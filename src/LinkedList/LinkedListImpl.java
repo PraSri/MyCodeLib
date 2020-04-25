@@ -1,5 +1,6 @@
 package LinkedList;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LinkedListImpl {
@@ -87,7 +88,7 @@ public class LinkedListImpl {
 
 		if (head.next == null || position == 1) {
 			insertAtHead(value);
-		} else if (position >= lengthLL()) {
+		} else if (position == lengthLL()) {
 			insertAtLast(value);
 		} else {
 			// take p-1 jumps
@@ -104,32 +105,68 @@ public class LinkedListImpl {
 
 	}
 
+// 	public static void insert_node(int index, int val) {
+// 	    int size = lengthLL();
+//         if (index > size) return;
+//         if (index == 0) {
+//             insertAtHead(val);
+//         } else {
+//             size++;
+//             Node current = head;
+//             for (int i = 0; i < index - 1; i++) {
+//                 current = current.next;
+//             }
+//             Node node = new Node(val);
+//             node.next = current.next;
+//             current.next = node;
+//         }
+//     }
+
+// 	public static void delete_node(int position) {
+// 		// @params position, integer
+// 		if (head.next == null || position == 1) {
+// 			deleteFront();
+// 		} else if (position >= lengthLL()) {
+// // 			deleteLast();
+// 		} else {
+// 			// take p-1 jumps
+// 			int jump = 1;
+// 			Node t = head;
+// 			while (jump <= position - 1) {
+// 				t = t.next;
+// 				jump++;
+// 			}
+// 			Node p = t.next;
+// 			t.next = p.next;
+// 		}
+// 	}
+
 	public static void delete_node(int position) {
-		// @params position, integer
-		if (head.next == null || position == 1) {
-			deleteFront();
-		} else if (position >= lengthLL()) {
-			deleteLast();
-		} else {
-			// take p-1 jumps
-			int jump = 1;
-			Node t = head;
-			while (jump <= position - 1) {
-				t = t.next;
-				jump++;
-			}
-			Node p = t.next;
-			t.next = p.next;
+		int index = position;
+		int size = lengthLL();
+		if (index > size)
+			return;
+		size--;
+		Node current = head;
+		for (int i = 0; i < index - 1; i++) {
+			current = current.next;
 		}
+		current.next = current.next.next;
 	}
 
 	public static void print_ll() {
 		// Output each element followed by a space
-//    	System.out.println("HEAD= " + head);
 		Node t = head.next;
+		ArrayList<Integer> a = new ArrayList<>();
 		while (t != null) {
-			System.out.print(t.d + " ");
+			a.add(t.d);
 			t = t.next;
+		}
+		for (int i = 0; i < a.size(); i++) {
+			System.out.print(a.get(i));
+			if (i < a.size() - 1) {
+				System.out.print(" ");
+			}
 		}
 	}
 
