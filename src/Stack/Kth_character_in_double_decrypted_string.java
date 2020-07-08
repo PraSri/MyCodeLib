@@ -30,6 +30,8 @@ public class Kth_character_in_double_decrypted_string {
 	 * Note: Frequency of encrypted substring can be of more than one digit. For
 	 * example, in “ab12c3”, ab is repeated 12 times. No leading 0 is present in the
 	 * frequency of substring.
+	 * 
+	 * 
 	 */
 
 	public static class Pair {

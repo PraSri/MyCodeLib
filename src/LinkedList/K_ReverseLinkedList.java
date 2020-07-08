@@ -30,6 +30,7 @@ public class K_ReverseLinkedList {
 
 		int i = 0;
 		while (head != null) {
+			i++;
 			if (i % k == 0) {
 				begin = reverse(begin, head.next);
 				head = begin.next;
