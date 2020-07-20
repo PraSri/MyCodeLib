@@ -3,8 +3,13 @@ package Misc;
 public class Contest {
 
 	public static void main(String[] args) {
-		System.out.println(solve(997, 1251));
-//		System.out.println(solve(5, 9));
+		Double d = 0.0;
+		int i = 3;
+		int y = 5;
+		Double f = (double) (i/y);
+		float t = 3/5;
+		System.out.println(t);
+		System.out.println(f);
 	}
 
 	public static int solve(int A, int B) {

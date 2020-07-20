@@ -1,4 +1,4 @@
-package twoPointers;
+package TwoPointers;
 
 public class CountOfPairsWithTheGivenSumII {
 
