@@ -1,95 +1,111 @@
 package Misc;
 
-public class Solution {
+class Solution {
 
-	// binary trie, where each trie node has only 2 child
-	// one child will represent bit "1" in the binary representation of num
-	// one child will represent bit "0" in the binary representation of num
-	private static class TrieNode {
-		// children[0]: represent bit "1" in the binary representation
-		// children[1]: represent bit "0" in the binary representation
-		private final TrieNode[] children;
-
-		private TrieNode() {
-			children = new TrieNode[2];
-		}
-	}
-
-	private TrieNode root;
-
-	public int findMaximumXOR(int[] nums) {
-		// initialize the root node
-		root = new TrieNode();
-
-		TrieNode curr;
-
-		// build the trie
-		for (int num : nums) {
-			// starting from root;
-			curr = root;
-
-			// since every num is positive, their 31th bit is always 0
-			// we can ignore that bit and directy build from the 30th bit
-			for (int i = 30; i >= 0; --i) {
-				int bit = getIthBit(num, i);
-
-				// if current bit is 0, it will go to children[1]
-				// if current bit is 1, it will go to children[0]
-				if (curr.children[bit ^ 1] == null) {
-					curr.children[bit ^ 1] = new TrieNode();
-				}
-
-				curr = curr.children[bit ^ 1];
+	public static void main(String[] args) {
+		String A = "111";
+		int n = A.length();
+		long mod = 1000000007;
+		int x = 10;
+		System.out.println(x % mod);
+		int c = 0;
+		for (int i = 0; i < n; i++) {
+			if (A.charAt(i) == '1') {
+				c++;
 			}
 		}
 
-		int ans = Integer.MIN_VALUE;
+		long l = c * (c - 1);
 
-		// iterate through each num again
-		// starting from those significant bits of num, we try the best
-		// to go to the node that represent the negation of current bit
-		// if such node doesn't exist, we have to go the node that represents
-		// the current bit
-		for (int num : nums) {
-			// starting from root
-			curr = root;
-
-			// keep track of the maximum result of XOR current num with
-			// other num in the array
-			int rst = 0;
-			for (int i = 30; i >= 0; --i) {
-				int bit = getIthBit(num, i);
-
-				// check to see if node that represents the negation of
-				// current bit exists or not. If exists, go to that way
-
-				// if current bit is 1, then we want to go to children[1] (which represents 0)
-				// if current bit is 0, then we want to go to children[0] (which represents 1)
-				if (curr.children[bit] != null) {
-					curr = curr.children[bit];
-
-					// if exists, then we will have a "1" at the current index
-					// in the result of maximum XOR
-					rst += (1 << i);
-				}
-				// if not exists
-				else {
-					curr = curr.children[bit ^ 1];
-				}
-			}
-
-			// keep track of global maximum
-			ans = Math.max(ans, rst);
-			// there is no need to continue when final result has reached max value
-			if (ans == Integer.MAX_VALUE)
-				break;
-		}
-
-		return ans;
+		int ans = (int) l / 2;
+		System.out.println(ans + c);
 	}
 
-	// get the ith bit (count from LSB, 0-based) of num
-	private int getIthBit(int num, int i) {
-		return (num & (1 << i)) == 0 ? 0 : 1;
+	public boolean isMatch(String s, String p) {
+		// corner case
+		if (s == null || p == null)
+			return false;
+
+		int m = s.length();
+		int n = p.length();
+
+		// M[i][j] represents if the 1st i characters in s can match the 1st j
+		// characters in p
+		boolean[][] M = new boolean[m + 1][n + 1];
+
+		// initialization:
+		// 1. M[0][0] = true, since empty string matches empty pattern
+		M[0][0] = true;
+
+		// 2. M[i][0] = false(which is default value of the boolean array) since empty
+		// pattern cannot match non-empty string
+		// 3. M[0][j]: what pattern matches empty string ""? It should be #*#*#*#*...,
+		// or (#*)* if allow me to represent regex using regex :P,
+		// and for this case we need to check manually:
+		// as we can see, the length of pattern should be even && the character at the
+		// even position should be *,
+		// thus for odd length, M[0][j] = false which is default. So we can just skip
+		// the odd position, i.e. j starts from 2, the interval of j is also 2.
+		// and notice that the length of repeat sub-pattern #* is only 2, we can just
+		// make use of M[0][j - 2] rather than scanning j length each time
+		// for checking if it matches #*#*#*#*.
+		for (int j = 2; j < n + 1; j += 2) {
+			if (p.charAt(j - 1) == '*' && M[0][j - 2]) {
+				M[0][j] = true;
+			}
+		}
+
+		// Induction rule is very similar to edit distance, where we also consider from
+		// the end. And it is based on what character in the pattern we meet.
+		// 1. if p.charAt(j) == s.charAt(i), M[i][j] = M[i - 1][j - 1]
+		// ######a(i)
+		// ####a(j)
+		// 2. if p.charAt(j) == '.', M[i][j] = M[i - 1][j - 1]
+		// #######a(i)
+		// ####.(j)
+		// 3. if p.charAt(j) == '*':
+		// 1. if p.charAt(j - 1) != '.' && p.charAt(j - 1) != s.charAt(i), then b* is
+		// counted as empty. M[i][j] = M[i][j - 2]
+		// #####a(i)
+		// ####b*(j)
+		// 2.if p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i):
+		// ######a(i)
+		// ####.*(j)
+		//
+		// #####a(i)
+		// ###a*(j)
+		// 2.1 if p.charAt(j - 1) is counted as empty, then M[i][j] = M[i][j - 2]
+		// 2.2 if counted as one, then M[i][j] = M[i - 1][j - 2]
+		// 2.3 if counted as multiple, then M[i][j] = M[i - 1][j]
+
+		// recap:
+		// M[i][j] = M[i - 1][j - 1]
+		// M[i][j] = M[i - 1][j - 1]
+		// M[i][j] = M[i][j - 2]
+		// M[i][j] = M[i][j - 2]
+		// M[i][j] = M[i - 1][j - 2]
+		// M[i][j] = M[i - 1][j]
+		// Observation: from above, we can see to get M[i][j], we need to know previous
+		// elements in M, i.e. we need to compute them first.
+		// which determines i goes from 1 to m - 1, j goes from 1 to n + 1
+
+		for (int i = 1; i < m + 1; i++) {
+			for (int j = 1; j < n + 1; j++) {
+				char curS = s.charAt(i - 1);
+				char curP = p.charAt(j - 1);
+				if (curS == curP || curP == '.') {
+					M[i][j] = M[i - 1][j - 1];
+				} else if (curP == '*') {
+					char preCurP = p.charAt(j - 2);
+					if (preCurP != '.' && preCurP != curS) {
+						M[i][j] = M[i][j - 2];
+					} else {
+						M[i][j] = (M[i][j - 2] || M[i - 1][j - 2] || M[i - 1][j]);
+					}
+				}
+			}
+		}
+
+		return M[m][n];
 	}
 }

@@ -3,8 +3,7 @@ package DynamicProgramming;
 public class WaysToDecode {
 
 	public static void main(String[] args) {
-		System.out.println(numDecodings(
-				"32925665678138257423442343752148360796465852883409126159293254159974370974059818198867156827877059067081419274873853679038"));
+		System.out.println(numDecodings("8"));
 	}
 
 	/*
@@ -42,6 +41,7 @@ public class WaysToDecode {
 	public static int numDecodings(String A) {
 
 		int n = A.length();
+		int mod = 1000000007;
 		if (A.charAt(0) == '0')
 			return 0;
 		if (n == 1) {
@@ -64,16 +64,16 @@ public class WaysToDecode {
 			int y = Integer.parseInt(A.substring(i - 2, i));
 
 			if (x >= 1 && x <= 9) {
-				dp[i] += dp[i - 1];
+				dp[i] += dp[i - 1] % mod;
 			}
 
 			if (y >= 10 && y <= 26) {
-				dp[i] += dp[i - 2];
+				dp[i] += dp[i - 2] % mod;
 			}
 
 		}
 
-		return dp[n];
+		return dp[n] % mod;
 
 	}
 
