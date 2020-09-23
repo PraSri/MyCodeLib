@@ -3,10 +3,10 @@ package Heaps;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class Heaps4 {
+public class MinimumLargestElement {
 
 	public static void main(String[] args) {
-		Heaps4 h = new Heaps4();
+		MinimumLargestElement h = new MinimumLargestElement();
 
 		System.out.println(h.solve(new int[] {5, 7, 8}, 9));
 

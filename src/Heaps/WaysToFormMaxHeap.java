@@ -10,7 +10,7 @@ public class WaysToFormMaxHeap {
 		System.out.println(x);
 		int y = waysToFormMaxHeap.getnCk(5, 2);
 		System.out.println(y);
-		int z = waysToFormMaxHeap.solve(20);
+		int z = waysToFormMaxHeap.solve(3);
 		System.out.println(z);
 	}
 
