@@ -14,7 +14,12 @@ public class DijsktraUsingPriorityQueue {
 //	https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-in-java-using-priorityqueue/
 
 	public static void main(String[] args) {
-
+		int[][] B = new int[][] { { 2, 4, 10 }, { 3, 4, 1 }, { 3, 6, 1 }, { 1, 2, 4 }, { 4, 5, 6 } };
+		DijsktraUsingPriorityQueue d = new DijsktraUsingPriorityQueue();
+		int[] ans = d.solve(7, B, 2);
+		for (int i : ans) {
+			System.out.print(i + " ");
+		}
 	}
 
 	public class Node implements Comparator<Node> {
@@ -39,6 +44,12 @@ public class DijsktraUsingPriorityQueue {
 				return -1;
 			return 0;
 		}
+
+//		@Override
+//		public int compareTo(Node n) {
+//			// TODO Auto-generated method stub
+//			return 0;
+//		}
 
 	}
 
@@ -68,13 +79,18 @@ public class DijsktraUsingPriorityQueue {
 		int[] dist = new int[vertices];
 		Set<Integer> set = new HashSet<Integer>();
 		Arrays.fill(dist, Integer.MAX_VALUE);
-		PriorityQueue<Node> pq = new PriorityQueue<Node>();
+		PriorityQueue<Node> pq = new PriorityQueue<Node>(vertices, new Node());
 		dist[src] = 0;
 		pq.add(new Node(src, 0));
-		while (set.size() != vertices) {
+		while (!pq.isEmpty() && set.size() != vertices) {
 			int u = pq.remove().v;
 			set.add(u);
 			processNeighbours(u, adj, dist, pq, set);
+		}
+		for (int i = 0; i < dist.length; i++) {
+			if (dist[i] == Integer.MAX_VALUE) {
+				dist[i] = -1;
+			}
 		}
 		return dist;
 	}
