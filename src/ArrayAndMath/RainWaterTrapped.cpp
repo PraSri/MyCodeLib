@@ -1,3 +1,12 @@
+/*
+*
+*
+*Given a vector A of non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+*
+*https://www.geeksforgeeks.org/trapping-rain-water/
+*
+*/
+
 int Solution::trap(const vector<int> &A) {
     int n = A.size();
     int prefix[n];
