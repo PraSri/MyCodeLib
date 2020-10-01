@@ -1,4 +1,4 @@
-package TestPackage;
+package Graphs;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -39,8 +39,7 @@ public class SmallestSequenceWithGivenPrimes {
 
 		int lowest = 0;
 
-
-		while (i<D) {
+		while (i < D) {
 
 			int curr = pq.poll();
 

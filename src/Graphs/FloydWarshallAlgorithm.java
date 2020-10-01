@@ -1,4 +1,4 @@
-package TestPackage;
+package Graphs;
 
 public class FloydWarshallAlgorithm {
 
