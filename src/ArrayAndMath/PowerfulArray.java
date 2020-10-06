@@ -1,4 +1,4 @@
-package TestPackage;
+package ArrayAndMath;
 
 public class PowerfulArray {
 
