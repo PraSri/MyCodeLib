@@ -11,6 +11,11 @@
  * the newspaper.
  *
  */
+
+/**
+	 * Intuition is that you keep summing the B[i] till you equal or exceed A , with it keep updating the counter , now take answer will be counter % 7;
+	 * */
+
 int Solution::solve(int A, vector<int> &B) {
 	int n = B.size();
 	int i = 0;

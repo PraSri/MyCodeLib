@@ -1,7 +1,7 @@
 package Misc;
 
 public class Contest {
-
+	
 	public static void main(String[] args) {
 		Double d = 0.0;
 		int i = 3;

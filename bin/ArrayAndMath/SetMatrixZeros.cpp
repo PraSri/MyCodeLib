@@ -3,6 +3,34 @@
 //Note: This will be evaluated on the extra memory used. Try to minimize the space and time complexity.
 //
 
+/**
+	 * 
+	 * One brute force approach is that you can if u find any element 
+	 * matrix[i][j] = 0 then you should mark its corresponding row and column as -1; after
+	 * completing the traversal , once again iterate the matrix and change all -1 to 0.
+	 * 
+	 ********************************************************************************************** 
+	 *
+	 *
+	 * One of the optimized solution is that : 
+	 * first u check the 0th row for 0 and
+	 * set the flag if present and break; 
+	 * second check 0th column for 0 , set flag
+	 * and break;
+	 * 
+	 * iterate the matrix from 1 to rowLength and 1 to colLength, if u find zero
+	 * just mark its corresponding 0th row and 0th column as 0
+	 * 
+	 * Again iterate matrix , if its 0th row OR 0th column has 0 then mark that
+	 * element as 0
+	 * 
+	 * At last , if flag is set for 0th row and 0th column , iterate for each row
+	 * and column and fill zeroes.
+	 * 
+	 * 
+	 */
+
+
 void Solution::setZeroes(vector<vector<int> > &A) {
 	// Do not write main() function.
 	// Do not read input, instead use the arguments to the function.
