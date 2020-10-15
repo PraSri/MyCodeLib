@@ -64,7 +64,7 @@ public class SpiralOrderMatrixII {
 					v++;
 				}
 
-				// decrease start col
+				// increase start col
 				startCol++;
 
 			}

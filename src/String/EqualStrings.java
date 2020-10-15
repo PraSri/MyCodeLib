@@ -4,7 +4,7 @@ public class EqualStrings {
 
 	public static void main(String[] args) {
 
-		System.out.println(solve("tjjgtdrntrjtwwixd", "dgwwnigjoipdxiopg"));
+		System.out.println(solve("ababc", "adadg"));
 
 	}
 
