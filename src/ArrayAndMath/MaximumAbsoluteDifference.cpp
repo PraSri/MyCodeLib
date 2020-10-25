@@ -18,8 +18,8 @@ int Solution::maxArr(vector<int> &A) {
 /**
 	 * 
 	 * |A[i]-A[j]| + |i-j|
-	 * remove modulus according to modulus function:
-	 * (a[i]+i)-(a[j]+j) or (a[j]+j)-(a[i]+i)
+	 * remove modulus according to modulus function: (a[i]-i) + (j-a[j]) = (a[i]-i) - (a[j]-j)
+	 * (a[i]+i)-(a[j]+j) or (a[i]-i) - (a[j]-j)
 	 * For max value = MAX-MIN
 	 * 
 	 * 

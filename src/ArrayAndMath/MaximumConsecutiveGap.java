@@ -5,7 +5,7 @@ public class MaximumConsecutiveGap {
 	public static void main(String[] args) {
 	}
 
-	/*
+	/***
 	 * Given an unsorted integer array A of size N. Find the maximum difference
 	 * between the successive elements in its sorted form.
 	 * 
@@ -16,6 +16,12 @@ public class MaximumConsecutiveGap {
 	 * difference will not overflow.
 	 * 
 	 * Return 0 if the array contains less than 2 elements.
+	 * 
+	 */
+
+	/***
+	 * Input: [3,6,9,1] Output: 3 Explanation: The sorted form of the array is
+	 * [1,3,6,9], either (3,6) or (6,9) has the maximum difference 3.
 	 * 
 	 */
 

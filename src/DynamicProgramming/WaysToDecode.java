@@ -5,11 +5,12 @@ public class WaysToDecode {
 	public static void main(String[] args) {
 		System.out.println(numDecodings("8"));
 	}
-
+	
+//	https://leetcode.com/problems/decode-ways/discuss/30358/Java-clean-DP-solution-with-explanation/29468
+	
+	
 	/*
-	 * https://leetcode.com/problems/decode-ways/discuss/30358/Java-clean-DP-
-	 * solution-with-explanation/29468 Thank you so much for this clean and
-	 * intuitive solution!!
+	 * 
 	 * 
 	 * I wrote some notes for myself reference, hope it might help someone to
 	 * understand this solution.
