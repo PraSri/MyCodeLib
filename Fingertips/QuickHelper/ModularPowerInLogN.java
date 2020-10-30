@@ -1,6 +1,6 @@
-package TestPackage;
+package QuickHelper;
 
-public class Test2 {
+public class ModularPowerInLogN {
 	
 	
 	public static void main(String[] args) {

@@ -1,4 +1,8 @@
-public static void main(String[] args) {
+package DynamicProgramming;
+
+public class DungeonPrincess {
+
+	public static void main(String[] args) {
 
 	}
 
@@ -27,3 +31,5 @@ public static void main(String[] args) {
 		memo[i][j] = need;
 		return memo[i][j];
 	}
+
+}
