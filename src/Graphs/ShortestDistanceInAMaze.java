@@ -6,6 +6,10 @@ import java.util.PriorityQueue;
 
 public class ShortestDistanceInAMaze {
 
+	public ShortestDistanceInAMaze() {
+
+	}
+
 	public static void main(String[] args) {
 
 	}
@@ -34,7 +38,7 @@ public class ShortestDistanceInAMaze {
 	 * /Graphs/Shortest%20Distance%20in%20a%20Maze.cpp
 	 * 
 	 */
-	public class Node {
+	public static class Node {
 		public int u, v, w;
 
 		public Node(int u, int v, int w) {

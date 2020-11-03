@@ -13,6 +13,12 @@ public class MaxChunksToMakeSortedII {
 	 * 
 	 */
 
+	/*******
+	 * A = [2, 0, 1, 2] Given array : 2, 0, 1, 2 Final sorted array : 0, 1, 2, 2
+	 * Difference array : -2,1,1,0 sum : -2,-1,0,0
+	 * 
+	 ****/
+
 	public int solve(int[] A) {
 		int[] a = new int[A.length];
 		for (int i = 0; i < A.length; i++) {
