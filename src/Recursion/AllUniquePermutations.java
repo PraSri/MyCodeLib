@@ -7,6 +7,15 @@ import java.util.List;
 
 public class AllUniquePermutations {
 
+	/***********
+	 * 
+	 * 
+	 * Given an array A of size N denoting collection of numbers that might contain
+	 * duplicates, return all possible unique permutations. NOTE: No 2 entries in
+	 * the permutation sequence should be the same.
+	 * 
+	 *************/
+
 	public static void main(String[] args) {
 
 		for (ArrayList<Integer> a : permute(new ArrayList<>(Arrays.asList(1, 2, 3)))) {
