@@ -8,6 +8,27 @@ public class StuckedKey {
 
 	// https://leetcode.com/discuss/interview-question/679321/Google-or-Onsite-or-Determine-if-word-is-typo-because-of-stuck-key/573400
 
+	/******************
+	 * 
+	 * 
+	 * Given a dictionary of valid words, write a function isTypoBecauseStuckKey()
+	 * that accepts a string to determine if the string has a typo that is strictly
+	 * caused by a stuck key.
+	 * 
+	 * Example:
+	 * 
+	 * Input: Dictionary: { hello, cat, world, dog, bird, grass, green, help, greet,
+	 * great } String: bbbirrrdddd
+	 * 
+	 * Output: True
+	 * 
+	 * Explanation: The character's 'b', 'r', & 'd' all repeat. Assuming their keys
+	 * got stuck, we can form the word 'bird', which exists in the dictionary.
+	 * 
+	 * 
+	 * 
+	 **************************************/
+
 	public static void main(String[] args) {
 
 		String[] A = new String[] { "hello", "cat", "world", "dog", "bird", "grass", "green", "help", "greet",
