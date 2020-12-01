@@ -1,4 +1,4 @@
-package Backtracking;
+package BacktrackingRecursion;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,19 @@ public class KthPermutationSequence {
 	public static void main(String[] args) {
 		System.out.println(getPermutation(3, 4));
 	}
+
+	/******
+	 * Given n and k, return the kth permutation sequence.
+	 * 
+	 * 
+	 * By listing and labeling all of the permutations in order, We get the
+	 * following sequence (ie, for n = 3 ) :
+	 * 
+	 * 1. "123" 2. "132" 3. "213" 4. "231" 5. "312" 6. "321"
+	 * 
+	 * For example, given n = 3, k = 4, ans = "231"
+	 * 
+	 **********************/
 
 	/*
 	 * say n = 4, you have {1, 2, 3, 4}
@@ -112,7 +125,7 @@ public class KthPermutationSequence {
 			numbers.add(i);
 		}
 
-		// resue k = k - 1 to match index
+		// reduce k = k - 1 to match index
 
 		k--;
 

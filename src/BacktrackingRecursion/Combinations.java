@@ -1,4 +1,4 @@
-package Backtracking;
+package BacktrackingRecursion;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public class Combinations {
 
 	public static void main(String[] args) {
 
-		for (ArrayList<Integer> a : combine(4, 2)) {
+		for (ArrayList<Integer> a : combine(5, 3)) {
 			System.out.println(a);
 		}
 

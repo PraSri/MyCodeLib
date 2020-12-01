@@ -1,4 +1,4 @@
-package Backtracking;
+package BacktrackingRecursion;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class PalindromePartitioning {
 
 	/*
 	 * https://leetcode.com/problems/palindrome-partitioning/discuss/41963/Java%3A-
-	 * Backtracking-solution.
+	 * BacktrackingRecursion-solution.
 	 */
 
 	public static ArrayList<ArrayList<String>> partition(String a) {

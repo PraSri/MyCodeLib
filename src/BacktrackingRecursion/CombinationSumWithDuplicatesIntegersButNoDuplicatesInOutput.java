@@ -1,10 +1,10 @@
-package Recursion;
+package BacktrackingRecursion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class CombinationSum {
+public class CombinationSumWithDuplicatesIntegersButNoDuplicatesInOutput {
 
 	public static void main(String[] args) {
 
@@ -16,6 +16,22 @@ public class CombinationSum {
 		}
 
 	}
+
+	/*******************************/
+
+	/*****
+	 * Given a collection of candidate numbers (candidates) and a target number
+	 * (target), find all unique combinations in candidates where the candidate
+	 * numbers sum to target.
+	 * 
+	 * Each number in candidates may only be used once in the combination.
+	 * 
+	 * Note: The solution set must not contain duplicate combinations.
+	 *
+	 * 
+	 * 
+	 * Input: candidates = [2,5,2,1,2], target = 5 Output: [ [1,2,2], [5] ]
+	 *******/
 
 	public static ArrayList<ArrayList<Integer>> combinationSum(ArrayList<Integer> a, int b) {
 
@@ -45,6 +61,16 @@ public class CombinationSum {
 		for (int cur = i; cur < a.size(); cur++) {
 
 			// if duplicates don't repeat
+
+			/**
+			 * 
+			 * i>curr means position curr has been processed and we have found all the
+			 * combinations starting from position curr by doing dfs. Therefore if
+			 * cand[curr+1]==cand[curr] there is no need to process position curr+1 as it
+			 * will provide combinations which have already been found by dfs from position
+			 * curr hence we skip the step to avoid duplicate combinations.
+			 * 
+			 ****/
 			if (cur > i && a.get(cur) == a.get(cur - 1)) {
 				continue;
 			}

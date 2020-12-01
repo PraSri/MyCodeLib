@@ -17,6 +17,26 @@ public class FirstNegativeIntegerInWindowSizeB {
 
 	}
 
+	/*********
+	 * 
+	 * Given an array of integers A of size N and an integer B.
+	 * 
+	 * Find the first negative integer for each and every window(contiguous
+	 * subarray) of size B.
+	 * 
+	 * If a window does not contain a negative integer, then return 0 for that
+	 * window.
+	 * 
+	 * Input 1: A = [-1, 2, 3, -4, 5] B = 2
+	 * 
+	 * 
+	 * Input 2: A = [-8, 2, 3, -6, 10] B = 2
+	 * 
+	 * 
+	 * Output 1: [-1, 0, -4, -4] Output 2: [-8, 0, -6, -6]
+	 * 
+	 **********/
+
 	public static int[] solve(int[] A, int B) {
 
 		int n = A.length;
@@ -41,7 +61,7 @@ public class FirstNegativeIntegerInWindowSizeB {
 				d.add(i);
 			}
 		}
-		
+
 		if (!d.isEmpty()) {
 			ans.add(A[d.peek()]);
 		} else {
