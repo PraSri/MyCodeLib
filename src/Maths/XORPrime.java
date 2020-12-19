@@ -3,10 +3,11 @@ package Maths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import QuickHelper.PrimeNumbers;
+
 public class XORPrime {
 
 	public static void main(String[] args) {
-		int mod = 1000000007;
 //		System.out.println(mod);
 		System.out.println(solve(new int[] { 10, 45 }));
 
@@ -41,20 +42,7 @@ public class XORPrime {
 
 		int n = A.length;
 
-		boolean[] prime = new boolean[100005];
-
-		Arrays.fill(prime, true);
-
-		ArrayList<Integer> primes = new ArrayList<>();
-
-		for (int i = 2; i * i <= 100000; i++) {
-			if (prime[i]) {
-				primes.add(i);
-				for (int j = i * i; j <= 100000; j += i) {
-					prime[j] = false;
-				}
-			}
-		}
+		ArrayList<Integer> primes = PrimeNumbers.sievePrimeList();
 
 		int res = 0;
 		int mod = 1000000007;
