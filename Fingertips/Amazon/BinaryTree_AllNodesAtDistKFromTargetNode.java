@@ -17,36 +17,7 @@ import helperimpl.MyPrintIntegerArray;
 public class BinaryTree_AllNodesAtDistKFromTargetNode {
 
 	public static void main(String[] args) {
-		
-		TreeNode root = createTreeFromArray(new Integer[] {3,5,1,6,2,0,8,null,null,7,4});
-		int[] ans = InorderTraversal.inorderTraversal(root);
-		MyPrintIntegerArray.printArray(ans);
 
-	}
-	
-	public static TreeNode createTreeFromArray(Integer[] treeArray) {
-		
-		if(treeArray.length==0 || treeArray[0]==null) {
-			return null;
-		}
-		return build(treeArray,0);
-		
-	}
-
-	private static TreeNode build(Integer[] a,int i) {
-		// a[0] = root
-		// a[i] = parent
-		// 2*i = left child
-		// 2*i+1 = right child
-		
-		if(a[i]==null || i==a.length) {
-			return null;
-		}
-		
-		TreeNode root = new TreeNode(a[i]);
-		root.left = build(a, i+1);
-		root.right = build(a, i+2);
-		return root;
 	}
 
 	/*****
@@ -68,7 +39,7 @@ public class BinaryTree_AllNodesAtDistKFromTargetNode {
 		// buildChildParentMap
 		cp = new HashMap<TreeNode, List<TreeNode>>();
 		buildMap(root, null);
-		// now this tree can act as graph and target node as source 
+		// now this tree can act as graph and target node as source
 		// BFS and count level till level=k
 
 		return bfs(target, k);
@@ -77,36 +48,36 @@ public class BinaryTree_AllNodesAtDistKFromTargetNode {
 
 	private List<Integer> bfs(TreeNode src, int k) {
 		List<Integer> res = new ArrayList<Integer>();
-		if(!cp.containsKey(src))
+		if (!cp.containsKey(src))
 			return res;
 		Set<TreeNode> visited = new HashSet<TreeNode>();
 		Queue<TreeNode> queue = new LinkedList<TreeNode>();
 		queue.add(src);
 		visited.add(src);
-		while(!queue.isEmpty()) {
-			
+		while (!queue.isEmpty()) {
+
 			int size = queue.size();
-			if(k==0) {
-				for(int  i =0;i<size;i++) {
+			if (k == 0) {
+				for (int i = 0; i < size; i++) {
 					res.add(queue.poll().val);
 					return res;
 				}
 			}
-			
-			for(int i = 0;i<size;i++) {
+
+			for (int i = 0; i < size; i++) {
 				TreeNode curr = queue.poll();
-				for(TreeNode neigh : cp.get(curr)) {
-					if(visited.contains(neigh))
+				for (TreeNode neigh : cp.get(curr)) {
+					if (visited.contains(neigh))
 						continue;
 					visited.add(neigh);
 					queue.add(neigh);
 				}
 			}
-			
+
 			k--;
-			
+
 		}
- 		return res;
+		return res;
 	}
 
 	private void buildMap(TreeNode child, TreeNode parent) {
@@ -115,13 +86,65 @@ public class BinaryTree_AllNodesAtDistKFromTargetNode {
 		}
 		if (!cp.containsKey(child)) {
 			cp.put(child, new ArrayList<TreeNode>());
-		}
-		if(parent!=null) {
-			cp.get(child).add(parent);
-			cp.get(parent).add(child);
+			if (parent != null) {
+				cp.get(child).add(parent);
+				cp.get(parent).add(child);
+			}
 			buildMap(child.left, child);
 			buildMap(child.right, child);
 		}
+
 	}
 
+	class LeetcodeSol {
+		Map<TreeNode, List<TreeNode>> map = new HashMap();
+		// here can also use Map<TreeNode, TreeNode> to only store the child - parent
+		// mapping, since parent-child mapping is inherent in the tree structure
+
+		public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+			List<Integer> res = new ArrayList<Integer>();
+			if (root == null || K < 0)
+				return res;
+			buildMap(root, null);
+			if (!map.containsKey(target))
+				return res;
+			Set<TreeNode> visited = new HashSet<TreeNode>();
+			Queue<TreeNode> q = new LinkedList<TreeNode>();
+			q.add(target);
+			visited.add(target);
+			while (!q.isEmpty()) {
+				int size = q.size();
+				if (K == 0) {
+					for (int i = 0; i < size; i++)
+						res.add(q.poll().val);
+					return res;
+				}
+				for (int i = 0; i < size; i++) {
+					TreeNode node = q.poll();
+					for (TreeNode next : map.get(node)) {
+						if (visited.contains(next))
+							continue;
+						visited.add(next);
+						q.add(next);
+					}
+				}
+				K--;
+			}
+			return res;
+		}
+
+		private void buildMap(TreeNode node, TreeNode parent) {
+			if (node == null)
+				return;
+			if (!map.containsKey(node)) {
+				map.put(node, new ArrayList<TreeNode>());
+				if (parent != null) {
+					map.get(node).add(parent);
+					map.get(parent).add(node);
+				}
+				buildMap(node.left, node);
+				buildMap(node.right, node);
+			}
+		}
+	}
 }
