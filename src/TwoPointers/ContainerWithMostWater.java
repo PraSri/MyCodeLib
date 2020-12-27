@@ -2,6 +2,19 @@ package TwoPointers;
 
 public class ContainerWithMostWater {
 
+	/**
+	 * Given n non-negative integers A[0], A[1], ..., A[n-1] , where each represents
+	 * a point at coordinate (i, A[i]).
+	 * 
+	 * N vertical lines are drawn such that the two endpoints of line i is at (i,
+	 * A[i]) and (i, 0).
+	 * 
+	 * Find two lines, which together with x-axis forms a container, such that the
+	 * container contains the most water.
+	 * 
+	 * Note: You may not slant the container.
+	 ***/
+
 	public static void main(String[] args) {
 		int[] A = new int[] { 5, 1, 2 };
 		System.out.println(maxArea(A));
