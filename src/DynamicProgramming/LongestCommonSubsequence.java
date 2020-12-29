@@ -1,6 +1,13 @@
 package DynamicProgramming;
 
 public class LongestCommonSubsequence {
+
+	/***
+	 * Given two strings A and B. Find the longest common subsequence ( A sequence
+	 * which does not need to be contiguous), which is common in both the strings.
+	 * 
+	 * You need to return the length of such longest common subsequence.
+	 ****/
 	public int solve(String A, String B) {
 		int n = A.length();
 		int m = B.length();
