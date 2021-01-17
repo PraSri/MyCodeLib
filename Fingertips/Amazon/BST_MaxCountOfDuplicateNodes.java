@@ -53,6 +53,7 @@ public class BST_MaxCountOfDuplicateNodes {
 			curr = root;
 		}
 		prev = root;
+		
 		inorderTraversal(root.right);
 
 	}

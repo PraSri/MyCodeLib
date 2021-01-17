@@ -6,6 +6,17 @@ public class BalancedBinaryTree {
 
 	}
 
+	/**
+	 *
+	 * 
+	 * Given a root of binary tree A, determine if it is height-balanced.
+	 * 
+	 * A height-balanced binary tree is defined as a binary tree in which the depth
+	 * of the two subtrees of every node never differ by more than 1.
+	 * 
+	 * 
+	 *****/
+
 	public int isBalanced(TreeNode A) {
 
 		if (heightOfTree(A) != -1) {

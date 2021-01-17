@@ -6,6 +6,8 @@ public class ReverseLinkListII {
 
 	}
 
+	// Reverse a linked list from position m to n. Do it in one-pass.
+
 	public ListNode reverseBetween(ListNode A, int B, int C) {
 
 		ListNode dummy = new ListNode(-1);

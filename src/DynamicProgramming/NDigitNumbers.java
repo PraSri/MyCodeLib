@@ -9,6 +9,7 @@ public class NDigitNumbers {
 		NDigitNumbers n = new NDigitNumbers();
 
 		System.out.println(n.solve(1, 3));
+		System.out.println(n.solve(5, 3));
 
 	}
 

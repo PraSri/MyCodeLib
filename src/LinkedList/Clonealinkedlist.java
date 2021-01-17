@@ -6,6 +6,16 @@ public class Clonealinkedlist {
 
 	}
 
+	/****
+	 * Given a doubly linked list of integers with one pointer of each node pointing
+	 * to the next node (just like in a single link list) while the second pointer,
+	 * however, can point to any node in the list and not just the previous node.
+	 * 
+	 * You have to create a copy of this list and return the head pointer of the
+	 * duplicated list.
+	 * 
+	 ****/
+
 	ListNode cloneList(ListNode A) {
 
 		// insert new nodes in between
