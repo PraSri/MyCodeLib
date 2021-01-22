@@ -8,7 +8,7 @@ public class NextPermutation {
 
 		NextPermutation n = new NextPermutation();
 
-		int[] a = n.nextPermutation(new int[] { 2, 3, 1, 5, 4 });
+		int[] a = n.nextPermutation(new int[] { 2, 3, 1, 5, 4,4 });
 		Arrays.stream(a).forEach(i -> System.out.print(i + ", "));
 
 	}
