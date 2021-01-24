@@ -7,9 +7,9 @@ import java.util.Queue;
 public class OddAndEvenLevels {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
+	
+	// Given a binary tree of integers. Find the difference between the sum of nodes at odd level and sum of nodes at even level.
 
 	public int solve(TreeNode A) {
 		return travel(A);
