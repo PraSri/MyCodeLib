@@ -1,5 +1,7 @@
 package multithreading;
 
+import java.util.HashMap;
+
 public class MyThread {
 
 	Thread t = new Thread(() -> {
@@ -23,6 +25,7 @@ public class MyThread {
 	Thread oldWayThread = new Thread(runnable, "Old without lambda!!!!!!!!!!!");
 
 	public static void main(String[] args) {
+		
 
 		MyThread myThread = new MyThread();
 		
