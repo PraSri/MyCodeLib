@@ -7,6 +7,16 @@ import java.util.PriorityQueue;
 
 public class SpecialPath {
 
+// 	Given a graph with N nodes numbered 1 to N and M weighted edges. Given a binary array A of size N. A[i] = 1 if the ith node is special else 0.
+
+// Find the minimum distance of the special path between the 1st and the Nth node. Distance between two nodes is defined as the sum of the weight of edges in the path.
+
+// A special path is a path which visits alteast C non-special nodes and atleast D special nodes.
+
+// NOTE: A node or edge can occur multiple times in a special path. If no such path exists return -1.
+
+
+	
 	public static void main(String[] args) {
 
 		int[] A = new int[] { 0, 1, 0 };
