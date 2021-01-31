@@ -10,6 +10,16 @@ public class DistanceOfNearestCell {
 
 	}
 
+// 	Given a matrix of integers A of size N x M consisting of 0 or 1.
+
+// For each cell of the matrix find the distance of nearest 1 in the matrix.
+
+// Distance between two cells (x1, y1) and (x2, y2) is defined as |x1 - x2| + |y1 - y2|.
+
+// Find and return a matrix B of size N x M which defines for each cell in A distance of nearest 1 in the matrix A.
+
+// NOTE: There is atleast one 1 is present in the matrix.
+	
 	// Getting TLE
 
 	public int[][] solve(int[][] A) {
