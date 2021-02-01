@@ -1,6 +1,14 @@
 package Important;
 
+import java.util.List;
+
 public class FindMajorityElement implements MajorityElementsTypeQuestions {
+	
+	public static void main(String[] args) {
+		MajorityElementsTypeQuestions ob = new FindMajorityElement();
+		int ans = ob.majorityElement(new int[] {3,2});
+		System.out.println(ans);
+	}
 
 	@Override
 	public int majorityElement(int[] nums) {
@@ -39,10 +47,10 @@ public class FindMajorityElement implements MajorityElementsTypeQuestions {
 		return false;
 	}
 
-	public static void main(String[] args) {
-		MajorityElementsTypeQuestions ob = new FindMajorityElement();
-		int ans = ob.majorityElement(new int[] {3,2});
-		System.out.println(ans);
+	@Override
+	public List<Integer> majorityElement_ii(int[] nums) {
+//		TODO:
+		return null;
 	}
 
 }
