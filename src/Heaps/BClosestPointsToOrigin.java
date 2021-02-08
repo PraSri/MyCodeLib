@@ -1,14 +1,37 @@
 package Heaps;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class BClosestPointsToOrigin {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		BClosestPointsToOrigin ob = new BClosestPointsToOrigin();
+
+		ArrayList<ArrayList<Integer>> A = new ArrayList<ArrayList<Integer>>();
+		A.add(new ArrayList<Integer>() {
+			{
+				add(3);
+				add(3);
+			}
+		});
+		A.add(new ArrayList<Integer>() {
+			{
+				add(5);
+				add(-1);
+			}
+		});
+		A.add(new ArrayList<Integer>() {
+			{
+				add(-2);
+				add(4);
+			}
+		});
+		int B = 2;
+		System.out.println(ob.solve(A, B));
 	}
 
 	public static class Pair {

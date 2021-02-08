@@ -3,6 +3,7 @@ package Important;
 public interface NextGreaterElements {
 
 //	https://www.geeksforgeeks.org/next-greater-element/
+//	https://www.studytonight.com/post/finding-next-greater-element-for-every-element-in-an-array#
 
 	public int[] getNextElementInArrayRightOfEachElement(int[] a);
 

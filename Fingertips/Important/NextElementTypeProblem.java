@@ -7,7 +7,9 @@ public class NextElementTypeProblem implements NextGreaterElements {
 	public static void main(String[] args) {
 
 		NextElementTypeProblem nextElementTypeProblem = new NextElementTypeProblem();
-		int[] a = nextElementTypeProblem.getNextElementInArrayRightOfEachElement(new int[] { 11, 13, 21, 3 });
+		System.out.println("HELLO");
+		int[] a = nextElementTypeProblem.getNextElementInArrayRightOfEachElement(new int[] { 11, 13, 21, 3, 4, 2 });
+		System.out.println("HELLO");
 		for (int x : a) {
 			System.out.println(x);
 		}
@@ -17,38 +19,34 @@ public class NextElementTypeProblem implements NextGreaterElements {
 	@Override
 	public int[] getNextElementInArrayRightOfEachElement(int[] a) {
 		Stack<Integer> s = new Stack<Integer>();
-
 		s.push(a[0]);
-		int n = a.length;
-		int next, k = 0, x;
+		int n = a.length, k = 0;
 		int[] ans = new int[n];
+
 		for (int i = 1; i < n; i++) {
 
-			next = a[i];
-
-			if (!s.empty()) {
-				x = s.pop();
-				while (x < next) {
-					ans[k++] = next;
-					if (s.empty())
-						break;
-					x = s.pop();
-				}
-				if (x > next) {
-					s.push(x);
-				}
+			// while stack is not empty and top of stack is less than curr element keep
+			// printing
+			while (!s.empty() && s.peek() < a[i]) {
+				ans[k++] = a[i];
+				s.pop();
 			}
 
-			s.push(next);
+			// push the current element
+			s.push(a[i]);
+
 		}
+
+		// if no greater element then print -1
 
 		while (!s.empty()) {
-			x = s.pop();
-			a[k++] = -1;
+			ans[k++]=-1;
+			s.pop();
 		}
 
-		return a;
+		return ans;
 	}
+
 
 	@Override
 	public int[] nextGreaterElement(int[] nums1, int[] nums2) {
