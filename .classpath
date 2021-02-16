@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="Fingertips"/>
-	<classpathentry kind="src" path="JavaSpecific"/>
+	<classpathentry kind="src" path="fingertips"/>
+	<classpathentry kind="src" path="javaspecific"/>
 	<classpathentry kind="src" path="design"/>
 	<classpathentry kind="src" path="practice"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-13">
