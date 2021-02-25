@@ -8,7 +8,10 @@ public class NextPermutation {
 
 		NextPermutation n = new NextPermutation();
 
-		int[] a = n.nextPermutation(new int[] { 2, 3, 1, 5, 4,4 });
+//		int[] a = n.nextPermutation(new int[] { 2, 3, 1, 5, 4,4 });
+//		Arrays.stream(a).forEach(i -> System.out.print(i + ", "));
+
+		int[] a = n.nextPermutation(new int[] { 5, 3, 4, 9, 7, 6 });
 		Arrays.stream(a).forEach(i -> System.out.print(i + ", "));
 
 	}
@@ -39,26 +42,41 @@ public class NextPermutation {
 	 */
 
 	public int[] nextPermutation(int[] A) {
+
+		// traverse from rightmost side till u find a digit smaller than previously
+		// traversed digit
+
 		int i = A.length - 1;
 
 		while (i > 0 && A[i - 1] >= A[i]) {
 			i--;
 		}
-//		System.out.println("i1=" + i);
+
 		i--;
-//		System.out.println("i2=" + i);
+
+//		 if u don't find such digit that means its sorted in desending order and it is the last permutation...
+//		then reverse the digits 
 
 		if (i >= 0) {
+
+			// now search the right side of above found digit and find smallest just greater
+			// digit than above found digit
+
 			int j = A.length - 1;
+
 			while (j >= 0 && A[i] >= A[j]) {
 				j--;
 			}
-//			System.out.println("j=" + j);
+
+			// if u able to find such digit then just swap both found digits
 			if (j >= 0) {
 				swap(A, i, j);
 			}
 		}
+
+		// reverse the portion of array starting from i+1 to end of array
 		reverse(A, i);
+
 		return A;
 	}
 
