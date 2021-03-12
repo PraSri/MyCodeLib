@@ -6,6 +6,11 @@ public class ShortestUniquePrefix {
 
 	}
 
+	// Given a list of N words. Find shortest unique prefix to represent each word
+	// in the list.
+	// input : A = ["zebra", "dog", "duck", "dove"]
+	// output : B = ["z", "dog", "du", "dov"]
+
 	public class Trie {
 
 		public Trie[] next;
