@@ -4,6 +4,18 @@ import java.util.ArrayList;
 
 public class PrefixAndSuffix {
 
+	/***
+	 * Given a list of N words denoted by string array A of size N.
+	 * 
+	 * You have to answer Q queries denoted by string array B, for each query you
+	 * have a string S of size M, find the number of words in the list A which have
+	 * string S as a prefix and suffix.
+	 * 
+	 * 
+	 * A = ["ababa", "aabbvaab", "aecdsaaec", "abaaxbqaba"] B = ["aba", "aec",
+	 * "abb", "aab"] op : [2, 1, 0, 1]
+	 * 
+	 ********/
 	public static void main(String[] args) {
 		PrefixAndSuffix prefixAndSuffix = new PrefixAndSuffix();
 
@@ -11,7 +23,7 @@ public class PrefixAndSuffix {
 				"gszbqxlvfmkhjdbxigtuwrirbsywfdsczgszbqxlvfmkhjdbxigtuwrirbsywfdsczsucvzqlgszbqxlvfmkhjdbxigtuwrirbsywfdscz",
 				3);
 		System.out.println(test);
-		System.out.println("szbqxlv".substring(7-3));
+		System.out.println("szbqxlv".substring(7 - 3));
 
 	}
 
@@ -91,13 +103,13 @@ public class PrefixAndSuffix {
 		int i = 0;
 //		aabaab
 		int n = s.length();
-		if(m>n) {
+		if (m > n) {
 			return false;
 		}
 		System.out.println("n=" + n);
 		int j = n - m;
 		System.out.println("BEFORE WHILE ......");
-		while (i < m && j < n-1) {
+		while (i < m && j < n - 1) {
 			System.out.println(s.charAt(i) + ":" + s.charAt(j));
 			if (s.charAt(i) != s.charAt(j)) {
 				return false;
@@ -108,5 +120,5 @@ public class PrefixAndSuffix {
 		System.out.println("AFTER WHILE ......");
 		return true;
 	}
-	
+
 }

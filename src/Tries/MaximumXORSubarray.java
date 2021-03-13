@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class MaximumXORSubarray {
 
+	// Given an array A of integers of size N. Find the subarray AL, AL+1, AL+2, ...
+	// AR with 1<=L<=R<=N which has maximum XOR value.
+
+	// A = [1, 4, 3] res = [2, 3]
+
 	public static void main(String[] args) {
 
 		MaximumXORSubarray maximumXORSubarray = new MaximumXORSubarray();

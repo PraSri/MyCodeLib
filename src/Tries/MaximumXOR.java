@@ -6,6 +6,7 @@ public class MaximumXOR {
 
 	}
 
+//Given an array of integers A, find and return the maximum result of A[i] XOR A[j], where i, j are the indexes of the array.
 	class Trie {
 		Trie[] children;
 
