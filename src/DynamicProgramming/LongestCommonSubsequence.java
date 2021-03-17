@@ -7,6 +7,9 @@ public class LongestCommonSubsequence {
 	 * which does not need to be contiguous), which is common in both the strings.
 	 * 
 	 * You need to return the length of such longest common subsequence.
+	 * 
+	 * EXAMPLE : LCS for input Sequences “ABCDGH” and “AEDFHR” is “ADH” of length 3.
+	 * 
 	 ****/
 	public int solve(String A, String B) {
 		int n = A.length();
