@@ -1,7 +1,5 @@
 package GoldmanSachs;
 
-import java.util.Arrays;
-
 public class Binary_Search_in_forest {
 
 	/******
@@ -20,6 +18,7 @@ public class Binary_Search_in_forest {
 	}
 
 	static int wood_collected(int tree[], int n, int h) {
+	
 		int ret = 0;
 
 		// counting the amount of wood that gets collected

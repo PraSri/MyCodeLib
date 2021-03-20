@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 public class CandyCrush_RemovingRepeatingNumber {
 
 	public int[] remove(int[] in) {
+
 		if (in.length == 1)
 			return in;
 
@@ -38,9 +39,11 @@ public class CandyCrush_RemovingRepeatingNumber {
 
 		int[] result = new int[deque.size()];
 		int i = 0;
+
 		while (!deque.isEmpty()) {
 			result[i++] = deque.pollFirst();
 		}
+
 		return result;
 	}
 }
