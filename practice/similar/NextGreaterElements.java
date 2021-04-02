@@ -1,11 +1,13 @@
-package Important;
+package similar;
+
+import java.util.List;
 
 public interface NextGreaterElements {
 
 //	https://www.geeksforgeeks.org/next-greater-element/
 //	https://www.studytonight.com/post/finding-next-greater-element-for-every-element-in-an-array#
 
-	public int[] getNextElementInArrayRightOfEachElement(int[] a);
+	public List<Integer> getNextElementInArrayRightOfEachElement(int[] a);
 
 //	https://leetcode.com/problems/next-greater-element-i/
 
@@ -21,6 +23,6 @@ public interface NextGreaterElements {
 	public int[] dailyTemperatures(int[] T);
 
 //	https://leetcode.com/problems/next-permutation/
-	public void nextPermutation(int[] nums);
+	public int[] nextPermutation(int[] nums);
 
 }

@@ -1,4 +1,4 @@
-package Amazon;
+package similar;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ public interface FindNextElementInArrayTypeQuestions {
 //	https://www.geeksforgeeks.org/next-greater-element/ => https://www.geeksforgeeks.org/next-greater-element-in-same-order-as-input/
 //	https://www.geeksforgeeks.org/next-smaller-element/
 //	https://www.geeksforgeeks.org/previous-greater-element/
+//	https://www.geeksforgeeks.org/leaders-in-an-array/
 
 	// previous smallest element
 	// Find the nearest smaller numbers on left side in an array
@@ -21,6 +22,9 @@ public interface FindNextElementInArrayTypeQuestions {
 
 //	Next Greater Element
 	public List<Integer> NGE(int[] a);
+	
+//  Leaders in array
+	public List<Integer> leadersInArray(int[] a);
 
 	/*******
 	 * I believe all should be studied at once, as it provides perspective: NGE -

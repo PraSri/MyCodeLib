@@ -6,12 +6,7 @@ public class NextPermutation {
 
 	public static void main(String[] args) {
 
-		NextPermutation n = new NextPermutation();
-
-//		int[] a = n.nextPermutation(new int[] { 2, 3, 1, 5, 4,4 });
-//		Arrays.stream(a).forEach(i -> System.out.print(i + ", "));
-
-		int[] a = n.nextPermutation(new int[] { 5, 3, 4, 9, 7, 6 });
+		int[] a = nextPermutation(new int[] { 5, 3, 4, 9, 7, 6 });
 		Arrays.stream(a).forEach(i -> System.out.print(i + ", "));
 
 	}
@@ -41,7 +36,7 @@ public class NextPermutation {
 	 * 
 	 */
 
-	public int[] nextPermutation(int[] A) {
+	public static int[] nextPermutation(int[] A) {
 
 		// traverse from rightmost side till u find a digit smaller than previously
 		// traversed digit

@@ -12,9 +12,13 @@ public class NGE {
 		int[] a = new int[] { 11, 13, 21, 3 };
 
 		System.out.println(nge(a));
-		
-		a = new int[] {4, 5, 2, 25 };
-		
+
+		a = new int[] { 4, 5, 2, 25 };
+
+		System.out.println(nge(a));
+
+		a = new int[] { 11, 13, 21, 3, 4, 2 };
+
 		System.out.println(nge(a));
 
 	}

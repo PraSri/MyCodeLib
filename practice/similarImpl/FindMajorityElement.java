@@ -1,6 +1,8 @@
-package Important;
+package similarImpl;
 
 import java.util.List;
+
+import similar.MajorityElementsTypeQuestions;
 
 public class FindMajorityElement implements MajorityElementsTypeQuestions {
 	

@@ -1,7 +1,10 @@
-package Amazon;
+package similarImpl;
 
 import java.util.List;
+
+import Arrays.LeadersInArray;
 import Stack.*;
+import similar.FindNextElementInArrayTypeQuestions;
 
 public class FindNextElementInArrayTypeQuestionsImpl implements FindNextElementInArrayTypeQuestions {
 
@@ -23,6 +26,11 @@ public class FindNextElementInArrayTypeQuestionsImpl implements FindNextElementI
 	@Override
 	public List<Integer> NGE(int[] a) {
 		return NGE.nge(a);
+	}
+
+	@Override
+	public List<Integer> leadersInArray(int[] a) {
+		return LeadersInArray.getLeaders(a);
 	}
 
 }
