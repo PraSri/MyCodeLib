@@ -29,7 +29,6 @@ public class MaximumDistinctNodesInRootToLeafPath {
 		if(node == null) {
 			map.size();
 		}
-		
 		if(map.containsKey(node.val)) {
 			map.put(node.val, map.get(node.val)+1);
 		}else {

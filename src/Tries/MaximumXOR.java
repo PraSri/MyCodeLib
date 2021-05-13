@@ -4,6 +4,10 @@ public class MaximumXOR {
 
 	public static void main(String[] args) {
 
+		MaximumXOR m = new MaximumXOR();
+		int x = m.solve(new int[] { 5, 6 });
+		System.out.println(x);
+
 	}
 
 //Given an array of integers A, find and return the maximum result of A[i] XOR A[j], where i, j are the indexes of the array.
