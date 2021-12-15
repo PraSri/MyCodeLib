@@ -31,6 +31,8 @@ public class LongestSubstringWithoutRepeatingCharacters {
 		// for ex : geeksforgeeks ans = 7 (eksforg)
 		// keep count of chars in window
 		int[] f = new int[256];
+		
+		// the inner while loop is contracting the window, increaing the s pointer towards right, till it reaches the point where repeated char is found.
 
 		while (e < n) {
 			if (f[str.charAt(e)] > 0) {
@@ -55,38 +57,6 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
 	}
 	
-	public static int lengthOfLongestSubstring_slightChanged(String str) {
-
-		int n = str.length();
-		if (n == 0)
-			return 0;
-
-		int s = 0, e = 0, c = 0, maxLength = -1;
-
-		int[] f = new int[256];
-
-		while (e < n) {
-			if (f[str.charAt(e)] > 0) {
-				c++;
-			}
-			f[str.charAt(e)]++;
-			e++;
-			if (c > 0) {
-
-				if (f[str.charAt(s)] > 1) {
-					c--;
-				}
-				f[str.charAt(s)]--;
-				s++;
-
-			}
-
-			maxLength = Math.max(maxLength, e - s);
-		}
-
-		return maxLength;
-
-	}
 	
 	// https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1864/O(n)-time-O(1)-space-solution-using-Kadane's-algo-in-Java
 	public int lengthOfLongestSubstring_UsingKadanesApproach(String s) {
