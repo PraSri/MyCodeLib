@@ -114,7 +114,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
             
             if(curLen > maxLen){
                 maxLen = curLen;
-                bestStart = start;
+                bestStart = start; // can be avoided we are not using it.
             }
         }
         
