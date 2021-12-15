@@ -14,6 +14,42 @@ public class LongestSubstringWithoutRepeatingCharacters {
 				lengthOfLongestSubstring("geeksforgeeks") == lengthOfLongestSubstring_Using_Queue("geeksforgeeks"));
 
 	}
+	
+	public static int lengthOfLongestSubstring_Neat(String str) {
+        int n = str.length();
+        if (n == 0)
+            return 0;
+
+        int start = 0, end = 0, c = 0, maxLength = -1;
+
+        int[] f = new int[256];
+
+        while (end < n) {
+            
+            // expansion
+            if (f[str.charAt(end)] > 0) {
+                c++;
+            }
+            f[str.charAt(end)]++;
+            end++;
+
+            // contraction
+            while (c > 0) {
+
+                if (f[str.charAt(start)] > 1) {
+                    c--;
+                }
+                f[str.charAt(start)]--;
+                start++;
+
+            }
+
+            maxLength = Math.max(maxLength, end - start);
+        }
+
+        return maxLength;
+
+    }
 
 	public static int lengthOfLongestSubstring(String str) {
 
