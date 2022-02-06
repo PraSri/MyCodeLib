@@ -14,6 +14,42 @@ public class LongestSubstringWithoutRepeatingCharacters {
 				lengthOfLongestSubstring("geeksforgeeks") == lengthOfLongestSubstring_Using_Queue("geeksforgeeks"));
 
 	}
+	
+	public static int lengthOfLongestSubstring_Neat(String str) {
+        int n = str.length();
+        if (n == 0)
+            return 0;
+
+        int start = 0, end = 0, c = 0, maxLength = -1;
+
+        int[] f = new int[256];
+
+        while (end < n) {
+            
+            // expansion
+            if (f[str.charAt(end)] > 0) {
+                c++;
+            }
+            f[str.charAt(end)]++;
+            end++;
+
+            // contraction
+            while (c > 0) {
+
+                if (f[str.charAt(start)] > 1) {
+                    c--;
+                }
+                f[str.charAt(start)]--;
+                start++;
+
+            }
+
+            maxLength = Math.max(maxLength, end - start);
+        }
+
+        return maxLength;
+
+    }
 
 	public static int lengthOfLongestSubstring(String str) {
 
@@ -31,6 +67,8 @@ public class LongestSubstringWithoutRepeatingCharacters {
 		// for ex : geeksforgeeks ans = 7 (eksforg)
 		// keep count of chars in window
 		int[] f = new int[256];
+		
+		// the inner while loop is contracting the window, increaing the s pointer towards right, till it reaches the point where repeated char is found.
 
 		while (e < n) {
 			if (f[str.charAt(e)] > 0) {
@@ -54,6 +92,41 @@ public class LongestSubstringWithoutRepeatingCharacters {
 		return maxLength;
 
 	}
+	
+	
+	// https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1864/O(n)-time-O(1)-space-solution-using-Kadane's-algo-in-Java
+	public int lengthOfLongestSubstring_UsingKadanesApproach(String s) {
+        int lastIndices[] = new int[256];
+        for(int i = 0; i<256; i++){
+            lastIndices[i] = -1;
+        }
+        
+        int maxLen = 0;
+        int curLen = 0;
+        int start = 0;
+        int bestStart = 0;
+        for(int i = 0; i<s.length(); i++){
+            char cur = s.charAt(i);
+            if(lastIndices[cur]  < start){
+                lastIndices[cur] = i;
+                curLen++;
+            }
+            else{
+                int lastIndex = lastIndices[cur];
+                start = lastIndex+1;
+                curLen = i-start+1;
+                lastIndices[cur] = i;
+            }
+            
+            if(curLen > maxLen){
+                maxLen = curLen;
+                bestStart = start; // can be avoided we are not using it.
+            }
+        }
+        
+        return maxLen;
+    }
+
 
 	// O(n^2)
 	public static int lengthOfLongestSubstring_Using_Queue(String s) {
