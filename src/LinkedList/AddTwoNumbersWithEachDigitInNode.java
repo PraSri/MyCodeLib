@@ -22,7 +22,7 @@ public class AddTwoNumbersWithEachDigitInNode {
             }
             if(c2!=null){
                 sum += c2.val;
-                c2 = c2.next
+                c2 = c2.next;
             }
             l.next = new ListNode(sum%10);
             l = l.next;
