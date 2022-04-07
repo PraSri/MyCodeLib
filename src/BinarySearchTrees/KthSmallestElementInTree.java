@@ -27,5 +27,26 @@ public class KthSmallestElementInTree {
 			return 0;
 		return size(root.left) + size(root.right) + 1;
 	}
+	
+	public int kthSmallestIterative(TreeNode root, int k) {
+        
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        
+        while(true) {
+            
+            while(root!=null) {
+                stack.push(root);
+                root = root.left;
+            }
+            
+            root = stack.pop();
+            k--;
+            if(k==0) {
+                return root.val;
+            }
+            root = root.right;
+        }
+        
+    }
 
 }
