@@ -1,6 +1,9 @@
 package DynamicProgramming;
 
 public class WaysToDecode {
+	
+	// Best solution. : https://leetcode.com/problems/decode-ways/discuss/30522/Java-2ms-DP-solution-with-detailed-explanation-and-inline-comments
+	
 
 	public static void main(String[] args) {
 		System.out.println(numDecodings("123"));
