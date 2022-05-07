@@ -48,5 +48,25 @@ public class IntersectionOfLinkedLists {
 
 		return a;
 	}
+	
+	public ListNode getIntersectionNodeWithLinearSpace(ListNode headA, ListNode headB) {
+        
+        ListNode h1 = headA;
+        ListNode h2 = headB;
+        Set<ListNode> set = new HashSet<>();
+        while(h1!=null) {
+            set.add(h1);
+            h1 = h1.next;
+        }
+        
+        while(h2!=null) {
+            if(set.contains(h2)) {
+                return h2;
+            }
+            h2=h2.next;
+        }
+        
+        return null;
+    }
 
 }
