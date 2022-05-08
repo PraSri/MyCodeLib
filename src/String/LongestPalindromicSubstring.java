@@ -23,6 +23,33 @@ public class LongestPalindromicSubstring {
 	 * 
 	 * 
 	 */
+	
+	
+	 int start = 0, maxLen = 0;
+    public String longestPalindrome(String s) {
+        
+        int n = s.length();
+        
+        for(int i = 0; i<n; i++) {
+            extend(s,n,i,i);
+            extend(s,n,i,i+1);
+        }
+        
+        return s.substring(start, start+maxLen);
+        
+    }
+    
+    public void extend(String s, int n, int left, int right) {
+        while(left>=0 && right<n && s.charAt(left)==s.charAt(right)) {
+            left--;
+            right++;
+        }
+        if(maxLen < right-left-1) {
+            maxLen = right-left-1;
+            start = left+1;
+        }
+    }
+	
 
 	public static String solve(String A) {
 
