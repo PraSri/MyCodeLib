@@ -1,9 +1,12 @@
 package String;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PartitionLabels {
 
  // https://leetcode.com/problems/partition-labels/discuss/1868842/JavaC%2B%2B-VISUALLY-EXPLAINEDDDDD!!
-    
+
     public List<Integer> partitionLabels(String s) {
         int n = s.length();
         int[] lastFound = new int[26];

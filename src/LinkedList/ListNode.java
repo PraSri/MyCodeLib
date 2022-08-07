@@ -11,4 +11,8 @@ public class ListNode {
 		prev = null;
 	}
 
+	public ListNode(int val, ListNode next) {
+		this.val = val;
+		this.next = next;
+	}
 }

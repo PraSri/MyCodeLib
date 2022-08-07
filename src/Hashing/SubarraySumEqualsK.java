@@ -1,5 +1,8 @@
 package Hashing;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SubarraySumEqualsK {
 
  // At each step, we check if the counterpart of sum_till_now {i.e. negative sum_till_now} has been calculated previously or not, and if yes then how many times, that will help us to build the previous subarrays which could've been the answer candidate but were left out in the calculation up till now. Most helpful in case of arrays having negative values.

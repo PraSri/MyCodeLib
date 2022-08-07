@@ -1,10 +1,15 @@
+package Heaps;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class FindMedianFromDataStream {
   
     PriorityQueue<Integer> minHeap = null;
     PriorityQueue<Integer> maxHeap = null;
  
     /** initialize your data structure here. */
-    public MedianFinder() {
+    public void MedianFinder() {
         minHeap = new PriorityQueue<>();
         maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
     }
