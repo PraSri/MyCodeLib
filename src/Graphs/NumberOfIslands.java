@@ -50,9 +50,10 @@ public class NumberOfIslands {
 		int m = A[0].length;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
+				// if current cell is a piece of land (1) then find its adjoining lands to count it as a island
 				if (A[i][j] == 1) {
 					dfs(A, i, j);
-					count++;
+					count++; // when dfs is completed for i,j then increment the islands count.
 				}
 			}
 		}
@@ -63,12 +64,15 @@ public class NumberOfIslands {
 
 	private static void dfs(int[][] a, int i, int j) {
 
+		// valid conditions to proceed with dfs
 		if (i < 0 || j < 0 || i >= a.length || j >= a[0].length || a[i][j] != 1) {
 			return;
 		}
 
+		// change the 1 to 0, acting as visited array so that already counted islands are not counted in later dfs
 		a[i][j] = 0;
 
+		// do dfs in all 8 directions
 		dfs(a, i - 1, j);// top
 		dfs(a, i - 1, j - 1);// top left
 		dfs(a, i - 1, j + 1);// top right

@@ -1,7 +1,5 @@
 package leetcode75;
 
-import java.util.Map;
-
 public class IsSubsequence {
 
     public boolean isSubsequence(String s, String t) {
