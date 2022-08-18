@@ -4,6 +4,9 @@ package Amazon;
 public class BullsAndCows_Hashing {
 
 	public static void main(String[] args) {
+
+		// https://leetcode.com/problems/bulls-and-cows/
+
 		int x = '1' - '0';
 		System.out.println(x);
 		System.out.println(getHint("1807", "7810"));
