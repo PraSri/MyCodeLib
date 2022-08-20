@@ -1,9 +1,6 @@
 package Heaps;// https://leetcode.com/problems/top-k-frequent-elements/
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class TopKFrequentElements {
 
@@ -16,7 +13,7 @@ public class TopKFrequentElements {
         }
 
         Queue<Integer> minHeap = new PriorityQueue<>(
-                (x1, x2) -> frequency.get(x1) - frequency.get(x2)
+                Comparator.comparingInt(frequency::get)
         );
 
         for(int x : frequency.keySet()) {
