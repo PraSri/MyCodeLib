@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/leetcode" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/practice" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lc-classifier" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
