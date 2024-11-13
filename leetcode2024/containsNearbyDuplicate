@@ -1,0 +1,19 @@
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int i = 0;
+        for(int num : nums) {
+            if(map.containsKey(num) && isIndexInRange(i, map.get(num), k)) {
+                return true;
+            } 
+            map.put(num, i);
+            i++;
+        }
+        return false;
+    }
+    
+    private boolean isIndexInRange(int curr_index, int map_index, int k) {
+        int x = Math.abs(curr_index - map_index);
+        return x <= k ? true : false;
+    }
+}
