@@ -61,6 +61,9 @@ great summary of binary search. It is extremely important to **implement your ow
 algorithms, and make correspondence between your versions and `bisect.bisect()/bisect.bisect_right()` and 
 `bisect.bisect_left()`. 
 
+### Binary search template
+https://leetcode.com/problems/koko-eating-bananas/solutions/769702/python-clear-explanation-powerful-ultimate-binary-search-template-solved-many-problems/
+
  ID | Problem Name | Difficulty | Similar problems | Main Idea
 --- | ------------ | ---------- | ---------------- | ----------------------------------------------------------
 [69](https://leetcode.com/problems/sqrtx/) | Sqrt(x)   | Easy | | 
