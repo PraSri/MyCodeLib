@@ -32,6 +32,11 @@ public class RepeatedDNASequences {
         return res;
     }
 
+   // here we used rolling hash approach, choosen a hash function where collision is minimized & time complexity of hash function is constant - 
+   // hash func => H = c1*a^k-1 + ....+ck*a^0
+   // for non starting sub string, we used previous hash values, substract H(removed) & added char
+   // worst TC can go to O((n-k)*k) for cases like "AAAAAAAAAAAA" but average TC is O(n)
+
    public static Set<String> findRepeatedSequences(String dna, int k) {
       
         int stringLength = dna.length();
