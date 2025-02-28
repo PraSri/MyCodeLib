@@ -86,3 +86,80 @@ class ReverseNodesInEvenGroups {
       }
 	 }
 }
+package package2;
+
+public class ReverseLLinEvenGroups {
+
+  public ListNode reverseEvenLengthGroups(ListNode head) {
+
+    int groupLen = 2;
+    int numNodes = 0;
+
+    ListNode prev = head;
+    ListNode node, curr, currNext, prevNext, reverse = null;
+
+    while (prev.next != null) {
+
+      numNodes = 0;
+      node = prev;
+
+      // traverse all elements in current group
+
+      for (int i = 0; i < groupLen; i++) {
+        if (node.next == null) {
+          break;
+        }
+        numNodes++;
+        node = node.next;
+      }
+
+      // odd len groups skip
+      if (numNodes % 2 != 0) {
+        prev = node;
+      }
+
+      // even len group reverse
+      else {
+
+        reverse = node.next;
+        curr = prev.next;
+        // reverse the group
+        for (int i = 0; i < numNodes; i++) {
+          currNext = curr.next;
+          curr.next = reverse;
+          reverse = curr;
+          curr = currNext;
+        }
+
+        prevNext = prev.next;
+        prev.next = node;
+        prev = prevNext;
+
+      }
+
+      groupLen++;
+
+    }
+
+    return head;
+
+  }
+
+  public static class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {
+    }
+
+    ListNode(int val) {
+      this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
+    }
+  }
+}
+
