@@ -1,4 +1,4 @@
-class SwapNodes {
+public class SwappingNodesLinkedList {
     public static void swap(LinkedListNode node1, LinkedListNode node2) {
         int temp = node1.data;
         node1.data = node2.data;
