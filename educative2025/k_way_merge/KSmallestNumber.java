@@ -13,6 +13,7 @@ class KSmallestNumber {
                 continue;
             } else {
                 // placing the first element of each list in the min-heap
+             // keep details in priority queue - elementValue, listIndex, elementIndex, min heap on elementValue
                 kthSmallest.offer(new int[] {lists.get(index).get(0), index, 0});
             }
         }
