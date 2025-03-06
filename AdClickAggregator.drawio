@@ -93,6 +93,21 @@
         <mxCell id="jbLgsYa1gUXmTNqhdp_X-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.088;entryY=0.068;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="jbLgsYa1gUXmTNqhdp_X-4" target="jbLgsYa1gUXmTNqhdp_X-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="jbLgsYa1gUXmTNqhdp_X-33" value="generate impression id as&amp;nbsp;&lt;div&gt;idempotency key&lt;/div&gt;&lt;div&gt;and store as cache&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="360" y="163" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jbLgsYa1gUXmTNqhdp_X-34" value="Both kafka &amp;amp; flink&lt;div&gt;partition by AdId&lt;/div&gt;&lt;div&gt;with hot shards&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="620" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jbLgsYa1gUXmTNqhdp_X-35" value="7 day retention" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="620" y="538" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="jbLgsYa1gUXmTNqhdp_X-36" value="- aggregated data&lt;div&gt;-AdId&lt;/div&gt;&lt;div&gt;-AdvertiserId (PK)&lt;/div&gt;&lt;div&gt;-Minute (SK)&lt;/div&gt;&lt;div&gt;- Click count&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="860" y="260" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="jbLgsYa1gUXmTNqhdp_X-37" value="Fix inconsistencies in data" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="330" width="160" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
