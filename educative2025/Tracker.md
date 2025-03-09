@@ -8,7 +8,7 @@
 - [x] In place manipulation of Linked List
 - [x] Heaps
 - [x] K-way merge
-- [ ] Top K elements
+- [x] Top K elements
 - [ ] Modified Binary Search
 - [ ] Subsets
 - [ ] Greedy Techniques
