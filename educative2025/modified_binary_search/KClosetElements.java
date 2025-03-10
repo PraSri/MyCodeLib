@@ -31,6 +31,28 @@ class KClosest {
         // if the target is not found, return the index where it should be inserted
         return left;
     }
+
+  // time complexity = O(log(n-k) + k)
+  public List<Integer> findClosestElementsOptimized(int[] arr, int k, int x) {
+        int n = arr.length;
+        int s = 0, e = n-k;
+        List<Integer> res = new ArrayList<>();
+        
+        while(s<e) {
+            int mid = s + (e-s)/2;
+            if(x-arr[mid] > arr[mid+k]-x) {
+                s = mid + 1;
+            } else {
+              e = mid;  
+            }
+        }
+        
+        for(int i = s; i<s+k; i++) {
+            res.add(arr[i]);
+        }
+        
+        return res;
+    }
   
     public static List<Integer> findClosestElements(int[] nums, int k, int target) {
         
