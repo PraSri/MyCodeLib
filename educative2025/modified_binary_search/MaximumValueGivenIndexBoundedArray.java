@@ -1,5 +1,51 @@
 public class MaximumValueGivenIndexBoundedArray {
-    // Method to calculate the sum
+
+//     We first do maxSum -= n,
+// then all elements needs only to valid A[i] >= 0
+
+// We binary search the final result between left and right,
+// where left = 0 and right = maxSum.
+
+// For each test, we check minimum sum if A[index] = a.
+// The minimum case would be A[index] is a peak in A.
+// It's arithmetic sequence on the left of A[index] with difference is 1.
+// It's also arithmetic sequence on the right of A[index] with difference is -1.
+
+// On the left, A[0] = max(a - index, 0),
+// On the right, A[n - 1] = max(a - ((n - 1) - index), 0),
+
+// The sum of arithmetic sequence {b, b+1, ....a},
+// equals to (a + b) * (a - b + 1) / 2.
+    
+    public int maxValue(int n, int index, int maxSum) {
+        maxSum -= n;
+        int left = 0, right = maxSum;
+        // Binary search for the maximum mid at the index
+        while (left < right) {
+            // Check if the current mid mid is a valid maximum mid
+            int mid = (left + right + 1) / 2;
+
+            // Move to the right half if valid
+            if (test(n, index, mid) <= maxSum) {
+                left = mid;
+            } else {
+                // Otherwise, move to the left half
+                right = mid - 1;
+            }
+        }
+
+        // The maximum valid mid at the index
+        return left+1;
+    }
+
+    private long test(int n, int index, int a) {
+        int b = Math.max(a - index, 0);
+        long res = (long)(a + b) * (a - b + 1) / 2;
+        b = Math.max(a - ((n - 1) - index), 0);
+        res += (long)(a + b) * (a - b + 1) / 2;
+        return res - a;
+    }
+
     public static int calculateSum(int index, int mid, int n) {
         int count = 0;
 
@@ -27,28 +73,6 @@ public class MaximumValueGivenIndexBoundedArray {
 
         // Subtract the mid at the index because it is counted twice
         return count - mid;
-    }
-
-    // Method to calculate the max mid
-    public static int maxValue(int n, int index, int maxSum) {
-        int left = 1, right = maxSum;
-
-        // Binary search for the maximum mid at the index
-        while (left < right) {
-            // Check if the current mid mid is a valid maximum mid
-            int mid = (left + right + 1) / 2;
-
-            // Move to the right half if valid
-            if (calculateSum(index, mid, n) <= maxSum) {
-                left = mid;
-            } else {
-                // Otherwise, move to the left half
-                right = mid - 1;
-            }
-        }
-
-        // The maximum valid mid at the index
-        return left;
     }
 
     // Driver code
