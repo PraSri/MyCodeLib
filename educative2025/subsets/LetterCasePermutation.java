@@ -35,6 +35,33 @@ public class LetterCasePermutation
         return result;
     }
 
+    public List<String> letterCasePermutation2(String s) {
+        List<String> result = new ArrayList<>();
+        backtrack(s.toCharArray(), 0, result);
+        return result;
+    }
+
+    private void backtrack(char[] arr, int index, List<String> result) {
+        if (index == arr.length) {
+            result.add(new String(arr));
+            return;
+        }
+        
+        // Always explore the current character
+        backtrack(arr, index + 1, result);
+
+        // If it's a letter, toggle case and explore
+        if (Character.isLetter(arr[index])) {
+            arr[index] = Character.isLowerCase(arr[index]) ? 
+                         Character.toUpperCase(arr[index]) : 
+                         Character.toLowerCase(arr[index]);
+            backtrack(arr, index + 1, result);  // Explore toggled case
+            arr[index] = Character.isLowerCase(arr[index]) ? 
+                         Character.toUpperCase(arr[index]) : 
+                         Character.toLowerCase(arr[index]); // Restore original case
+        }
+    }
+
     public static void main(String[] args) {
         String[] strings = {"a1b2", "3z4", "ABC", "123", "xYz"}; 
 
