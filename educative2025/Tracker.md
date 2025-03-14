@@ -10,7 +10,7 @@
 - [x] K-way merge
 - [x] Top K elements
 - [x] Modified Binary Search - 12/3/2025
-- [ ] Subsets - 15/3/2025
+- [x] Subsets - 15/3/2025 --> Completed on 14/3/2025
 - [ ] Greedy Techniques - 20/3/2025
 - [ ] Backtracking - 22/3/2025
 - [ ] Dynamic Programming - 27/3/2025
