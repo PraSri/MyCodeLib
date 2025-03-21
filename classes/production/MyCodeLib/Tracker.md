@@ -1,0 +1,33 @@
+# Tracker of Grokking the Coding Interview Patterns
+
+- [x] Getting Started
+- [x] Two Pointers
+- [x] Fast & Slow pointers
+- [x] Sliding window
+- [x] Merge Intervals
+- [x] In place manipulation of Linked List
+- [x] Heaps
+- [x] K-way merge
+- [x] Top K elements
+- [x] Modified Binary Search - 12/3/2025
+- [x] Subsets - 15/3/2025 --> Completed on 14/3/2025
+- [x] Greedy Techniques - 20/3/2025 --> Completed on 19/3/2025
+- [ ] Backtracking - 22/3/2025
+- [ ] Dynamic Programming - 27/3/2025
+- [ ] Cyclic Sort - 31/3/2025
+- [ ] Topological Sort
+- [ ] Sort & Search
+- [ ] Matrices
+- [ ] Stack
+- [ ] Graphs
+- [ ] Tree Depth First Search
+- [ ] Tree Breadth First Search
+- [ ] Trie
+- [ ] Hash Maps
+- [ ] Knowing What to Track
+- [ ] Union find
+- [ ] Custom Data Structures
+- [ ] Bitwise Manipulation
+- [ ] Math & Geometry
+- [ ] Challenge Yourself
+- [ ] Conclusion
