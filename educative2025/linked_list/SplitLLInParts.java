@@ -1,5 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
+package linked_list;
+
+import linked_list.ReverseKGroups.LinkedListNode;
 
 public class SplitLLInParts {
 
@@ -49,44 +50,4 @@ public class SplitLLInParts {
     }
 
 
-    public static void main(String[] args) {
-        int[][] lists = {
-            {9, 7, 8, 7, 7, 6},
-            {2, 3, 5, 7, 11},
-            {4, 4, 4, 4, 4},
-            {1, 2, 3, 11, 22, 33},
-            {1, 2, 6, 3, 4, 5, 6}
-        };
-
-        int[] ks = {7, 2, 4, 3, 6};
-
-        for (int i = 0; i < lists.length; i++) {
-            LinkedList inputLinkedList = new LinkedList();
-            inputLinkedList.createLinkedList(lists[i]);
-            System.out.print((i + 1) + ". \tLinked list: ");
-            PrintList.printListWithForwardArrow(inputLinkedList.head);
-
-            System.out.println("\n\tk: " + ks[i]);
-            LinkedListNode[] result = splitListToParts(inputLinkedList.head, ks[i]);
-
-            System.out.print("\tLinked list parts: [");
-            for (int j = 0; j < result.length; j++) {
-                if (result[j] != null) {
-                    System.out.print("[");
-                    LinkedListNode part = result[j];
-                    while (part != null) {
-                        System.out.print(part.data);
-                        if (part.next != null) System.out.print(", ");
-                        part = part.next;
-                    }
-                    System.out.print("]");
-                } else {
-                    System.out.print("[]");
-                }
-                if (j < result.length - 1) System.out.print(", ");
-            }
-            System.out.println("]");
-            System.out.println(new String(new char[100]).replace('\0', '-'));
-        }
-    }
 }

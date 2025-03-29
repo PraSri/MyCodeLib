@@ -1,3 +1,5 @@
+package greedy_techiniques;
+
 public class MaximumSwap {
     public static int maximumSwap(int num) {
         // Convert the number to a string for easy manipulation
@@ -33,14 +35,4 @@ public class MaximumSwap {
     }
     
     // Driver code
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] nums = {4121, 87654, 1643, 123, 14};
-
-        for (int i = 0; i < nums.length; i++) {
-            System.out.println((i + 1) + ".\tNumber: " + nums[i]);
-            System.out.println("\n\tLargest number after swapping: " + solution.maximumSwap(nums[i]));
-            System.out.println(new String(new char[100]).replace('\0', '-'));
-        }
-    }
 }

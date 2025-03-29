@@ -1,3 +1,5 @@
+package modified_binary_search;
+
 import java.util.*;
 
 class Solution {

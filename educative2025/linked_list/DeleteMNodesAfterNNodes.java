@@ -1,5 +1,6 @@
-import java.util.List;
-import java.util.ArrayList;
+package linked_list;
+
+import linked_list.ReverseKGroups.LinkedListNode;
 
 public class DeleteMNodesAfterNNodes {
     public static LinkedListNode deleteNodes(LinkedListNode head, int m, int n) {
@@ -45,33 +46,4 @@ public class DeleteMNodesAfterNNodes {
     }
 
     // Driver code
-    public static void main(String[] args) {
-        int[][] inputLists = {
-            {5},
-            {1, 2, 2, 3, 3, 3},
-            {3, 7, 9},
-            {10, 10, 100, 100, 100},
-            {7, 7, 7, 7, 77, 77, 77, 77}
-        };
-
-        int[] allMs = {1, 3, 1, 4, 5};
-        int[] allNs = {1, 1, 3, 2, 7};
-
-        for (int i = 0; i < inputLists.length; i++) {
-            LinkedList inputLinkedList = new LinkedList();
-            inputLinkedList.createLinkedList(inputLists[i]);
-
-            System.out.println((i + 1) + ".\tInput:");
-            System.out.print("\t");
-            inputLinkedList.printListWithForwardArrow();
-            System.out.println("\tm = " + allMs[i]);
-            System.out.println("\tn = " + allNs[i]);
-
-            inputLinkedList.head = deleteNodes(inputLinkedList.head, allMs[i], allNs[i]);
-            System.out.println("\n\tOutput:");
-            System.out.print("\t");
-            inputLinkedList.printListWithForwardArrow();
-            System.out.println(new String(new char[100]).replace('\0', '-'));
-        }
-    }
 }

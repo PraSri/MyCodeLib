@@ -1,6 +1,8 @@
+package heap;
+
 import java.util.PriorityQueue;
 
-class LongestHappyString {
+public class LongestHappyString {
     public String longestDiverseString(int a, int b, int c) 
     {
         // Max heap to store character counts
@@ -53,25 +55,4 @@ class LongestHappyString {
     }
 
     // Driver code
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        
-        int[][] testCases = {
-            {1, 1, 7},
-            {2, 2, 1},
-            {7, 2, 0},
-            {0, 0, 0},
-            {10, 5, 3},
-            {3, 3, 3}
-        };
-
-        int testCaseNum = 1;
-        for (int[] testCase : testCases) {
-            int a = testCase[0], b = testCase[1], c = testCase[2];
-            System.out.println(testCaseNum++ + ".\t a: " + a + ", b: " + b + ", c: " + c);
-            String result = solution.longestDiverseString(a, b, c);
-            System.out.println("\n\t Longest Happy String: " + result);
-            System.out.println(new String(new char[100]).replace("\0", "-"));
-        }
-    }
 }

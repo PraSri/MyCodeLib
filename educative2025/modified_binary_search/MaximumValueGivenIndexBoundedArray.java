@@ -1,3 +1,5 @@
+package modified_binary_search;
+
 public class MaximumValueGivenIndexBoundedArray {
 
 //     We first do maxSum -= n,
@@ -76,23 +78,4 @@ public class MaximumValueGivenIndexBoundedArray {
     }
 
     // Driver code
-    public static void main(String[] args) {
-        int[][] inputList = {
-            {6, 3, 18},
-            {4, 2, 6},
-            {3, 0, 3},
-            {5, 3, 15},
-            {7, 4, 20}
-        };
-
-        for (int i = 0; i < inputList.length; i++) {
-            int n = inputList[i][0];
-            int index = inputList[i][1];
-            int maxSum = inputList[i][2];
-            int result = maxValue(n, index, maxSum);
-            System.out.println((i + 1) + ".\tInput: n = " + n + ", index = " + index + ", maxSum = " + maxSum);
-            System.out.println("\tMaximum mid at index " + index + ": " + result);
-            System.out.println(new String(new char[100]).replace('\0', '-'));
-        }
-    }
 }

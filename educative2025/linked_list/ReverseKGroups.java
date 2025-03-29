@@ -2,6 +2,25 @@ package linked_list;// Template for the linked list
 
 public class ReverseKGroups {
 
+    public static class LinkedListNode {
+        int val;
+        public LinkedListNode next;
+
+        public int data;
+
+        // Constructor
+        public LinkedListNode(int val) {
+            this.val = val;
+            this.next = null;
+        }
+
+        public LinkedListNode(int val, int data) {
+            this.val = val;
+            this.next = null;
+            this.data = data;
+        }
+    }
+
     public static LinkedListNode reverseKGroups(LinkedListNode head, int k) {
 
         LinkedListNode dummy = new LinkedListNode(0);
@@ -97,7 +116,7 @@ public class ReverseKGroups {
     }
 
     // Template for printing the linked list with forward arrows
-    static class PrintList {
+    public static class PrintList {
         public static void printListWithForwardArrow(LinkedListNode head) {
             LinkedListNode temp = head;
 
@@ -114,11 +133,11 @@ public class ReverseKGroups {
     }
 
 // Template for the linked list
-    static class LinkedList<T> {
+    public static class LinkedList1<T> {
         public LinkedListNode head;
 
         // constructor will be used to make a LinkedList type object
-        public LinkedList() {
+        public LinkedList1() {
             this.head = null;
         }
 
@@ -143,7 +162,7 @@ public class ReverseKGroups {
         }
     }
 
-    static class LinkedListReversal {
+    public static class LinkedListReversal {
         static LinkedListNode[] reverseLinkedList(LinkedListNode node, int k) {
 
             LinkedListNode previous = null;
@@ -160,4 +179,6 @@ public class ReverseKGroups {
             return new LinkedListNode[]{previous, current};
         }
     }
+
+
 }

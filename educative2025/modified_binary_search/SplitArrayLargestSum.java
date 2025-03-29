@@ -1,3 +1,5 @@
+package modified_binary_search;
+
 public class SplitArrayLargestSum {
   // Check if the array can be split into k or fewer subarrays with the maximum sum as mid
   public boolean canSplit(int[] nums, int k, int mid) {
@@ -56,23 +58,4 @@ public class SplitArrayLargestSum {
   }
   
   // Driver code
-  public static void main(String[] args) {
-    Solution solution = new Solution();
-
-    int[][] splits = {
-            {3, 4, 6, 3},
-            {2, 7, 8, 9, 2, 1, 4},
-            {12, 53, 43, 67, 35},
-            {4, 6, 4, 6, 4, 6},
-            {11, 11, 11, 11, 11}
-    };
-    int[] k = {3, 6, 5, 4, 2};
-
-    for (int i = 0; i < splits.length; i++) {
-      System.out.println((i + 1) + ".\tInput Array: " + java.util.Arrays.toString(splits[i]));
-      System.out.println("\tk: " + k[i]);
-      System.out.println("\tLargest minimized sum: " + solution.splitArray(splits[i], k[i]));
-      System.out.println(new String(new char[100]).replace('\0', '-'));
-    }
-  }
 }

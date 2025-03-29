@@ -1,3 +1,5 @@
+package modified_binary_search;
+
 import java.util.PriorityQueue;
 import java.util.Arrays;
 
@@ -43,21 +45,4 @@ public class KWeakestRowsMatrix {
         return low;
     }
 
-    public static void main(String[] args) {
-        int[][][] matrixList = {
-            {{1, 1, 0, 0, 0}, {1, 1, 1, 1, 0}, {1, 0, 0, 0, 0}, {1, 1, 0, 0, 0}, {1, 1, 1, 1, 1}},
-            {{1, 1, 0, 0}, {1, 0, 0, 0}, {1, 1, 1, 1}, {1, 1, 0, 0}},
-            {{1, 1}, {1, 1}, {0, 0}, {1, 0}, {1, 1}},
-            {{1, 0, 0, 0}, {1, 1, 0, 0}, {1, 1, 1, 1}, {1, 0, 0, 0}},
-            {{1, 0, 0}, {0, 0, 0}, {1, 1, 1}, {1, 1, 0}}
-        };
-        int[] kValues = {2, 3, 3, 2, 1};
-
-        for (int i = 0; i < matrixList.length; i++) {
-            System.out.println((i + 1) + ".\tInput matrix: \n\tmatrix = " + Arrays.deepToString(matrixList[i]) + "\n\tk = " + kValues[i]);
-            int[] weakestRows = new Solution().findKWeakestRows(matrixList[i], kValues[i]);
-            System.out.println("\n\tIndexes of the " + kValues[i] + " weakest rows: " + Arrays.toString(weakestRows));
-            System.out.println(new String(new char[100]).replace("\0", "-"));
-        }
-    }
 }

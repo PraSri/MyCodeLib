@@ -1,4 +1,4 @@
-package package3;
+package two_pointers.top_K_elements;
 
 import java.util.ArrayList;
 import java.util.Collections;

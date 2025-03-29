@@ -1,9 +1,9 @@
-package Heaps;
+package two_pointers.top_K_elements;
 // https://leetcode.com/problems/top-k-frequent-elements/
 
 import java.util.*;
 
-public class TopKFrequentElements {
+public class TopKFrequentElements2 {
 
     public int[] topKFrequent(int[] nums, int k) {
 

@@ -1,4 +1,8 @@
-class Permutations {
+package subsets;
+
+import java.util.*;
+
+public class Permutations {
  
     public static String swapChar(String word,int i, int j) 
     {
@@ -37,7 +41,6 @@ class Permutations {
             ArrayList <String> permutedWords = permuteWord(inputWord[index]);
             System.out.println(index + 1 + ".\t Input string: '" + inputWord[index] + "'");
             System.out.println("\t All possible permutations are: " + permutedWords);
-             System.out.println(PrintHyphens.repeat("-", 100));
         }
     }
 }

@@ -1,4 +1,8 @@
-class KClosest {
+package modified_binary_search;
+
+import java.util.*;
+
+public class KClosest {
 
   // The overall time complexity becomes O(logn+k)
   
@@ -85,7 +89,7 @@ class KClosest {
         }
 
         // find the first closest element to target using binary search
-        int firstClosest = BinarySearch.binarySearch(nums, target);
+        int firstClosest = binarySearch(nums, target);
 
         // initialize the sliding window pointers
         int windowLeft = firstClosest - 1;
@@ -122,26 +126,4 @@ class KClosest {
     }
 
     // Driver code
-    public static void main(String[] args) {
-    
-      int[][]inputs={
-        {1, 2, 3, 4, 5, 6, 7},
-        {1, 2, 3, 4, 5},
-        {1, 2, 4, 5, 6},
-        {1, 2, 3, 4, 5, 10}
-      };
-      int[] k = {4, 4, 2, 3};
-      int[] x = {4, 3, 10, -5};
-      for(int i=0; i<k.length; i++){
-        List<Integer> kList = findClosestElements(inputs[i], k[i], x[i]);
-        System.out.print(i+1);
-        System.out.println(".\tThe "+k[i]+" closest elements for the number "+x[i]+ " in the array "+ Arrays.toString(inputs[i])+ " are: ");
-        System.out.print("\t[");
-        for(int j = 0; j < k[i]-1; j++) {
-          System.out.print(kList.get(j) + ", ");
-        }
-        System.out.println(kList.get(k[i]-1) + "]");
-        System.out.println(PrintHyphens.repeat("-", 100));
-      }
-  } 
 }
