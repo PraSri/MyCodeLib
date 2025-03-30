@@ -14,7 +14,7 @@
 - [x] Greedy Techniques - 20/3/2025 --> Completed on 19/3/2025
 - [x] Backtracking - 22/3/2025 --> Derailed - Completed on 24/3/2025
 - [x] Dynamic Programming - 27/3/2025 --> Derailed - Completed on 30/3/2025
-- [ ] Cyclic Sort - 31/3/2025
+- [x] Cyclic Sort - 31/3/2025 - Completed on 31/3/2025
 - [ ] Topological Sort
 - [ ] Sort & Search
 - [ ] Matrices
