@@ -15,8 +15,8 @@
 - [x] Backtracking - 22/3/2025 --> Derailed - Completed on 24/3/2025
 - [x] Dynamic Programming - 27/3/2025 --> Derailed - Completed on 30/3/2025
 - [x] Cyclic Sort - 31/3/2025 - Completed on 31/3/2025
-- [ ] Topological Sort
-- [ ] Sort & Search
+- [x] Topological Sort - completed on 5/4/2025
+- [x] Sort & Search
 - [ ] Matrices
 - [ ] Stack
 - [ ] Graphs
