@@ -17,7 +17,7 @@
 - [x] Cyclic Sort - 31/3/2025 - Completed on 31/3/2025
 - [x] Topological Sort - completed on 5/4/2025
 - [x] Sort & Search
-- [ ] Matrices
+- [x] Matrices
 - [ ] Stack
 - [ ] Graphs
 - [ ] Tree Depth First Search
