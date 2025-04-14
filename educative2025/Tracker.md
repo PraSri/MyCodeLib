@@ -18,7 +18,7 @@
 - [x] Topological Sort - completed on 5/4/2025
 - [x] Sort & Search
 - [x] Matrices
-- [ ] Stack
+- [x] Stack
 - [ ] Graphs
 - [ ] Tree Depth First Search
 - [ ] Tree Breadth First Search
