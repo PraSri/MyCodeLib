@@ -19,7 +19,7 @@
 - [x] Sort & Search
 - [x] Matrices
 - [x] Stack
-- [ ] Graphs
+- [x] Graphs
 - [ ] Tree Depth First Search
 - [ ] Tree Breadth First Search
 - [ ] Trie
