@@ -1,20 +1,22 @@
-package BinarySearchTrees;
+package tree_dfs;
+
+import BinarySearchTrees.TreeNode;
 
 import java.util.LinkedList;
 
-public class KthSmallestElementInTree {
+public class KthSmallestElementInBST {
 
     public static void main(String[] args) {
 
     }
 
-    public int kthsmallest(TreeNode A, int B) {
+    public int kthsmallest(BinarySearchTrees.TreeNode A, int B) {
 
         return helper(A, B);
 
     }
 
-    private int helper(TreeNode root, int k) {
+    private int helper(BinarySearchTrees.TreeNode root, int k) {
         if (size(root.left) == k - 1) {
             return root.val;
         }
@@ -24,15 +26,15 @@ public class KthSmallestElementInTree {
         return helper(root.right, k - 1 - size(root.left));
     }
 
-    private int size(TreeNode root) {
+    private int size(BinarySearchTrees.TreeNode root) {
         if (root == null)
             return 0;
         return size(root.left) + size(root.right) + 1;
     }
 
-    public int kthSmallestIterative(TreeNode root, int k) {
+    public int kthSmallestIterative(BinarySearchTrees.TreeNode root, int k) {
 
-        LinkedList<TreeNode> stack = new LinkedList<>();
+        LinkedList<BinarySearchTrees.TreeNode> stack = new LinkedList<>();
 
         while (true) {
 
@@ -54,7 +56,7 @@ public class KthSmallestElementInTree {
     private int count = 0;
     private int result = -1;
 
-    public int kthSmallest(TreeNode root, int k) {
+    public int kthSmallest(BinarySearchTrees.TreeNode root, int k) {
         inorder(root, k);
         return result;
     }

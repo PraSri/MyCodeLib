@@ -20,7 +20,7 @@
 - [x] Matrices
 - [x] Stack
 - [x] Graphs
-- [ ] Tree Depth First Search
+- [x] Tree Depth First Search
 - [ ] Tree Breadth First Search
 - [ ] Trie
 - [ ] Hash Maps

@@ -12,7 +12,7 @@ public class RightViewOfBinaryTree {
 
 	public ArrayList<Integer> solve(TreeNode A) {
 
-		ArrayList<Integer> res = new ArrayList<Integer>();
+		ArrayList<Integer> res = new ArrayList<>();
 
 		rightViewUtil(A, res);
 
@@ -26,7 +26,7 @@ public class RightViewOfBinaryTree {
 			return;
 		}
 
-		Queue<TreeNode> q = new LinkedList<TreeNode>();
+		Queue<TreeNode> q = new LinkedList<>();
 
 		q.add(a);
 
@@ -36,6 +36,7 @@ public class RightViewOfBinaryTree {
 			int size = q.size();
 			while (size-- > 0) {
 				end = q.poll();
+				// representing last element -> right side visible element
 				if (size == 0) {
 					res.add(end.val);
 				}
