@@ -22,7 +22,7 @@
 - [x] Graphs
 - [x] Tree Depth First Search
 - [x] Tree Breadth First Search
-- [ ] Trie
+- [x] Trie
 - [ ] Hash Maps
 - [ ] Knowing What to Track
 - [ ] Union find

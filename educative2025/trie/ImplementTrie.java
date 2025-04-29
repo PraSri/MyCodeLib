@@ -1,11 +1,9 @@
-package Tries;// https://leetcode.com/problems/implement-trie-prefix-tree/
+package trie;
 
-
-class Trie {
-
+public class ImplementTrie {
     TrieNode root;
 
-    public Trie() {
+    public ImplementTrie() {
         root = new TrieNode();
     }
 
@@ -47,13 +45,12 @@ class Trie {
     }
 
     public static class TrieNode {
-        private TrieNode[] next;
-        private final int R = 26;
-
+        private final TrieNode[] next;
         private boolean isEnd;
 
         public TrieNode() {
-            next = new TrieNode[R];
+            int r = 26;
+            next = new TrieNode[r];
         }
 
         public boolean containsKey(char ch) {
@@ -80,11 +77,3 @@ class Trie {
     }
 
 }
-
-/**
- * Your Trie object will be instantiated and called as such:
- * Trie obj = new Trie();
- * obj.insert(word);
- * boolean param_2 = obj.search(word);
- * boolean param_3 = obj.startsWith(prefix);
- */
