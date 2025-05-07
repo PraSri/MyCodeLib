@@ -23,7 +23,7 @@
 - [x] Tree Depth First Search
 - [x] Tree Breadth First Search
 - [x] Trie
-- [ ] Hash Maps
+- [x] Hash Maps
 - [ ] Knowing What to Track
 - [ ] Union find
 - [ ] Custom Data Structures
