@@ -1,3 +1,5 @@
+package medium;
+
 class Solution {
     public void nextPermutation(int[] a) {
         
@@ -34,14 +36,15 @@ class Solution {
             }
         }
         
-        // abb baaki jo i+1 se end tak numbers unko reverse krdo, actually me ye lowest sorting krni thi but reverse bhi same kaam krega, but kyu??  yha pe reverse krne ke baad muhje lowest sorting hi milege
+        // abb baaki jo i+1 se end tak numbers unko reverse krdo, actually me ye lowest sorting krni thi but
+        // reverse bhi same kaam krega, but kyu??  yha pe reverse krne ke baad muhje lowest sorting hi milege
         // above ex: [2,3,1] ki baat kre toh wo swap step ke baad aisa hoga [3,2,1]
         // abb baccha 2,1 reverse krege toh 1,2 milega aur final answer [3,1,2] hoga
-        // iska genarailize solution ye keh skte hai ki jo 1st while loop hai i wali usme hum ye ensure kr rhe hai ki left se elements descending order (matlab bade se chota) me ho aur jaise hi ye order break hota hai, hum loop exit kr dete hai, 
+        // iska genarailize solution ye keh skte hai ki jo
+        // 1st while loop hai i wali usme hum ye ensure kr rhe hai ki left se elements descending order (matlab bade se chota)
+        // me ho aur jaise hi ye order break hota hai, hum loop exit kr dete hai,
         
         reverse(a, i);
-        
-        
     }
     
     public void swap(int[] a, int i, int j) {

@@ -24,10 +24,10 @@
 - [x] Tree Breadth First Search
 - [x] Trie
 - [x] Hash Maps
-- [ ] Knowing What to Track
-- [ ] Union find
-- [ ] Custom Data Structures
-- [ ] Bitwise Manipulation
-- [ ] Math & Geometry
+- [x] Knowing What to Track
+- [x] Union find
+- [x] Custom Data Structures
+- [x] Bitwise Manipulation
+- [x] Math & Geometry
 - [ ] Challenge Yourself
 - [ ] Conclusion

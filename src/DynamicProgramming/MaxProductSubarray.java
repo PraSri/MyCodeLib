@@ -28,7 +28,6 @@ public class MaxProductSubarray {
 		int prevMaxPro, curMaxPro, preMinPro;
 		preMinPro = A[0];
 		prevMaxPro = A[0];
-		curMaxPro = A[0];
 		int ans = A[0];
 		for (int i = 1; i < n; i++) {
 			curMaxPro = Math.max(prevMaxPro * A[i], Math.max(preMinPro * A[i], A[i]));
