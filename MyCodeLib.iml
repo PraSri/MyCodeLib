@@ -13,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/striver" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/random" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/design" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/phonepe" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -1,0 +1,31 @@
+
+Part 1
+
+Write code in JAVA using OOPS and proper names for this requirement.Given a list of some drivers and the deliveries they are making,
+need to write a code to compute the total cost of all deliveries.
+It needed to have 3 methods:
+add driver(driverId)
+add deliveries(startTime, endTime)
+getTotalCost()
+
+getTotalCost was needed in optimised time, which can be provided by computing cost at the time of adding the delivery.
+
+Part 2
+
+Add two more functionalities
+payUpToTime(upToTime) -> settle the delivery cost up to this time
+getCostToBePaid() -> get the remaining delivery costs left after settling the payment
+
+Part 3
+Implement a method to provide simultaneous deliveries across drivers.
+
+
+Given a list of delivery drivers, the per hour payment of each driver
+and a list of deliveries they do, your job is to find the total to be paid to all the driver combined.
+Write a production quality code in JAVA OOPS using some design pattern.
+Create respective functions:
+Add driver and per hour rate.
+Add delivery (This was epoch seconds)
+Get total to amount to be paid to all drivers.
+Given a time when we clear payments, output the total that has to be paid.
+Also, there should be another function that returns the total unpaid.

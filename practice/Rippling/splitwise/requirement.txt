@@ -1,0 +1,16 @@
+
+
+The problem was like: given a list of transaction <from, to, amount>,
+I have to settle them and return who will pay whom, how much.
+(note: it did not ask me to find the most optimal way to settle like in Splitwise simplify balance feature).
+
+I gave a solution, and coded it.
+I did it in Java to use Oops etc(as i use Java in my day to day job)
+but I practice DSA with c++.
+And it lead to multiple compilation errors, as I haven't used a lot of datastructures in Java.
+My suggestion will be to stick to one language for coding.
+I told the intervviewer regading the same and they were ok and said they are fine with the solution.
+
+In last 5min they asked me a follow up,
+what is the most optimal way to settle the balance. I gave them a greedy solution and we ended the interview.
+

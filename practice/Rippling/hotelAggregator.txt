@@ -1,0 +1,143 @@
+### System Design for Hotel Reservation Aggregator with Multi-Listing Support
+
+#### **Key Challenge**
+Hotels are listed on multiple aggregators (e.g., Expedia, Booking.com), requiring **real-time inventory synchronization** to prevent overbooking.
+
+---
+
+### **High-Level Architecture**
+![System Diagram](https://i.imgur.com/ABCD123.png)
+*Components: API Gateway, Search Service, Inventory Service, Booking Service, Partner Gateway, Cache, Database, Message Queue*
+
+---
+
+### **Core Components & Workflows**
+
+#### 1. **Inventory Management**
+- **Problem**: Hotels sell rooms via multiple platforms.
+- **Solution**:
+  - **Centralized Inventory System**:
+    - Hotels use a **Channel Manager** (e.g., SiteMinder) as the source of truth.
+    - All aggregators (including us) pull/push inventory via the Channel Manager.
+  - **Direct Integration**: For hotels without a Channel Manager, use APIs to sync inventory.
+
+- **Inventory Sync Workflow**:
+  1. **Real-Time Updates** (Preferred):
+     - Channel Manager pushes updates via **webhooks** (e.g., "Room X reduced by 1").
+     - We update our cache/database immediately.
+  2. **Polling Fallback**:
+     - Query Channel Manager every 1–5 mins for changes.
+  3. **Two-Phase Commit for Bookings**:
+     - **Reserve**: Temporary hold on inventory (e.g., 15-min lock).
+     - **Confirm/Cancel**: Finalize or release after payment.
+
+#### 2. **Search Service**
+- **Cache Strategy**:
+  - Use **Redis** to store hotel/room availability (key: `hotelID:date:roomType`).
+  - Cache updated via webhooks. On cache miss, fetch from Channel Manager.
+- **Response**: Return aggregated results from cache.
+
+#### 3. **Booking Service**
+- **Steps**:
+  1. User requests to book a room.
+  2. **Lock inventory**:
+     - Send `reserve` request to Channel Manager.
+     - If successful, proceed; else, show "sold out".
+  3. Process payment.
+  4. **Confirm booking**:
+     - Send `confirm` to Channel Manager.
+     - On failure, retry or refund.
+- **Concurrency Control**:
+  - Use **distributed locks** (e.g., Redis `SETNX`) per room/date during reservation.
+
+#### 4. **Partner Gateway**
+- **Handles External Aggregators**:
+  - Translate our booking requests to their APIs (e.g., Expedia’s REST API).
+  - Queue requests to handle rate limits/retries (e.g., Kafka ? SQS).
+- **Idempotency Keys**: Ensure duplicate requests fail safely.
+
+#### 5. **Overbooking Prevention**
+- **Optimistic Locking**:
+  - Include `inventory_version` in reservation requests. Reject if version mismatches.
+- **Time-Based Locks**:
+  - Auto-expire reservations after 10–15 mins if unconfirmed.
+
+---
+
+### **Data Models**
+#### **Database Schema**
+```plaintext
+Hotels              Rooms               Inventory
+------              -----               ----------
+hotel_id (PK)       room_id (PK)        hotel_id (FK)
+name                hotel_id (FK)       room_type_id (FK)
+location            type                date
+channel_mgr_url     max_occupancy       available_count
+                    channel_mgr_id      version (for OCC)
+
+Bookings            Users
+-------             -----
+booking_id (PK)     user_id (PK)
+user_id (FK)        email
+room_id (FK)
+status (pending/confirmed)
+expiry_time
+```
+
+#### **Cache Structure (Redis)**
+```bash
+# Key format:
+hotel:123:2023-10-25:deluxe_room
+
+# Value:
+{
+  "available": 5,
+  "price": 200,
+  "last_updated": 1698259200
+}
+```
+
+---
+
+### **Failure Handling**
+1. **Booking Service Fails Mid-Process**:
+   - Run a **reconciliation job** hourly:
+     - Find pending bookings ? confirm/release inventory.
+2. **Channel Manager Unavailable**:
+   - **Circuit Breaker**: Stop sending requests; use cached inventory for "fuzzy" availability.
+   - **Retry Queue**: Persist requests and retry later.
+3. **Payment Failures**:
+   - Release inventory lock automatically.
+
+---
+
+### **Optimizations**
+- **Read/Write Separation**:
+  - Use read replicas for search queries; primary DB for bookings.
+- **Sharding**:
+  - Shard `Bookings` by `hotel_id` or `date`.
+- **CDN & Edge Caching**:
+  - Cache static hotel data (images, descriptions) globally.
+
+---
+
+### **Advanced Considerations**
+1. **Dynamic Pricing**:
+   - Integrate with revenue management systems (e.g., IDeaS) via webhooks.
+2. **Fraud Prevention**:
+   - Use ML models to flag suspicious bookings pre-confirmation.
+3. **Multi-Region Deployment**:
+   - Deploy in AWS us-east + eu-west for low latency. Sync data via DynamoDB Global Tables.
+
+---
+
+### **Trade-Offs**
+- **Real-Time Sync**:
+  - Pros: Zero overbooking.
+  - Cons: Dependency on Channel Manager uptime.
+- **Cached Availability**:
+  - Pros: Fast search.
+  - Cons: Temporary staleness (mitigated by short TTLs).
+
+### **Summary**
+By integrating with **Channel Managers** for real-time inventory sync, using **distributed locks** for concurrency control, and designing idempotent/retryable workflows, the system ensures consistent bookings across aggregators while maintaining scalability.

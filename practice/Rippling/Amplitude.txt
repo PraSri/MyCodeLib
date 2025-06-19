@@ -1,0 +1,191 @@
+Design an event system like amplitude with analytics and reporting use cases
+
+Designing an event analytics system like **Amplitude** requires addressing high-scale data ingestion,
+flexible storage, real-time processing, and low-latency analytics.
+Below is a comprehensive system design optimized for analytics and reporting use cases.
+
+---
+
+### **System Requirements**
+1. **High Ingestion Rate**: Support millions of events/sec.
+2. **Low-Latency Queries**: Sub-second responses for dashboards.
+3. **Scalability**: Horizontal scaling for storage/compute.
+4. **Data Freshness**: Near real-time processing (seconds to minutes).
+5. **Flexible Analytics**: Ad-hoc queries, funnels, retention, cohort analysis.
+6. **Cost Efficiency**: Tiered storage, compression, and efficient querying.
+
+---
+
+### **High-Level Architecture**
+![Amplitude-like System Architecture](https://i.imgur.com/AmplitudeArch.png)
+*Simplified diagram showing data flow from ingestion to analytics*
+
+---
+
+### **Core Components**
+#### 1. **Event Ingestion Layer**
+- **Purpose**: Collect events from clients (web, mobile, server).
+- **Components**:
+  - **Load-Balanced API Gateways**: Stateless HTTP servers (e.g., NGINX) to accept events (POST `/track`).
+  - **Schema Validation**: Validate payloads (e.g., using JSON Schema) and reject malformed data.
+  - **Rate Limiting**: Per API key/user to prevent abuse.
+  - **Output**: Forward validated events to a message queue.
+
+#### 2. **Buffering & Decoupling**
+- **Purpose**: Absorb traffic spikes and decouple ingestion from processing.
+- **Technology**: **Apache Kafka** (or **Amazon Kinesis**):
+  - **Partitioning**: By `user_id` or `session_id` to maintain event sequence per user.
+  - **Retention**: Short-term (hours) for real-time processing + long-term (days) for replayability.
+  - **Throughput**: Scale partitions to handle load.
+
+#### 3. **Stream Processing**
+- **Purpose**: Enrich, clean, and pre-aggregate events in real-time.
+- **Technology**: **Apache Flink** (or **Spark Structured Streaming**):
+  - **Enrichment**:
+    - Geo-IP lookup.
+    - User-agent parsing.
+    - Sessionization (stitching events into sessions).
+  - **Pre-aggregation**:
+    - Count events/minute for high-cardinality metrics (e.g., pageviews).
+    - Detect bot traffic.
+  - **Output**: Write processed events to storage.
+
+#### 4. **Storage Layer**
+Use a **tiered approach** to balance cost, latency, and flexibility:
+
+| **Storage Type**       | **Technology**      | **Use Case**                              | **Retention** |
+|------------------------|---------------------|-------------------------------------------|---------------|
+| **Hot Storage**        | ClickHouse/Druid    | Sub-second queries, dashboards            | 30-90 days    |
+| **Warm Storage**       | Parquet on S3       | Ad-hoc SQL queries, historical analysis   | 1-2 years     |
+| **Metadata Store**     | PostgreSQL          | User definitions, dashboards, schemas     | Indefinite    |
+
+- **Hot Storage (OLAP Database)**:
+  - **ClickHouse**: Columnar storage, aggressive compression, and vectorized queries.
+  - **Data Model**:
+    ```sql
+    CREATE TABLE events (
+      event_time DateTime,
+      event_id String,
+      user_id String,
+      event_type String,
+      country String,
+      device String,
+      properties JSON
+    ) ENGINE = MergeTree()
+    PARTITION BY toYYYYMM(event_time)
+    ORDER BY (event_type, user_id, event_time);
+    ```
+- **Warm Storage (Data Lake)**:
+  - Events stored in **S3** as partitioned Parquet files (e.g., `s3://bucket/year=2023/month=10/day=01`).
+  - Cataloged with **AWS Glue** or **Hive Metastore** for SQL access via **Trino/Presto**.
+
+#### 5. **Batch Processing**
+- **Purpose**: Backfill data, compute complex metrics (retention, funnels).
+- **Technology**: **Apache Spark**:
+  - **ETL Pipelines**: Transform raw S3 data into aggregated tables.
+  - **Output**: Materialized views in ClickHouse or aggregate tables in S3.
+
+#### 6. **Query Service**
+- **Purpose**: Execute user queries and serve dashboards.
+- **Components**:
+  - **Query Orchestrator**: Routes queries to ClickHouse (fast) or Presto (ad-hoc).
+  - **Caching**: Redis/Memcached for frequent queries (e.g., daily active users).
+  - **SQL Interface**: Accepts ANSI SQL + custom functions (e.g., `FUNNEL(event_steps, 7d)`).
+  - **Rate Limiting**: Protect backend from expensive queries.
+
+#### 7. **Reporting & Visualization**
+- **API**: REST/GraphQL endpoints for dashboards.
+- **Web UI**: React-based interface for drag-and-drop analytics.
+- **Alerting**: Notify users when metrics breach thresholds (e.g., error rate > 5%).
+
+#### 8. **Metadata Service**
+- **Purpose**: Manage event schemas, dashboards, user permissions.
+- **Storage**: PostgreSQL with tables like:
+  ```sql
+  CREATE TABLE event_schemas (
+    event_name VARCHAR(255) PRIMARY KEY,
+    properties JSONB  -- e.g., {"price": "number", "product": "string"}
+  );
+  ```
+
+---
+
+### **Analytics Use Cases & Optimization**
+#### 1. **Funnel Analysis**
+- **Query**: "How many users completed steps A ? B ? C in 7 days?"
+- **Optimization**:
+  - Precompute funnel metrics using Spark batch jobs.
+  - Use ClickHouse’s **window functions** for real-time:
+    ```sql
+    WITH events AS (SELECT user_id, event_time, event_type FROM events)
+    SELECT countIf(step2_time > step1_time) AS step2_count
+    FROM (
+      SELECT
+        user_id,
+        minIf(event_time, event_type = 'A') AS step1_time,
+        minIf(event_time, event_type = 'B') AS step2_time
+      FROM events
+      GROUP BY user_id
+    );
+    ```
+
+#### 2. **Retention Analysis**
+- **Query**: "What % of Day 0 users returned on Day 7?"
+- **Optimization**:
+  - Precompute retention cohorts daily via Spark.
+  - Store results in a `retention_cohorts` table in ClickHouse.
+
+#### 3. **Ad-Hoc Queries**
+- **Example**: "Show pageviews by country for iPhone users in 2023."
+- **Optimization**:
+  - Use S3 + Presto for full historical data.
+  - Cache results in Redis for identical queries.
+
+---
+
+### **Scalability & Reliability**
+- **Ingestion Scaling**:
+  - Auto-scale API servers and Kafka partitions based on traffic.
+  - **Dead Letter Queue (DLQ)**: Handle failed events for reprocessing.
+- **Storage Scaling**:
+  - ClickHouse: Add shards/replicas via **ClickHouse Keeper**.
+  - S3: Unlimited scale; partition data by time/event.
+- **Fault Tolerance**:
+  - Kafka: Replication factor ?3.
+  - Spark/Flink: Checkpointing and exactly-once processing.
+
+---
+
+### **Cost Optimization**
+1. **Storage Tiering**: Move old data from ClickHouse to S3.
+2. **Data Compression**: Parquet/ClickHouse achieve 80-90% compression.
+3. **Query Optimization**: Cost-based optimizer in Presto; materialized views in ClickHouse.
+4. **Spot Instances**: Use for batch processing (Spark/Flink).
+
+---
+
+### **Advanced Features**
+1. **Anomaly Detection**: Integrate ML (e.g., Prophet) to flag metric deviations.
+2. **User Cohorts**: Dynamically segment users (e.g., "paid_users_in_EU").
+3. **Data Export**: Let users export raw data to S3/Redshift.
+
+---
+
+### **Trade-Offs**
+- **Latency vs. Freshness**: Pre-aggregation speeds up queries but adds delay (minutes).
+- **Ad-Hoc Flexibility**: S3+Presto supports complex queries but is slower than ClickHouse.
+- **Storage Cost**: ClickHouse is expensive for raw events; use only for hot data.
+
+---
+
+### **Tools Comparison**
+| **Component**       | **Options**                                  |
+|----------------------|---------------------------------------------|
+| **Stream Processing**| Flink, Spark, ksqlDB                        |
+| **OLAP Database**    | ClickHouse, Apache Druid, Rockset           |
+| **Data Lake**        | S3 + Parquet, Delta Lake, Iceberg           |
+| **Batch Processing** | Spark, AWS EMR, Databricks                  |
+
+---
+
+This design balances real-time analytics with historical flexibility, leveraging modern OLAP databases and cloud-native services. Adjust components based on team expertise and cloud provider (e.g., Kinesis instead of Kafka on AWS).

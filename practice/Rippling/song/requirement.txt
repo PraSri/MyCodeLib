@@ -1,0 +1,45 @@
+
+Problem Statement: Design a Song Play Analytics System
+AND
+Question about designing music library where we had to print the most played songs(by unique users).
+This was then extended to also add a function to return 3 unique most recently played songs.
+
+Write JAVA code using OOPS style with popular design patterns
+Design a system to track song plays and generate analytics based on
+the number of unique listeners per song.
+Implement the SongAnalytics class with the following methods:
+
+SongAnalytics() - Initializes the system.
+
+int add_song(string name) - Adds a song to the system, assigns it a unique auto-incrementing ID starting from 1,
+and returns the assigned ID.
+
+void play_song(int song_id, int user_id) - Records a play event for a song by a user.
+If song_id does not exist, output: Error: Song ID <song_id> does not exist. (replace <song_id> with the invalid ID).
+Each user is counted once per song, even if they play it multiple times.
+
+void print_analytics() - Prints a summary of all songs sorted by the number of unique listeners in descending order.
+If two songs have the same number of unique listeners, sort them lexicographically by name in ascending order.
+
+Each line in the output should follow the format: <song_name> (<count> unique listeners).
+Example:
+Input:
+add_song("Song A") ? returns 1
+add_song("Song B") ? returns 2
+add_song("Song C") ? returns 3
+play_song(1, 1)
+play_song(1, 2)
+play_song(2, 1)
+play_song(3, 3)
+play_song(3, 3)
+print_analytics()
+
+Output:
+Song A (2 unique listeners)
+Song B (1 unique listeners)
+Song C (1 unique listeners)
+
+Add extra requirement
+1. Print most played song by unique users
+2. Print 3 unique most recently played songs
+

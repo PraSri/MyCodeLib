@@ -1,0 +1,2 @@
+Design a photo upload service like Instagram. A detailed discussion on DB, Tables, APIs, Caching, Sync/Async, Fan Out(push/pull, Discussion around handling celebrity problem). Scaling individual components, SPOF etc.
+Some questions on setting up alerting/monitoring/metrics/analytics for this service.

@@ -1,0 +1,2 @@
+A large file of append only streaming logs would be given with (user_id, date, timestamp),
+task was to find out the number of users whose timestamp[i] < timestamp[j] and user_id[i] > user_id[j] for a given date.

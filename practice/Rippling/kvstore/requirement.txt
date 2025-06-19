@@ -1,0 +1,19 @@
+Design a Key Value Store
+
+string get(string key);
+void set(string key, string value);
+void deleteKey(string key);
+Follow up 1
+Support transactions - begin, commit and rollback. I immediately asked the interviewer if we needed to support nested transactions. He said yes but for the next followup. He still asked me to first code it for 1 level of transaction for which I took a lot of time.
+
+Follow up 2
+Support nested transactions. No time was left.
+
+
+Write JAVA code using OOPs and design pattern for designing key value store. It should have following methods:
+string get(string key);
+void set(string key, string value);
+void deleteKey(string key);
+Also, support transactions - begin, commit, rollback.
+Extend the solution to support nested transactions
+Write a main class with all the test cases and comment with explanation.
