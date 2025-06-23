@@ -39,15 +39,12 @@ public class SongAnalytics {
 
     public void print_analytics() {
         List<Song> songsList = new ArrayList<>(songsById.values());
-        Collections.sort(songsList, new Comparator<Song>() {
-            @Override
-            public int compare(Song s1, Song s2) {
-                int countComparison = Integer.compare(s2.getUniqueListeners(), s1.getUniqueListeners());
-                if (countComparison != 0) {
-                    return countComparison;
-                }
-                return s1.name.compareTo(s2.name);
+        songsList.sort((s1, s2) -> {
+            int countComparison = Integer.compare(s2.getUniqueListeners(), s1.getUniqueListeners());
+            if (countComparison != 0) {
+                return countComparison;
             }
+            return s1.name.compareTo(s2.name);
         });
 
         for (Song song : songsList) {

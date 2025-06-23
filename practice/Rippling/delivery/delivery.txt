@@ -1,4 +1,3 @@
-package Rippling.delivery;
 
 import java.util.*;
 
@@ -59,7 +58,6 @@ public class DeliverySystemV3 {
             if (isAvailable(schedule, delivery)) {
                 schedule.add(delivery);
                 assigned = true;
-                // each delivery cost -> driver.perHourRate * (hours taken to complete the delivery)
                 break;
             }
         }
@@ -130,74 +128,5 @@ public class DeliverySystemV3 {
         long remainingMinutes = totalMinutesAll - totalSettledMinutes;
         int remainingDeliveries = totalDeliveriesAll - totalSettledDeliveryCount;
         return 10 * remainingMinutes + 7 * remainingDeliveries;
-    }
-
-
-    /**
-     * Returns the maximum number of drivers who were simultaneously
-     * on a delivery at any instant in the 24-hour window
-     * [currentTime - 24*60, currentTime].
-     * <p>
-     * Assumes all times are in the same unit (e.g. minutes since epoch).
-     */
-    public int getMaxActiveDriversInLast24Hours(long currentTime) {
-        long windowStart = currentTime - 24L * 60; // 24 hours in minutes
-        List<Event> events = new ArrayList<>();
-
-        // build start/end events for any delivery overlapping the window
-        for (Map.Entry<String, TreeSet<Delivery>> e : driverSchedules.entrySet()) {
-            for (Delivery d : e.getValue()) {
-                if (d.end <= windowStart || d.start >= currentTime) {
-                    // completely outside the window
-                    continue;
-                }
-                long s = Math.max(d.start, windowStart);
-                long t = Math.min(d.end, currentTime);
-                events.add(new Event(s, +1));
-                events.add(new Event(t, -1));
-            }
-        }
-
-        // sweep
-        Collections.sort(events);
-        int maxConcurrent = 0, curr = 0;
-        for (Event ev : events) {
-            curr += ev.delta;
-            maxConcurrent = Math.max(maxConcurrent, curr);
-        }
-        return maxConcurrent;
-    }
-
-    // small helper to mark +1 at start, -1 at end
-    static class Event implements Comparable<Event> {
-        public long time;
-        public int delta;
-
-        Event(long time, int delta) {
-            this.time = time;
-            this.delta = delta;
-        }
-
-        public long getTime() {
-            return time;
-        }
-
-        public void setTime(long time) {
-            this.time = time;
-        }
-
-        public int getDelta() {
-            return delta;
-        }
-
-        public void setDelta(int delta) {
-            this.delta = delta;
-        }
-
-        @Override
-        public int compareTo(Event e) {
-            int cmp = Long.compare(this.time, e.time);
-            return cmp != 0 ? cmp : Long.compare(this.delta, e.delta);
-        }
     }
 }

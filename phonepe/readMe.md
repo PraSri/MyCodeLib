@@ -16,7 +16,7 @@ Requirements P0
 Provide interfaces to add advertisers and their budgets.
 add_advertiser(name)
 add_budget(budget)
-Provide interfaces to add users and their attributes to the system, such as date of birth, interests, gender, etc.
+ributProvide interfaces to add users and their attes to the system, such as date of birth, interests, gender, etc.
 add_user(user, dob, gender)
 add_attribbute(attributes)
 Provide an interface to create an advertisement campaign for the advertiser.
@@ -29,7 +29,8 @@ System Constraints:
 
 A user shouldn’t see the same advertisement if he has seen it in the last 10 fetch instances.
 At the global level, don’t serve the same advertisement if it has been served 5 times in the last 1 minute.
-match_advertisement can return null if all the advertisements after the criteria matching fail the system constraints validation for a user.
+match_advertisement can return null if all the advertisements after 
+the criteria matching fail the system constraints validation for a user.
 
 Requirements P1
 Handle concurrency cases for different scenarios.
