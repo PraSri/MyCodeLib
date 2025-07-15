@@ -1,4 +1,4 @@
-package p0s07cu;
+package merge_intervals;
 
 import java.util.ArrayList;
 import java.util.Comparator;

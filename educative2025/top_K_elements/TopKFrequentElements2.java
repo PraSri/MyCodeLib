@@ -1,4 +1,4 @@
-package two_pointers.top_K_elements;
+package top_K_elements;
 // https://leetcode.com/problems/top-k-frequent-elements/
 
 import java.util.*;

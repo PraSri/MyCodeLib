@@ -1,4 +1,4 @@
-import java.util.*;
+package two_pointers;
 
 class EduTreeNode {
     int data;

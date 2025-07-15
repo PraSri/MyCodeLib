@@ -1,3 +1,5 @@
+package two_pointers;
+
 import java.util.*;
 
 class EduBinaryTree {

@@ -1,4 +1,4 @@
-package merge_interval;
+package merge_intervals;
 
 import java.util.*;
 
