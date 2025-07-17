@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/random" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/design" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/phonepe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/neetcode150" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
