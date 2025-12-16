@@ -1,0 +1,68 @@
+package vnd.ecommerce.baskets;
+import java.security.Authentication;
+import java.security. Principal;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+/*
+desription -  Adding a new version of the basket checkout that stops the user
+from checking out if they don't have available balance in their wallet.
+The authorisation is controlled using a paramater so we can use it internally
+in service to service calls. Calls the wallet-service over HTTP to get the
+balance and then to pay
+*/
+
+@RequestMapping ("/v3/baskets/")
+@RestController
+public class CheckoutController {
+
+    @Autowired
+    public WalletService walletService;
+
+    @Autowired
+    public BasketRepository basketRepository;
+
+    public static final Logger logger = LoggerFactory.getLogger(CheckoutController.class);
+
+    @PutMapping (value = "/new/{basketId}/v2/checkout/confirm")
+    public String checkoutBasket(@PathVariable String basketid, @RequestParam boolean isInternal, Authentication auth, @Request Param String walletId){
+
+        boolean canAccess = true;
+        if(!isInternal || auth.getPrincipal().getName() != null){
+            List<Basket> bList = basketRepository.findByUsername(auth.getPrincipal().getName());
+            boolean ownsBasket = false;
+            bList.stream().forEach(b -> {
+                if(b.getId() == basketId){
+                    ownsBasket = true;
+                }
+            });
+            if(!ownsBasket) canAccess = false;
+        }
+
+
+        if (!canAccess) return "NOT-ALLOWED";
+
+        if (walletId == null) {
+            var basketOptional = basketRepository.findById(basketId);
+            walletId = basketOptional.get().getUserWallet();
+        }
+
+        Wallet wallet = walletService.getWallet(walletId);
+        Optional.ofNullable (wallet).orElseThrow();
+        double balance = wallet.getBalance();
+
+        var basketOptional = basketRepository.findById(basketId);
+        if (balance > basketOptional.get().getTotal()){
+            basketRepository.changeStatus(basketId, "SEND_FOR_DELIVERY");
+            walletService.reduceBalance(walletId, basketOptional.get().getTotal());
+        } else{
+            return "INSUFFICIENT_FUNDS";
+        }
+
+        return "OK";
+
+    }
+}
