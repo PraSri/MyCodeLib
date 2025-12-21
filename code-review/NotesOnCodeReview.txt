@@ -1,0 +1,100 @@
+
+
+About imports
+Use explicit imports (no *) as the default
+Prefer explicit imports (e.g. import java.util.List;) instead of wildcard imports (import java.util.*;).
+Avoid static wildcard imports except in very local, readable cases
+
+naming
+ A good name is long enough to fully communicate what the item is or does, without being so long that it becomes hard to read.
+
+ comments
+ Usually comments are useful when they explain why some code exists, and should not be explaining what some code is doing. If the code isn’t clear enough to explain itself, then the code should be made simpler.
+
+ complex issues such as security, concurrency, accessibility, internationalization, etc.
+
+Spring Boot Microservice Code Review
+
+Check code formatting & conventions:
+Verify package structure -  separation of controller, service, and repository layers
+Dependency management
+
+Configuration: Check if application.properties or application.yml settings are placed correctly
+
+Controller Layer: Validate request mappings (@GetMapping, @PostMapping, etc.) and response statuses.
+
+Service Layer:
+    Confirm the business logic.
+    Is it well-structured?
+    Are transactions handled properly?
+    Look for race conditions if you’re doing multi-threaded or asynchronous tasks.
+
+Data Access Layer:
+    Inspect repositories, queries, and caching.
+    Ensure the correct usage of JPA or JDBC templates.
+    Pay attention to potential N+1 query issues.
+
+
+Authentication & Authorization:
+    If you’re using Spring Security or OAuth2,
+    check that endpoints have the right security constraints (@PreAuthorize, @Secured, etc.).
+
+Sensitive Info:
+    Verify that secrets (like API keys) aren’t stored in code or logs.
+    Best practice is to externalize them in a secure config or vault.
+
+Input Validation:
+    Make sure user inputs or API calls are validated properly to prevent common vulnerabilities
+    (e.g., SQL injection, cross-site scripting).
+
+Observability & Logging
+    Meaningful Logs
+    avoid logging sensitive data
+    Metrics & Health Checks
+    Distributed Tracing - consider using Zipkin
+
+Testing & CI/CD Integration
+    Test Coverage
+    ensure that builds, tests, and checks (like SonarQube) run automatically
+
+Misc
+    Review for consistent logging levels (info for normal, debug for deep dives, error for critical).
+    Ensure method names and REST endpoints follow naming conventions.
+    Look out for common pitfalls like null pointer issues or ignoring exceptions silently.
+    Validate security measures (auth, roles, tokens).
+    Confirm relevant documentation or code comments for complex logic or tricky edge cases
+
+
+ SAGA design patterns, how and where to use local transactions,
+ security, concurrency, transactional
+ handling situations in which third party service times out by?? Idempotency?? reconciliation??
+ how to handle duplicate events ??  we can use idempotency identifier based on which we can have locks or probabilistic data stores like bloom filters.??
+
+
+
+ Classes should be nouns and written with Pascal case, for example, BankAccount.
+ Interfaces should be adjectives also written in Pascal case, for example, Spendable.
+ Methods should be verbs and written in camel case, for example, transferPocketMoney.
+ Constants don’t change, so their names should describe what they are and be written in all caps and underscores, for example, WEEKLY_POCKET_MONEY_AMOUNT.
+
+consider using @Slf4j/@Data Lombok annotations to reduce boilerplate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
