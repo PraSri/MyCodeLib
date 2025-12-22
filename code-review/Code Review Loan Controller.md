@@ -467,3 +467,553 @@ saga.execute();  // Runs steps; auto-rollback on failure
 ```
 
 **Bottom Line**: SAGA is **Outbox's big brother** — use it when you need coordinated rollbacks across multiple services, not just reliable messaging to one.
+
+### User Input
+
+can we incorparate some concurrency flow in this code to make it further optimized. Share your opinion and rationale behind it.
+
+### Planner Response
+
+## My Opinion: **Be Very Careful with Concurrency in Financial Transactions**
+
+This is a nuanced topic. Let me break it down:
+
+---
+
+### ⚠️ Where Concurrency is **DANGEROUS** (Don't Do It)
+
+The **core transaction flow MUST remain sequential**:
+
+```
+Debit → Credit → Register Loan
+```
+
+**Why?** These have **causal dependencies**:
+- Can't credit before verifying debit succeeded
+- Can't register loan before funds are transferred
+- Rollback order matters (LIFO)
+
+```java
+// ❌ DANGEROUS - Never do this
+CompletableFuture.allOf(
+    CompletableFuture.runAsync(() -> accountService.debit(source, amount)),
+    CompletableFuture.runAsync(() -> accountService.credit(dest, amount)),
+    CompletableFuture.runAsync(() -> loanService.register(...))
+).join();
+
+// Race conditions, partial failures, inconsistent state!
+```
+
+---
+
+### ✅ Where Concurrency **MAKES SENSE** (Do It)
+
+| Operation | Can Parallelize? | Rationale |
+|-----------|------------------|-----------|
+| **Validation checks** | ✅ Yes | Independent reads, no side effects |
+| **Account lookups** | ✅ Yes | Both accounts can be fetched simultaneously |
+| **Post-transaction tasks** | ✅ Yes | Notifications, analytics are fire-and-forget |
+| **Debit + Credit** | ❌ No | Must be atomic, sequential |
+| **Loan registration** | ❌ No | Depends on transfer success |
+
+---
+
+### Optimized Code with Safe Concurrency
+
+```java
+@PostMapping("/{accountId}/loans")
+@Transactional(isolation = Isolation.SERIALIZABLE)
+public ResponseEntity<LoanResponse> createLoan(
+        @PathVariable String accountId,
+        @Valid @RequestBody LoanRequest request,
+        @AuthenticationPrincipal UserDetails user) {
+
+    String correlationId = UUID.randomUUID().toString();
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 1: PARALLEL READS (Safe - no side effects)
+    // ═══════════════════════════════════════════════════════════════
+    
+    CompletableFuture<Account> sourceFuture = CompletableFuture.supplyAsync(
+        () -> accountService.findById(request.getSourceAccountId())
+                .orElseThrow(() -> new AccountNotFoundException("Source")));
+    
+    CompletableFuture<Account> destFuture = CompletableFuture.supplyAsync(
+        () -> accountService.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Destination")));
+    
+    CompletableFuture<BigDecimal> creditLimitFuture = CompletableFuture.supplyAsync(
+        () -> loanManagementService.getCreditLimit(accountId));
+    
+    // Wait for all reads to complete
+    CompletableFuture.allOf(sourceFuture, destFuture, creditLimitFuture).join();
+    
+    Account sourceAccount = sourceFuture.join();
+    Account destAccount = destFuture.join();
+    BigDecimal creditLimit = creditLimitFuture.join();
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 2: SEQUENTIAL VALIDATIONS (After data is loaded)
+    // ═══════════════════════════════════════════════════════════════
+    
+    validateAccountAccess(destAccount, user);
+    validateCreditLimit(request.getLoanAmount(), creditLimit);
+    validateSufficientBalance(sourceAccount, request.getLoanAmount());
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 3: SEQUENTIAL WRITES (Critical path - MUST be sequential)
+    // ═══════════════════════════════════════════════════════════════
+    
+    accountService.debit(sourceAccount, request.getLoanAmount());
+    accountService.credit(destAccount, request.getLoanAmount());
+    String loanId = registerLoan(request.getLoanAmount(), user.getUserId());
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 4: ASYNC POST-PROCESSING (Fire-and-forget, non-blocking)
+    // ═══════════════════════════════════════════════════════════════
+    
+    CompletableFuture.runAsync(() -> {
+        auditService.log(TransactionType.LOAN, accountId, request.getLoanAmount());
+        notificationService.sendLoanConfirmation(user.getEmail(), loanId);
+        analyticsService.trackLoanCreated(loanId, request.getLoanAmount());
+    });
+    
+    return ResponseEntity.status(HttpStatus.CREATED).body(buildResponse(loanId));
+}
+```
+
+---
+
+### Performance Impact Analysis
+
+| Phase | Before (Sequential) | After (Parallel) | Savings |
+|-------|---------------------|------------------|---------|
+| **Account Lookups** | ~50ms + ~50ms = 100ms | ~50ms (parallel) | **50ms** |
+| **Credit Limit Check** | ~30ms (blocked) | Runs with lookups | **30ms** |
+| **Post-Processing** | ~200ms (blocking) | ~0ms (async) | **200ms** |
+| **Total** | ~380ms | ~100ms | **~280ms (74%)** |
+
+---
+
+### My Verdict
+
+| Aspect | Recommendation |
+|--------|----------------|
+| **Core transaction** | Keep **strictly sequential** |
+| **Pre-transaction reads** | ✅ **Parallelize** with `CompletableFuture` |
+| **Post-transaction tasks** | ✅ **Fire-and-forget async** |
+| **Error handling** | Add proper exception handling for futures |
+| **Thread pool** | Use dedicated pool, not ForkJoinPool.commonPool() |
+
+---
+
+### ⚠️ Important Caveat
+
+```java
+// Use a dedicated thread pool for DB operations
+private final Executor dbExecutor = Executors.newFixedThreadPool(10);
+
+CompletableFuture.supplyAsync(() -> accountService.findById(...), dbExecutor);
+```
+
+**Why?** 
+- Default `ForkJoinPool.commonPool()` is CPU-bound
+- DB calls are I/O-bound and can exhaust the pool
+- In production: use Spring's `@Async` with custom `TaskExecutor`
+
+---
+
+### Bottom Line
+
+> **"Optimize the boring parts, keep the critical parts boring."**
+
+Concurrency in fintech is a **scalpel, not a sledgehammer**. Parallelize reads and post-processing, but never compromise the sequential integrity of the actual money movement.
+
+### User Input
+
+in addition to this only, how to handle duplicate events ??  we can use idempotency identifier based on which we can have locks or probabilistic data stores like bloom filters.??
+
+### Planner Response
+
+## Handling Duplicate Events: A Deep Dive
+
+Great question! Let me compare the approaches:
+
+---
+
+## 1. **Idempotency Key + Database Lock** (Recommended for Fintech)
+
+```java
+@Transactional
+public LoanResponse createLoan(LoanRequest request) {
+    String idempotencyKey = request.getIdempotencyKey();
+    
+    // Try to acquire lock via DB (SELECT FOR UPDATE or INSERT)
+    Optional<IdempotencyRecord> existing = idempotencyRepository
+        .findByKeyForUpdate(idempotencyKey);  // SELECT ... FOR UPDATE
+    
+    if (existing.isPresent()) {
+        if (existing.get().getStatus() == Status.COMPLETED) {
+            // Return cached response (replay)
+            return existing.get().getCachedResponse();
+        } else if (existing.get().getStatus() == Status.IN_PROGRESS) {
+            throw new ConflictException("Request already in progress");
+        }
+    }
+    
+    // Insert new record (acts as a lock)
+    idempotencyRepository.save(new IdempotencyRecord(
+        idempotencyKey, Status.IN_PROGRESS, Instant.now()));
+    
+    try {
+        LoanResponse response = processLoan(request);
+        
+        // Update with cached response
+        idempotencyRepository.updateStatus(
+            idempotencyKey, Status.COMPLETED, serialize(response));
+        
+        return response;
+    } catch (Exception e) {
+        idempotencyRepository.updateStatus(idempotencyKey, Status.FAILED, e.getMessage());
+        throw e;
+    }
+}
+```
+
+**Database Table:**
+```sql
+CREATE TABLE idempotency_keys (
+    idempotency_key VARCHAR(64) PRIMARY KEY,
+    status ENUM('IN_PROGRESS', 'COMPLETED', 'FAILED'),
+    cached_response JSON,
+    created_at TIMESTAMP,
+    expires_at TIMESTAMP,
+    INDEX idx_expires (expires_at)  -- For cleanup job
+);
+```
+
+---
+
+## 2. **Distributed Lock (Redis)**
+
+```java
+public LoanResponse createLoan(LoanRequest request) {
+    String lockKey = "loan:lock:" + request.getIdempotencyKey();
+    String cacheKey = "loan:result:" + request.getIdempotencyKey();
+    
+    // Check if already processed
+    String cachedResult = redis.get(cacheKey);
+    if (cachedResult != null) {
+        return deserialize(cachedResult);
+    }
+    
+    // Try to acquire distributed lock
+    boolean acquired = redis.set(lockKey, "1", SetParams.setParams()
+        .nx()           // Only if not exists
+        .ex(30));       // 30 second TTL
+    
+    if (!acquired) {
+        throw new ConflictException("Duplicate request in progress");
+    }
+    
+    try {
+        LoanResponse response = processLoan(request);
+        
+        // Cache result for replay (24 hour TTL)
+        redis.setex(cacheKey, 86400, serialize(response));
+        
+        return response;
+    } finally {
+        redis.del(lockKey);  // Release lock
+    }
+}
+```
+
+---
+
+## 3. **Bloom Filter** (For High-Volume Pre-Filtering)
+
+```java
+// Bloom filter = probabilistic "maybe seen" / "definitely not seen"
+private final BloomFilter<String> processedRequests = BloomFilter.create(
+    Funnels.stringFunnel(Charset.defaultCharset()),
+    10_000_000,     // Expected insertions
+    0.01            // 1% false positive rate
+);
+
+public LoanResponse createLoan(LoanRequest request) {
+    String idempotencyKey = request.getIdempotencyKey();
+    
+    // FAST PATH: Bloom filter check (in-memory, O(k) where k = hash functions)
+    if (processedRequests.mightContain(idempotencyKey)) {
+        // Bloom says "maybe seen" - need to verify with DB
+        Optional<LoanResponse> cached = idempotencyRepository
+            .findCachedResponse(idempotencyKey);
+        
+        if (cached.isPresent()) {
+            return cached.get();  // Confirmed duplicate
+        }
+        // False positive - continue processing
+    }
+    
+    // Process the loan...
+    LoanResponse response = processLoan(request);
+    
+    // Add to bloom filter
+    processedRequests.put(idempotencyKey);
+    
+    // Persist to DB for authoritative lookup
+    idempotencyRepository.save(idempotencyKey, response);
+    
+    return response;
+}
+```
+
+---
+
+## Comparison Table
+
+| Approach | Consistency | Speed | Memory | Use Case |
+|----------|-------------|-------|--------|----------|
+| **DB Lock** | ✅ Strong | 🐢 ~5-10ms | 💾 Disk | Financial transactions (RECOMMENDED) |
+| **Redis Lock** | ⚠️ Eventually | 🚀 ~1ms | 🧠 RAM | High-throughput, can tolerate rare duplicates |
+| **Bloom Filter** | ❌ Probabilistic | ⚡ ~0.01ms | 🧠 Very Low | Pre-filter only, needs DB backup |
+
+---
+
+## Hybrid Architecture (Production-Grade)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         REQUEST FLOW                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│   Request ──▶ [Bloom Filter] ──"definitely new"──▶ Process          │
+│                    │                                    │            │
+│                    │ "maybe seen"                       ▼            │
+│                    ▼                              [Add to Bloom]     │
+│              [Redis Cache]                              │            │
+│                    │                                    ▼            │
+│                    │ cache miss                  [Write to DB]       │
+│                    ▼                                                 │
+│           [DB Authoritative Check]                                   │
+│                    │                                                 │
+│          ┌────────┴────────┐                                        │
+│          ▼                 ▼                                        │
+│       Found            Not Found                                    │
+│     (Return cached)    (Process + Save)                             │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Code:**
+```java
+public LoanResponse createLoan(LoanRequest request) {
+    String key = request.getIdempotencyKey();
+    
+    // Layer 1: Bloom Filter (nanoseconds, in-memory)
+    if (!bloomFilter.mightContain(key)) {
+        return processAndCache(key, request);  // Fast path
+    }
+    
+    // Layer 2: Redis Cache (milliseconds)
+    String cached = redis.get("loan:" + key);
+    if (cached != null) {
+        return deserialize(cached);
+    }
+    
+    // Layer 3: DB with Lock (authoritative, milliseconds)
+    return idempotencyRepository.executeWithLock(key, () -> {
+        // Double-check after acquiring lock
+        Optional<LoanResponse> dbCached = idempotencyRepository.find(key);
+        if (dbCached.isPresent()) {
+            return dbCached.get();
+        }
+        
+        return processAndCache(key, request);
+    });
+}
+
+private LoanResponse processAndCache(String key, LoanRequest request) {
+    LoanResponse response = processLoan(request);
+    
+    // Update all layers
+    bloomFilter.put(key);
+    redis.setex("loan:" + key, 86400, serialize(response));
+    idempotencyRepository.save(key, response);
+    
+    return response;
+}
+```
+
+---
+
+## My Recommendation for Fintech
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **L1** | Bloom Filter | Reject obvious duplicates instantly (99%+ traffic) |
+| **L2** | Redis | Fast cache for recent results + distributed lock |
+| **L3** | PostgreSQL | Authoritative source of truth, ACID guarantees |
+
+**Why NOT Bloom Filter Alone?**
+
+| Issue | Impact |
+|-------|--------|
+| False positives | Would reject legitimate requests (1% at 0.01 FPR) |
+| No response replay | Can't return the original response |
+| Memory loss | Server restart = all history lost |
+| No atomicity | Two concurrent requests can both pass |
+
+> **Bloom filters are a performance optimization, not a correctness mechanism.** In fintech, always back them with a persistent, ACID-compliant store.
+
+---
+
+## Bottom Line
+
+```
+For Money: DB Lock (correctness > speed)
+For Scale: Bloom + Redis + DB (layered defense)
+Never:     Bloom filter alone for financial deduplication
+```
+
+### User Input
+
+i want to get good in these concepts for interview preparation, suggest me the reading and preparation material for this
+
+### Planner Response
+
+## Interview Prep: Distributed Systems & Fintech Patterns
+
+Here's a curated roadmap based on the concepts we discussed:
+
+---
+
+## 📚 Books (Must-Read)
+
+| Book | Focus | Priority |
+|------|-------|----------|
+| **[Designing Data-Intensive Applications](https://dataintensive.net/)** by Martin Kleppmann | Distributed systems, consistency, transactions | 🔴 #1 |
+| **[Microservices Patterns](https://microservices.io/book)** by Chris Richardson | SAGA, Outbox, Event Sourcing | 🔴 #2 |
+| **[Java Concurrency in Practice](https://jcip.net/)** by Brian Goetz | Threading, locks, concurrent collections | 🔴 #3 |
+| **[Release It!](https://pragprog.com/titles/mnee2/release-it-second-edition/)** by Michael Nygard | Circuit breakers, timeouts, resilience | 🟠 High |
+| **[System Design Interview Vol 1 & 2](https://www.amazon.com/System-Design-Interview-insiders-Second/dp/B08CMF2CQF)** by Alex Xu | Payment systems, rate limiting | 🟠 High |
+
+---
+
+## 🌐 Free Online Resources
+
+### Distributed Systems & Patterns
+| Resource | Topics Covered |
+|----------|----------------|
+| [microservices.io](https://microservices.io/patterns/) | SAGA, Outbox, CQRS patterns (by Chris Richardson) |
+| [Martin Fowler's Blog](https://martinfowler.com/) | Event Sourcing, CQRS, Microservices |
+| [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/) | Real-world distributed system designs |
+| [The Morning Paper](https://blog.acolyer.org/) | Academic paper summaries (distributed systems) |
+
+### Java & Spring Specific
+| Resource | Topics Covered |
+|----------|----------------|
+| [Baeldung](https://www.baeldung.com/) | Spring, transactions, concurrency tutorials |
+| [Vlad Mihalcea's Blog](https://vladmihalcea.com/) | JPA, Hibernate, DB transactions (excellent!) |
+| [Spring Docs - Transactions](https://docs.spring.io/spring-framework/reference/data-access/transaction.html) | Official Spring transaction guide |
+
+### System Design
+| Resource | Topics Covered |
+|----------|----------------|
+| [ByteByteGo Newsletter](https://blog.bytebytego.com/) | Weekly system design deep-dives |
+| [System Design Primer (GitHub)](https://github.com/donnemartin/system-design-primer) | Free, comprehensive, interview-focused |
+| [High Scalability Blog](http://highscalability.com/) | Real architectures of Netflix, Uber, etc. |
+
+---
+
+## 🎥 Video Courses
+
+| Course | Platform | Focus |
+|--------|----------|-------|
+| **[Distributed Systems](https://www.youtube.com/playlist?list=PLrw6a1wE39_tb2fErI4-WkMbsvGQk9_UB)** | MIT OCW (YouTube) | Free, academic, foundational |
+| **[Grokking System Design](https://www.designgurus.io/course/grokking-the-system-design-interview)** | Design Gurus | Interview-focused, payment systems |
+| **[Java Multithreading](https://www.udemy.com/course/java-multithreading-concurrency-performance-optimization/)** | Udemy | Hands-on concurrency |
+| **[Microservices with Spring](https://www.udemy.com/course/microservices-with-spring-boot-and-spring-cloud/)** | Udemy | Circuit breakers, resilience |
+
+---
+
+## 🏋️ Practice Platforms
+
+| Platform | Best For |
+|----------|----------|
+| [LeetCode - Concurrency](https://leetcode.com/problemset/concurrency/) | Threading problems (Print in Order, H2O, etc.) |
+| [Pramp](https://www.pramp.com/) | Mock system design interviews |
+| [Exponent](https://www.tryexponent.com/) | System design with video explanations |
+
+---
+
+## 📋 Topic-Wise Study Plan
+
+### Week 1-2: Foundations
+```
+□ DDIA Chapters 1-3 (Reliability, Scalability, Data Models)
+□ Java Concurrency: Thread pools, CompletableFuture
+□ Practice: LeetCode Concurrency problems
+```
+
+### Week 3-4: Transactions & Consistency
+```
+□ DDIA Chapters 7-9 (Transactions, Consistency, Consensus)
+□ Spring @Transactional deep-dive (isolation levels, propagation)
+□ Vlad Mihalcea's blog posts on JPA
+```
+
+### Week 5-6: Microservices Patterns
+```
+□ Microservices Patterns: SAGA, Outbox, Event Sourcing
+□ Circuit Breaker (Resilience4j docs)
+□ Design: Payment system with idempotency
+```
+
+### Week 7-8: System Design Practice
+```
+□ Design: Payment Gateway (like Stripe)
+□ Design: Banking Transaction System
+□ Design: Distributed Lock Service
+□ Mock interviews on Pramp
+```
+
+---
+
+## 🎯 Key Concepts Checklist
+
+| Concept | Resources |
+|---------|-----------|
+| **Idempotency** | [Stripe Docs](https://stripe.com/docs/api/idempotent_requests), DDIA Ch 11 |
+| **SAGA Pattern** | microservices.io, Microservices Patterns Ch 4 |
+| **Transactional Outbox** | microservices.io, [Debezium Blog](https://debezium.io/blog/) |
+| **Distributed Locks** | [Redis Redlock](https://redis.io/docs/manual/patterns/distributed-locks/), DDIA Ch 8 |
+| **Bloom Filters** | DDIA Ch 3, [Baeldung](https://www.baeldung.com/guava-bloom-filter) |
+| **Circuit Breakers** | [Resilience4j Docs](https://resilience4j.readme.io/), Release It! |
+| **Isolation Levels** | DDIA Ch 7, Vlad Mihalcea blog |
+| **CAP Theorem** | DDIA Ch 9, [You Can't Sacrifice Partition Tolerance](https://codahale.com/you-cant-sacrifice-partition-tolerance/) |
+
+---
+
+## 💡 Pro Tips for Interviews
+
+1. **Always mention trade-offs** — "This gives us X but at the cost of Y"
+2. **Use real examples** — "Stripe uses idempotency keys to handle this..."
+3. **Start with requirements** — "Before designing, let me clarify: is consistency more important than latency here?"
+4. **Draw diagrams** — Even in verbal interviews, say "Imagine a flow like..."
+5. **Know your stack** — Be ready to go deep on Spring, JDBC, JPA transactions
+
+---
+
+## 🏆 Top 3 Investments for Max ROI
+
+| Priority | Action | Time |
+|----------|--------|------|
+| **#1** | Read **DDIA** cover-to-cover | 3-4 weeks |
+| **#2** | Build a **mini payment system** with SAGA + Outbox | 1-2 weeks |
+| **#3** | Do 5+ **mock system design interviews** | Ongoing |
+
+> *"The best way to learn distributed systems is to build one that breaks, then fix it."*
+
+Good luck with your prep! 🚀
