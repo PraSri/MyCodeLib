@@ -2,6 +2,23 @@ package twopointers;
 
 public class TrappingRainWater {
 
+    /**
+     * Container With Most Water
+     * <a href="https://leetcode.com/problems/container-with-most-water/">...</a>
+     * <p>
+     * Product of Array Except Self
+     * <a href="https://leetcode.com/problems/product-of-array-except-self/">...</a>
+     * <p>
+     * Trapping Rain Water II
+     * <a href="https://leetcode.com/problems/trapping-rain-water-ii/">...</a>
+     * <p>
+     * Pour Water
+     * <a href="https://leetcode.com/problems/pour-water/">...</a>
+     * <p>
+     * Maximum Value of an Ordered Triplet II
+     * <a href="https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii/">...</a>
+     */
+
     public int trap(int[] height) {
 
         int n = height.length;
@@ -25,7 +42,7 @@ public class TrappingRainWater {
 //            Agar left height < right height hai,
 //            toh left side ka max hi decide karega ki kitna water trap hoga.
 //            Right side ka height already bada hai, toh woh boundary ban chuka hai.
-//            Overflow nahi hota — bas left ke liye water trapping tabhi calculate ho sakti
+//            Overflow nahi hota ï¿½ bas left ke liye water trapping tabhi calculate ho sakti
 //            hai jab left side boundary choti ho. Warna right side limit ban jayegi.
             if(height[left] < height[right]) {
                 // next pillar pe jao
@@ -77,4 +94,39 @@ public class TrappingRainWater {
         return area;
     }
 
+
+    /**
+     * <a href="https://leetcode.com/problems/container-with-most-water/">LeetCode - Container With Most Water</a>
+     */
+    public static class ContainerWithMostWater {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/product-of-array-except-self/">LeetCode - Product of Array Except Self</a>
+     */
+    public static class ProductOfArrayExceptSelf {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/trapping-rain-water-ii/">LeetCode - Trapping Rain Water II</a>
+     */
+    public static class TrappingRainWaterII {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/pour-water/">LeetCode - Pour Water</a>
+     */
+    public static class PourWater {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii/">LeetCode - Maximum Value of an Ordered Triplet II</a>
+     */
+    public static class MaximumValueOfAnOrderedTripletII {
+        // placeholder
+    }
 }
