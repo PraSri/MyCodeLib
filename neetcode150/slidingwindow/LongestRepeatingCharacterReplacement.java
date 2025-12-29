@@ -4,13 +4,34 @@ import java.util.*;
 
 public class LongestRepeatingCharacterReplacement {
 
+    /**
+     * 
+     * Longest Substring with At Most K Distinct Characters
+https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
+
+Max Consecutive Ones III
+https://leetcode.com/problems/max-consecutive-ones-iii/
+
+Minimum Number of Operations to Make Array Continuous
+https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/
+
+Maximize the Confusion of an Exam
+https://leetcode.com/problems/maximize-the-confusion-of-an-exam/
+
+Longest Substring of One Repeating Character
+https://leetcode.com/problems/longest-substring-of-one-repeating-character/
+     * 
+     * 
+     * 
+    */
+
     //Input: s = "XYYX", k = 2
     //
     //Output: 4
 
-    //“Sabse zyada repeat hone wale character ko lock kar do,
+    //ï¿½Sabse zyada repeat hone wale character ko lock kar do,
     // aur baaki ko replace samjho.
-    // Replace zyada ho jaye toh window shrink karo.”
+    // Replace zyada ho jaye toh window shrink karo.ï¿½
 
     public int characterReplacement(String s, int k) {
         HashMap<Character, Integer> count = new HashMap<>();
@@ -34,4 +55,38 @@ public class LongestRepeatingCharacterReplacement {
         return res;
     }
 
+    /**
+     * <a href="https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/">LeetCode - Longest Substring with At Most K Distinct Characters</a>
+     */
+    public static class LongestSubstringWithAtMostKDistinctCharacters {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/max-consecutive-ones-iii/">LeetCode - Max Consecutive Ones III</a>
+     */
+    public static class MaxConsecutiveOnesIII {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/">LeetCode - Minimum Number of Operations to Make Array Continuous</a>
+     */
+    public static class MinimumNumberOfOperationsToMakeArrayContinuous {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/maximize-the-confusion-of-an-exam/">LeetCode - Maximize the Confusion of an Exam</a>
+     */
+    public static class MaximizeTheConfusionOfAnExam {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/longest-substring-of-one-repeating-character/">LeetCode - Longest Substring of One Repeating Character</a>
+     */
+    public static class LongestSubstringOfOneRepeatingCharacter {
+        // placeholder
+    }
 }
