@@ -2,6 +2,12 @@ package stack;
 
 import java.util.*;
 
+/**Next Greater Element I
+https://leetcode.com/problems/next-greater-element-i/
+
+Online Stock Span
+https://leetcode.com/problems/online-stock-span/*/
+
 public class DailyTemperatures {
 
     public int[] dailyTemperatures(int[] temperatures) {
@@ -21,6 +27,20 @@ public class DailyTemperatures {
         }
 
         return res;
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/next-greater-element-i/">LeetCode - Next Greater Element I</a>
+     */
+    public static class NextGreaterElementI {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/online-stock-span/">LeetCode - Online Stock Span</a>
+     */
+    public static class OnlineStockSpan {
+        // placeholder
     }
 
 }

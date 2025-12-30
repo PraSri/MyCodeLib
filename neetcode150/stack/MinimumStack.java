@@ -2,6 +2,12 @@ package stack;
 
 import java.util.*;
 
+/**Sliding Window Maximum (Hard)
+https://leetcode.com/problems/sliding-window-maximum/
+
+Max Stack (Hard)
+https://leetcode.com/problems/max-stack/*/
+
 public class MinimumStack {
     //Input: ["MinStack", "push", 1, "push", 2, "push", 0, "getMin", "pop", "top", "getMin"]
     //
@@ -67,8 +73,10 @@ public class MinimumStack {
                 stack.push(0L);
                 min = val;
             } else {
-                stack.push(val - min);
-                if (val < min) min = val;
+                long diff = val - min;
+                stack.push(diff);
+                // agr diff -ve matlab naya val chota hai curr min se
+                if (diff < 0) min = val;
             }
         }
 
@@ -78,6 +86,10 @@ public class MinimumStack {
             long pop = stack.pop();
 
             // restore previous min
+            // diff = val - min
+            // diff -ve => min = val
+            // matlab min nikal gya
+            // naya min = min - pop => min = min - diff
             if (pop < 0) min = min - pop;
         }
 
@@ -93,6 +105,20 @@ public class MinimumStack {
         public int getMin() {
             return (int) min;
         }
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/sliding-window-maximum/">LeetCode - Sliding Window Maximum</a>
+     */
+    public static class SlidingWindowMaximum {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/max-stack/">LeetCode - Max Stack</a>
+     */
+    public static class MaxStack {
+        // placeholder
     }
 
 }
