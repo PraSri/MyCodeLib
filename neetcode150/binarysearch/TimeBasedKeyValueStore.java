@@ -2,6 +2,8 @@ package binarysearch;
 
 import java.util.*;
 
+// Stock Price Fluctuation - https://leetcode.com/problems/stock-price-fluctuation/
+
 public class TimeBasedKeyValueStore {
 
     // key -> list(pair(timestamp, value))
@@ -61,5 +63,12 @@ public class TimeBasedKeyValueStore {
         public V getValue() {
             return value;
         }
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/stock-price-fluctuation/">LeetCode - Stock Price Fluctuation</a>
+     */
+    public static class StockPriceFluctuation {
+        // placeholder
     }
 }

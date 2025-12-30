@@ -1,5 +1,7 @@
 package binarysearch;
 
+// Median of a Row Wise Sorted Matrix - https://leetcode.com/problems/median-of-a-row-wise-sorted-matrix/
+
 public class MedianOfTwoSortedArrays {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int n1 = nums1.length;
@@ -32,5 +34,12 @@ public class MedianOfTwoSortedArrays {
             }
         }
         return 0;
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/median-of-a-row-wise-sorted-matrix/">LeetCode - Median of a Row Wise Sorted Matrix</a>
+     */
+    public static class MedianOfARowWiseSortedMatrix {
+        // placeholder
     }
 }

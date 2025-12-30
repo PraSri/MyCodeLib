@@ -1,5 +1,12 @@
 package binarysearch;
 
+
+/***Search in Rotated Sorted Array (Medium)
+https://leetcode.com/problems/search-in-rotated-sorted-array/
+
+Find Minimum in Rotated Sorted Array II (Hard)
+https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/ */
+
 public class FindMinimumInRotatedSortedArray {
 
     public int findMin(int[] nums) {
@@ -58,6 +65,20 @@ public class FindMinimumInRotatedSortedArray {
         }
         //s == e ho jaata hai ? wahi minimum element ka index hai.
         return nums[s];
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/search-in-rotated-sorted-array/">LeetCode - Search in Rotated Sorted Array</a>
+     */
+    public static class SearchInRotatedSortedArray {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/">LeetCode - Find Minimum in Rotated Sorted Array II</a>
+     */
+    public static class FindMinimumInRotatedSortedArrayII {
+        // placeholder
     }
 
 }

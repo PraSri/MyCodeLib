@@ -1,5 +1,13 @@
 package binarysearch;
 
+/**Search a 2D Matrix II (Medium)
+https://leetcode.com/problems/search-a-2d-matrix-ii/
+
+Split Message Based on Limit (Hard)
+https://leetcode.com/problems/split-message-based-on-limit/
+
+*/
+
 public class SearchA2DMatrix {
     // staircase search
     // start from top-right corner
@@ -45,5 +53,19 @@ public class SearchA2DMatrix {
             }
         }
         return false;
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/search-a-2d-matrix-ii/">LeetCode - Search a 2D Matrix II</a>
+     */
+    public static class SearchA2DMatrixII {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/split-message-based-on-limit/">LeetCode - Split Message Based on Limit</a>
+     */
+    public static class SplitMessageBasedOnLimit {
+        // placeholder
     }
 }

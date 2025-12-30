@@ -1,5 +1,17 @@
 package binarysearch;
 
+/**
+ * 
+ * Search in Rotated Sorted Array II (Medium)
+https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+
+Find Minimum in Rotated Sorted Array (Medium)
+https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+
+Pour Water Between Buckets to Make Water Levels Equal (Medium)
+https://leetcode.com/problems/pour-water-between-buckets-to-make-water-levels-equal/
+ * 
+*/
 public class SearchInRotatedSortedArray {
 
     public int search(int[] nums, int target) {
@@ -41,5 +53,26 @@ public class SearchInRotatedSortedArray {
         }
 
         return -1;
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/search-in-rotated-sorted-array-ii/">LeetCode - Search in Rotated Sorted Array II</a>
+     */
+    public static class SearchInRotatedSortedArrayII {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">LeetCode - Find Minimum in Rotated Sorted Array</a>
+     */
+    public static class FindMinimumInRotatedSortedArray {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/pour-water-between-buckets-to-make-water-levels-equal/">LeetCode - Pour Water Between Buckets to Make Water Levels Equal</a>
+     */
+    public static class PourWaterBetweenBucketsToMakeWaterLevelsEqual {
+        // placeholder
     }
 }

@@ -2,6 +2,21 @@ package binarysearch;
 
 import java.util.*;
 
+/**Minimize Max Distance to Gas Station (Hard)
+https://leetcode.com/problems/minimize-max-distance-to-gas-station/
+
+Maximum Candies Allocated to K Children (Medium)
+https://leetcode.com/problems/maximum-candies-allocated-to-k-children/
+
+Minimized Maximum of Products Distributed to Any Store (Medium)
+https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/
+
+Frog Jump II (Medium)
+https://leetcode.com/problems/frog-jump-ii/
+
+Minimum Time to Repair Cars (Medium)
+https://leetcode.com/problems/minimum-time-to-repair-cars/**/
+
 public class KokoEatingBananas {
 
     // Input: piles = [1,4,3,2], h = 9
@@ -63,6 +78,41 @@ public class KokoEatingBananas {
             i++;
         }
         return actualHours<=expectedHours;
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/minimize-max-distance-to-gas-station/">LeetCode - Minimize Max Distance to Gas Station</a>
+     */
+    public static class MinimizeMaxDistanceToGasStation {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/maximum-candies-allocated-to-k-children/">LeetCode - Maximum Candies Allocated to K Children</a>
+     */
+    public static class MaximumCandiesAllocatedToKChildren {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/">LeetCode - Minimized Maximum of Products Distributed to Any Store</a>
+     */
+    public static class MinimizedMaximumOfProductsDistributedToAnyStore {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/frog-jump-ii/">LeetCode - Frog Jump II</a>
+     */
+    public static class FrogJumpII {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/minimum-time-to-repair-cars/">LeetCode - Minimum Time to Repair Cars</a>
+     */
+    public static class MinimumTimeToRepairCars {
+        // placeholder
     }
 
 }
