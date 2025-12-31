@@ -2,6 +2,18 @@ package linkedlist;
 
 import java.util.*;
 
+/**LFU Cache (Hard)
+https://leetcode.com/problems/lfu-cache/
+
+Design In-Memory File System (Hard)
+https://leetcode.com/problems/design-in-memory-file-system/
+
+Design Compressed String Iterator (Easy)
+https://leetcode.com/problems/design-compressed-string-iterator/
+
+Design Most Recently Used Queue (Medium)
+https://leetcode.com/problems/design-most-recently-used-queue/*/
+
 public class LruCache {
 
     private static class Node {
@@ -64,6 +76,32 @@ public class LruCache {
 
     }
 
+    /**
+     * <a href="https://leetcode.com/problems/lfu-cache/">LeetCode - LFU Cache</a>
+     */
+    public static class LfuCache {
+        // placeholder
+    }
 
+    /**
+     * <a href="https://leetcode.com/problems/design-in-memory-file-system/">LeetCode - Design In-Memory File System</a>
+     */
+    public static class DesignInMemoryFileSystem {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/design-compressed-string-iterator/">LeetCode - Design Compressed String Iterator</a>
+     */
+    public static class DesignCompressedStringIterator {
+        // placeholder
+    }
+
+    /**
+     * <a href="https://leetcode.com/problems/design-most-recently-used-queue/">LeetCode - Design Most Recently Used Queue</a>
+     */
+    public static class DesignMostRecentlyUsedQueue {
+        // placeholder
+    }
 
 }
