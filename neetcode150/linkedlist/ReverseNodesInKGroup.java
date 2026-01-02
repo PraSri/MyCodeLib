@@ -14,6 +14,10 @@ package linkedlist;
 
 public class ReverseNodesInKGroup {
 
+    //(begin) | a ? b ? c | (end)
+    //           ? reverse
+    //(begin) | c ? b ? a | (end)
+
     public ListNode reverseKGroup(ListNode head, int k) {
 
         ListNode dummy = new ListNode(-1);
