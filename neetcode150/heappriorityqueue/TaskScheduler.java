@@ -2,6 +2,24 @@ package heappriorityqueue;
 
 import java.util.*;
 
+/**Rearrange String k Distance Apart (Hard)
+https://leetcode.com/problems/rearrange-string-k-distance-apart/
+
+Reorganize String (Medium)
+https://leetcode.com/problems/reorganize-string/
+
+Maximum Number of Weeks for Which You Can Work (Medium)
+https://leetcode.com/problems/maximum-number-of-weeks-for-which-you-can-work/
+
+Find Minimum Time to Finish All Jobs II (Medium)
+https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs-ii/
+
+Task Scheduler II (Medium)
+https://leetcode.com/problems/task-scheduler-ii/
+
+Generate Schedule (Medium)
+https://leetcode.com/problems/generate-schedule/*/
+
 public class TaskScheduler {
 
     /**
@@ -54,14 +72,56 @@ public class TaskScheduler {
                 maxCount++;
             }
         }
-        // (maxf - 1) — Yeh represent karta hai gaps
+        // (maxf - 1) ï¿½ Yeh represent karta hai gaps
         // A = 3
         // A _ A _ A => 2 gaps
-        // (n + 1) — Har gap ka ideal size
+        // (n + 1) ï¿½ Har gap ka ideal size
         // [A][ _ _ _ ][A][ _ _ _ ][A] => Ek group = A + n other slots = (n + 1) size block
-        // + maxCount — Last row me jitne max-frequency tasks honge
+        // + maxCount ï¿½ Last row me jitne max-frequency tasks honge
         int time = (maxf - 1) * (n+1) + maxCount;
         return Math.max(time, tasks.length);
     }
 
+
+    /**
+     * Rearrange String k Distance Apart
+     * https://leetcode.com/problems/rearrange-string-k-distance-apart
+     */
+    public static class RearrangeStringKDistanceApart {
+    }
+
+    /**
+     * Reorganize String
+     * https://leetcode.com/problems/reorganize-string
+     */
+    public static class ReorganizeString {
+    }
+
+    /**
+     * Maximum Number of Weeks for Which You Can Work
+     * https://leetcode.com/problems/maximum-number-of-weeks-for-which-you-can-work
+     */
+    public static class MaximumNumberOfWeeksForWhichYouCanWork {
+    }
+
+    /**
+     * Find Minimum Time to Finish All Jobs II
+     * https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs-ii
+     */
+    public static class FindMinimumTimeToFinishAllJobsIi {
+    }
+
+    /**
+     * Task Scheduler II
+     * https://leetcode.com/problems/task-scheduler-ii
+     */
+    public static class TaskSchedulerIi {
+    }
+
+    /**
+     * Generate Schedule
+     * https://leetcode.com/problems/generate-schedule
+     */
+    public static class GenerateSchedule {
+    }
 }

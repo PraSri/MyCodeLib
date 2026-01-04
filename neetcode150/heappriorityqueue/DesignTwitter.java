@@ -2,6 +2,8 @@ package heappriorityqueue;
 
 import java.util.*;
 
+// Design a File Sharing System - https://leetcode.com/problems/design-a-file-sharing-system/
+
 public class DesignTwitter {
 
     static class Twitter {
@@ -120,4 +122,11 @@ public class DesignTwitter {
  * obj.follow(followerId,followeeId);
  * obj.unfollow(followerId,followeeId);
  */
+
+    /**
+     * Design a File Sharing System
+     * https://leetcode.com/problems/design-a-file-sharing-system/
+     */
+    public static class DesignAFileSharingSystem {
+    }
 }

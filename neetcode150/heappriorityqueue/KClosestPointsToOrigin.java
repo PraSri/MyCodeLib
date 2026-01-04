@@ -2,6 +2,24 @@ package heappriorityqueue;
 
 import java.util.*;
 
+/**Kth Largest Element in an Array (Medium)
+👉 https://leetcode.com/problems/kth-largest-element-in-an-array/
+
+Top K Frequent Elements (Medium)
+👉 https://leetcode.com/problems/top-k-frequent-elements/
+
+Top K Frequent Words (Medium)
+👉 https://leetcode.com/problems/top-k-frequent-words/
+
+Find Nearest Point That Has the Same X or Y Coordinate (Easy)
+👉 https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate/
+
+Minimum Rectangles to Cover Points (Medium)
+👉 https://leetcode.com/problems/minimum-rectangles-to-cover-points/
+
+K-th Nearest Obstacle Queries (Medium)
+👉 https://leetcode.com/problems/k-th-nearest-obstacle-queries/*/
+
 public class KClosestPointsToOrigin {
 
     public int[][] kClosest(int[][] points, int k) {
@@ -49,4 +67,46 @@ public class KClosestPointsToOrigin {
         }
     }
 
+
+    /**
+     * Kth Largest Element in an Array
+     * https://leetcode.com/problems/kth-largest-element-in-an-array
+     */
+    public static class KthLargestElementInAnArray {
+    }
+
+    /**
+     * Top K Frequent Elements
+     * https://leetcode.com/problems/top-k-frequent-elements
+     */
+    public static class TopKFrequentElements {
+    }
+
+    /**
+     * Top K Frequent Words
+     * https://leetcode.com/problems/top-k-frequent-words
+     */
+    public static class TopKFrequentWords {
+    }
+
+    /**
+     * Find Nearest Point That Has the Same X or Y Coordinate
+     * https://leetcode.com/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate
+     */
+    public static class FindNearestPointThatHasTheSameXOrYCoordinate {
+    }
+
+    /**
+     * Minimum Rectangles to Cover Points
+     * https://leetcode.com/problems/minimum-rectangles-to-cover-points
+     */
+    public static class MinimumRectanglesToCoverPoints {
+    }
+
+    /**
+     * K-th Nearest Obstacle Queries
+     * https://leetcode.com/problems/k-th-nearest-obstacle-queries
+     */
+    public static class KThNearestObstacleQueries {
+    }
 }
