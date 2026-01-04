@@ -2,6 +2,8 @@ package trees;
 
 public class InvertBinaryTree {
 
+    // Reverse Odd Levels of Binary Tree - https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/
+
     public TreeNode invertTree(TreeNode root) {
 
         if(root == null) {
@@ -17,4 +19,11 @@ public class InvertBinaryTree {
         return root;
     }
 
+
+    /**
+     * Reverse Odd Levels of Binary Tree
+     * https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/
+     */
+    public static class ReverseOddLevelsOfBinaryTree {
+    }
 }

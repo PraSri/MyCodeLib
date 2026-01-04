@@ -2,6 +2,18 @@ package trees;
 
 import java.util.*;
 
+/**Encode and Decode Strings (Medium)
+https://leetcode.com/problems/encode-and-decode-strings/
+
+Serialize and Deserialize BST (Medium)
+https://leetcode.com/problems/serialize-and-deserialize-bst/
+
+Find Duplicate Subtrees (Medium)
+https://leetcode.com/problems/find-duplicate-subtrees/
+
+Serialize and Deserialize N-ary Tree (Hard)
+https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/*/
+
 public class SerializeAndDeserializeBinaryTree {
 
     // Encodes a tree to a single string.
@@ -41,4 +53,32 @@ public class SerializeAndDeserializeBinaryTree {
         return node;
     }
 
+
+    /**
+     * Encode and Decode Strings
+     * https://leetcode.com/problems/encode-and-decode-strings/
+     */
+    public static class EncodeAndDecodeStrings {
+    }
+
+    /**
+     * Serialize and Deserialize BST
+     * https://leetcode.com/problems/serialize-and-deserialize-bst/
+     */
+    public static class SerializeAndDeserializeBst {
+    }
+
+    /**
+     * Find Duplicate Subtrees
+     * https://leetcode.com/problems/find-duplicate-subtrees/
+     */
+    public static class FindDuplicateSubtrees {
+    }
+
+    /**
+     * Serialize and Deserialize N-ary Tree
+     * https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree/
+     */
+    public static class SerializeAndDeserializeNAryTree {
+    }
 }

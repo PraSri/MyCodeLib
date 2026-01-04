@@ -2,6 +2,12 @@ package trees;
 
 import java.util.*;
 
+/**Populating Next Right Pointers in Each Node
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+
+Boundary of Binary Tree
+https://leetcode.com/problems/boundary-of-binary-tree/*/
+
 public class BinaryTreeRightSideView {
 
     public List<Integer> rightSideView(TreeNode root) {
@@ -39,4 +45,18 @@ public class BinaryTreeRightSideView {
         return res;
     }
 
+
+    /**
+     * Populating Next Right Pointers in Each Node
+     * https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+     */
+    public static class PopulatingNextRightPointersInEachNode {
+    }
+
+    /**
+     * Boundary of Binary Tree
+     * https://leetcode.com/problems/boundary-of-binary-tree/
+     */
+    public static class BoundaryOfBinaryTree {
+    }
 }

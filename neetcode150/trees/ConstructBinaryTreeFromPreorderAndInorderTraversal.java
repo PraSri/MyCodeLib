@@ -2,6 +2,8 @@ package trees;
 
 import java.util.*;
 
+//Construct Binary Tree from Inorder and Postorder Traversal - https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
     int pre_idx = 0;
@@ -26,4 +28,11 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
         return root;
     }
 
+
+    /**
+     * Construct Binary Tree from Inorder and Postorder Traversal
+     * https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+     */
+    public static class ConstructBinaryTreeFromInorderAndPostorderTraversal {
+    }
 }

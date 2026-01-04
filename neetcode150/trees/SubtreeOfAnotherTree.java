@@ -1,5 +1,11 @@
 package trees;
 
+/**Count Univalue Subtrees (Medium)
+👉 https://leetcode.com/problems/count-univalue-subtrees/
+
+Most Frequent Subtree Sum (Medium)
+👉 https://leetcode.com/problems/most-frequent-subtree-sum/*/
+
 public class SubtreeOfAnotherTree {
 
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
@@ -25,4 +31,18 @@ public class SubtreeOfAnotherTree {
         return isSame(a.left, b.left) && isSame(a.right, b.right);
     }
 
+
+    /**
+     * Count Univalue Subtrees
+     * https://leetcode.com/problems/count-univalue-subtrees/
+     */
+    public static class CountUnivalueSubtrees {
+    }
+
+    /**
+     * Most Frequent Subtree Sum
+     * https://leetcode.com/problems/most-frequent-subtree-sum/
+     */
+    public static class MostFrequentSubtreeSum {
+    }
 }

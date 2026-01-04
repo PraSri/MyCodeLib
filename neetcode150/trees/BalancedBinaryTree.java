@@ -1,5 +1,14 @@
 package trees;
 
+/**Maximum Depth of Binary Tree (Easy)
+👉 https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+K-th Largest Perfect Subtree Size in Binary Tree (Medium)
+👉 https://leetcode.com/problems/k-th-largest-perfect-subtree-size-in-binary-tree/
+
+Check Balanced String (Easy)
+👉 https://leetcode.com/problems/check-balanced-string/*/
+
 public class BalancedBinaryTree {
     public boolean isBalanced(TreeNode root) {
         if(true) {
@@ -37,5 +46,26 @@ public class BalancedBinaryTree {
         boolean balanced = (left[0]==1 && right[0]==1) && (Math.abs(left[1]-right[1])<=1);
         int height = 1 + Math.max(left[1], right[1]);
         return new int[]{balanced?1:0, height};
+    }
+
+    /**
+     * Maximum Depth of Binary Tree
+     * https://leetcode.com/problems/maximum-depth-of-binary-tree/
+     */
+    public static class MaximumDepthOfBinaryTree {
+    }
+
+    /**
+     * K-th Largest Perfect Subtree Size in Binary Tree
+     * https://leetcode.com/problems/k-th-largest-perfect-subtree-size-in-binary-tree/
+     */
+    public static class KThLargestPerfectSubtreeSizeInBinaryTree {
+    }
+
+    /**
+     * Check Balanced String
+     * https://leetcode.com/problems/check-balanced-string/
+     */
+    public static class CheckBalancedString {
     }
 }

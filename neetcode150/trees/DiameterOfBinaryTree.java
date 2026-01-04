@@ -1,5 +1,11 @@
 package trees;
 
+/**Diameter of N-Ary Tree (Medium)
+👉 https://leetcode.com/problems/diameter-of-n-ary-tree/
+
+Longest Path With Different Adjacent Characters (Hard)
+👉 https://leetcode.com/problems/longest-path-with-different-adjacent-characters/*/
+
 public class DiameterOfBinaryTree {
 
     public int diameterOfBinaryTree(TreeNode root) {
@@ -35,5 +41,19 @@ public class DiameterOfBinaryTree {
         int right = dfs(root.right, res);
         res[0] = Math.max(res[0], left+right);
         return 1 + Math.max(left, right);
+    }
+
+    /**
+     * Diameter of N-Ary Tree
+     * https://leetcode.com/problems/diameter-of-n-ary-tree/
+     */
+    public static class DiameterOfNAryTree {
+    }
+
+    /**
+     * Longest Path With Different Adjacent Characters
+     * https://leetcode.com/problems/longest-path-with-different-adjacent-characters/
+     */
+    public static class LongestPathWithDifferentAdjacentCharacters {
     }
 }
