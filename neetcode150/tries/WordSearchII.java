@@ -2,6 +2,15 @@ package tries;
 
 import java.util.*;
 
+/**Word Search (Medium)
+👉 https://leetcode.com/problems/word-search/
+
+Unique Paths III (Hard)
+👉 https://leetcode.com/problems/unique-paths-iii/
+
+Encrypt and Decrypt Strings (Hard)
+👉 https://leetcode.com/problems/encrypt-and-decrypt-strings/*/
+
 public class WordSearchII {
 
         static class TrieNode {
@@ -68,4 +77,25 @@ public class WordSearchII {
         }
 
 
+
+    /**
+     * Word Search
+     * https://leetcode.com/problems/word-search
+     */
+    public static class WordSearch {
+    }
+
+    /**
+     * Unique Paths III
+     * https://leetcode.com/problems/unique-paths-iii
+     */
+    public static class UniquePathsIii {
+    }
+
+    /**
+     * Encrypt and Decrypt Strings
+     * https://leetcode.com/problems/encrypt-and-decrypt-strings
+     */
+    public static class EncryptAndDecryptStrings {
+    }
 }

@@ -1,5 +1,24 @@
 package tries;
 
+
+/**Implement Trie (Prefix Tree) (Medium)
+👉 https://leetcode.com/problems/implement-trie-prefix-tree/
+
+Prefix and Suffix Search (Hard)
+👉 https://leetcode.com/problems/prefix-and-suffix-search/
+
+Match Substring After Replacement (Hard)
+👉 https://leetcode.com/problems/match-substring-after-replacement/
+
+Sum of Prefix Scores of Strings (Hard)
+👉 https://leetcode.com/problems/sum-of-prefix-scores-of-strings/
+
+Count Prefix and Suffix Pairs II (Hard)
+👉 https://leetcode.com/problems/count-prefix-and-suffix-pairs-ii/
+
+Count Prefix and Suffix Pairs I (Easy)
+👉 https://leetcode.com/problems/count-prefix-and-suffix-pairs-i/*/
+
 public class DesignAddSearchWordDataStructure {
 
     public static class TrieNode {
@@ -101,5 +120,47 @@ public class DesignAddSearchWordDataStructure {
             // and continue the depth-first traversal
             searchHelper(node.children[index], word, i + 1);
         }
+    }
+
+    /**
+     * Implement Trie (Prefix Tree)
+     * https://leetcode.com/problems/implement-trie-prefix-tree
+     */
+    public static class ImplementTriePrefixTree {
+    }
+
+    /**
+     * Prefix and Suffix Search
+     * https://leetcode.com/problems/prefix-and-suffix-search
+     */
+    public static class PrefixAndSuffixSearch {
+    }
+
+    /**
+     * Match Substring After Replacement
+     * https://leetcode.com/problems/match-substring-after-replacement
+     */
+    public static class MatchSubstringAfterReplacement {
+    }
+
+    /**
+     * Sum of Prefix Scores of Strings
+     * https://leetcode.com/problems/sum-of-prefix-scores-of-strings
+     */
+    public static class SumOfPrefixScoresOfStrings {
+    }
+
+    /**
+     * Count Prefix and Suffix Pairs II
+     * https://leetcode.com/problems/count-prefix-and-suffix-pairs-ii
+     */
+    public static class CountPrefixAndSuffixPairsIi {
+    }
+
+    /**
+     * Count Prefix and Suffix Pairs I
+     * https://leetcode.com/problems/count-prefix-and-suffix-pairs-i
+     */
+    public static class CountPrefixAndSuffixPairsI {
     }
 }
