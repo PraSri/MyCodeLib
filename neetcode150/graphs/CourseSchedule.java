@@ -2,6 +2,49 @@ package graphs;
 
 import java.util.*;
 
+/***Course Schedule II (Medium)
+ https://leetcode.com/problems/course-schedule-ii/
+
+ Graph Valid Tree (Medium)
+ https://leetcode.com/problems/graph-valid-tree/
+
+ Minimum Height Trees (Medium)
+ https://leetcode.com/problems/minimum-height-trees/
+
+ Course Schedule III (Hard)
+ https://leetcode.com/problems/course-schedule-iii/
+
+ Build a Matrix With Conditions (Hard)
+ https://leetcode.com/problems/build-a-matrix-with-conditions/
+
+ Course Schedule (Medium)
+ https://leetcode.com/problems/course-schedule/
+
+ Alien Dictionary (Hard)
+ https://leetcode.com/problems/alien-dictionary/
+
+ Minimum Height Trees (Medium)
+ https://leetcode.com/problems/minimum-height-trees/
+
+ Sequence Reconstruction (Medium)
+ https://leetcode.com/problems/sequence-reconstruction/
+
+ Course Schedule III (Hard)
+ https://leetcode.com/problems/course-schedule-iii/
+
+ Parallel Courses (Medium)
+ https://leetcode.com/problems/parallel-courses/
+
+ Find All Possible Recipes from Given Supplies (Medium)
+ https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/
+
+ Build a Matrix With Conditions (Hard)
+ https://leetcode.com/problems/build-a-matrix-with-conditions/
+
+ Sort Array by Moving Items to Empty Space (Hard)
+ https://leetcode.com/problems/sort-array-by-moving-items-to-empty-space/
+ ***/
+
 public class CourseSchedule {
 
     List<Integer> sortedOrder = new LinkedList<>();
@@ -55,11 +98,80 @@ public class CourseSchedule {
 
     // CourseSchedule II -> return order of courses
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        if(canFinish(numCourses, prerequisites))
+        if (canFinish(numCourses, prerequisites))
             return sortedOrder.stream().mapToInt(Integer::intValue).toArray();
         else
             return new int[]{};
     }
 
 
+    /**
+     * Course Schedule II (Medium)
+     * https://leetcode.com/problems/course-schedule-ii
+     */
+    public static class CourseScheduleIi {
+    }
+
+    /**
+     * Graph Valid Tree (Medium)
+     * https://leetcode.com/problems/graph-valid-tree
+     */
+    public static class GraphValidTree {
+    }
+
+    /**
+     * Minimum Height Trees (Medium)
+     * https://leetcode.com/problems/minimum-height-trees
+     */
+    public static class MinimumHeightTrees {
+    }
+
+    /**
+     * Course Schedule III (Hard)
+     * https://leetcode.com/problems/course-schedule-iii
+     */
+    public static class CourseScheduleIii {
+    }
+
+    /**
+     * Build a Matrix With Conditions (Hard)
+     * https://leetcode.com/problems/build-a-matrix-with-conditions
+     */
+    public static class BuildAMatrixWithConditions {
+    }
+
+    /**
+     * Alien Dictionary (Hard)
+     * https://leetcode.com/problems/alien-dictionary
+     */
+    public static class AlienDictionary {
+    }
+
+    /**
+     * Sequence Reconstruction (Medium)
+     * https://leetcode.com/problems/sequence-reconstruction
+     */
+    public static class SequenceReconstruction {
+    }
+
+    /**
+     * Parallel Courses (Medium)
+     * https://leetcode.com/problems/parallel-courses
+     */
+    public static class ParallelCourses {
+    }
+
+    /**
+     * Find All Possible Recipes from Given Supplies (Medium)
+     * https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies
+     */
+    public static class FindAllPossibleRecipesFromGivenSupplies {
+    }
+
+    /**
+     * Sort Array by Moving Items to Empty Space (Hard)
+     * https://leetcode.com/problems/sort-array-by-moving-items-to-empty-space
+     */
+    public static class SortArrayByMovingItemsToEmptySpace {
+    }
 }

@@ -2,13 +2,51 @@ package graphs;
 
 public class NumberOfIslands {
 
+    /**
+     * Surrounded Regions (Medium)
+     * https://leetcode.com/problems/surrounded-regions/
+     * <p>
+     * Walls and Gates (Medium)
+     * https://leetcode.com/problems/walls-and-gates/
+     * <p>
+     * Number of Islands II (Hard)
+     * https://leetcode.com/problems/number-of-islands-ii/
+     * <p>
+     * Number of Connected Components in an Undirected Graph (Medium)
+     * https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/
+     * <p>
+     * Battleships in a Board (Medium)
+     * https://leetcode.com/problems/battleships-in-a-board/
+     * <p>
+     * Number of Distinct Islands (Medium)
+     * https://leetcode.com/problems/number-of-distinct-islands/
+     * <p>
+     * Max Area of Island (Medium)
+     * https://leetcode.com/problems/max-area-of-island/
+     * <p>
+     * Count Sub Islands (Medium)
+     * https://leetcode.com/problems/count-sub-islands/
+     * <p>
+     * Find All Groups of Farmland (Medium)
+     * https://leetcode.com/problems/find-all-groups-of-farmland/
+     * <p>
+     * Count Unreachable Pairs of Nodes in an Undirected Graph (Medium)
+     * https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/
+     * <p>
+     * Maximum Number of Fish in a Grid (Medium)
+     * https://leetcode.com/problems/maximum-number-of-fish-in-a-grid/
+     * <p>
+     * Count Islands With Total Value Divisible by K (Medium)
+     * https://leetcode.com/problems/count-islands-with-total-value-divisible-by-k/
+     */
+
     public int numIslands(char[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
         int res = 0;
-        for(int i = 0; i<n; i++) {
-            for(int j = 0; j<m; j++) {
-                if(grid[i][j] == '1') {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1') {
                     dfs(grid, i, j);
                     res++;
                 }
@@ -17,9 +55,9 @@ public class NumberOfIslands {
         return res;
     }
 
-    private void dfs(char[][] grid, int i , int j) {
+    private void dfs(char[][] grid, int i, int j) {
         // boundary cases
-        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length || grid[i][j]=='0') {
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == '0') {
             return;
         }
 

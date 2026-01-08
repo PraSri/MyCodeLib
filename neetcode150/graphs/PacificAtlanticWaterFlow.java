@@ -4,6 +4,8 @@ import java.util.*;
 
 public class PacificAtlanticWaterFlow {
 
+    private final int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
 
         List<List<Integer>> res = new ArrayList<>();
@@ -16,40 +18,40 @@ public class PacificAtlanticWaterFlow {
 
         int m = heights[0].length;
 
-        boolean[][] pacific = new boolean[n][m];
-        boolean[][] atlantic = new boolean[n][m];
+        boolean[][] visitPacific = new boolean[n][m];
+        boolean[][] visitAtlantic = new boolean[n][m];
 
-        Queue<Pair> aq = new LinkedList<>();
-        Queue<Pair> pq = new LinkedList<>();
+        Queue<Pair> atlanticQueue = new LinkedList<>();
+        Queue<Pair> pacificQueue = new LinkedList<>();
 
         // vertical border
         for (int i = 0; i < n; i++) {
-            // right side in atlantic
-            aq.offer(new Pair(i, m - 1));
-            atlantic[i][m - 1] = true;
-            // left side in pacific
-            pq.offer(new Pair(i, 0));
-            pacific[i][0] = true;
+            // right side in visitAtlantic
+            atlanticQueue.offer(new Pair(i, m - 1));
+            visitAtlantic[i][m - 1] = true;
+            // left side in visitPacific
+            pacificQueue.offer(new Pair(i, 0));
+            visitPacific[i][0] = true;
         }
         // horizontal border
         for (int i = 0; i < m; i++) {
-            // up side pacific
-            pq.offer(new Pair(0, i));
-            pacific[0][i] = true;
-            // downside atlantic
-            aq.offer(new Pair(n - 1, i));
-            atlantic[n - 1][i] = true;
+            // up side visitPacific
+            pacificQueue.offer(new Pair(0, i));
+            visitPacific[0][i] = true;
+            // downside visitAtlantic
+            atlanticQueue.offer(new Pair(n - 1, i));
+            visitAtlantic[n - 1][i] = true;
         }
 
         // call bfs on each ocean
         // the bfs will fill the visited arrays
-        bfs(heights, atlantic, aq);
-        bfs(heights, pacific, pq);
+        bfs(heights, visitAtlantic, atlanticQueue);
+        bfs(heights, visitPacific, pacificQueue);
 
-        // find if visited to both atlantic & pacific then put in ans
+        // find if visited to both visitAtlantic & visitPacific then put in ans
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (atlantic[i][j] && pacific[i][j]) {
+                if (visitAtlantic[i][j] && visitPacific[i][j]) {
                     res.add(Arrays.asList(i, j));
                 }
             }
@@ -57,8 +59,6 @@ public class PacificAtlanticWaterFlow {
 
         return res;
     }
-
-    private int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     private void bfs(int[][] a, boolean[][] visited, Queue<Pair> q) {
         int n = a.length;

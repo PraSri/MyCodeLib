@@ -2,6 +2,18 @@ package graphs;
 
 import java.util.*;
 
+/**
+ * Word Ladder II (Hard)
+ * https://leetcode.com/problems/word-ladder-ii/
+ * <p>
+ * Minimum Genetic Mutation (Medium)
+ * https://leetcode.com/problems/minimum-genetic-mutation/
+ * <p>
+ * Words Within Two Edits of Dictionary (Medium)
+ * https://leetcode.com/problems/words-within-two-edits-of-dictionary/
+ ***/
+
+
 public class WordLadder {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
 
@@ -42,4 +54,25 @@ public class WordLadder {
         return 0;
     }
 
+
+    /**
+     * Word Ladder II (Hard)
+     * https://leetcode.com/problems/word-ladder-ii
+     */
+    public static class WordLadderIi {
+    }
+
+    /**
+     * Minimum Genetic Mutation (Medium)
+     * https://leetcode.com/problems/minimum-genetic-mutation
+     */
+    public static class MinimumGeneticMutation {
+    }
+
+    /**
+     * Words Within Two Edits of Dictionary (Medium)
+     * https://leetcode.com/problems/words-within-two-edits-of-dictionary
+     */
+    public static class WordsWithinTwoEditsOfDictionary {
+    }
 }
