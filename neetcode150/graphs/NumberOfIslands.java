@@ -70,4 +70,88 @@ public class NumberOfIslands {
         dfs(grid, i, j - 1);
     }
 
+
+    /**
+     * Surrounded Regions
+     * https://leetcode.com/problems/surrounded-regions
+     */
+    public static class SurroundedRegions {
+    }
+
+    /**
+     * Walls and Gates
+     * https://leetcode.com/problems/walls-and-gates
+     */
+    public static class WallsAndGates {
+    }
+
+    /**
+     * Number of Islands II
+     * https://leetcode.com/problems/number-of-islands-ii
+     */
+    public static class NumberOfIslandsIi {
+    }
+
+    /**
+     * Number of Connected Components in an Undirected Graph
+     * https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph
+     */
+    public static class NumberOfConnectedComponentsInAnUndirectedGraph {
+    }
+
+    /**
+     * Battleships in a Board
+     * https://leetcode.com/problems/battleships-in-a-board
+     */
+    public static class BattleshipsInABoard {
+    }
+
+    /**
+     * Number of Distinct Islands
+     * https://leetcode.com/problems/number-of-distinct-islands
+     */
+    public static class NumberOfDistinctIslands {
+    }
+
+    /**
+     * Max Area of Island
+     * https://leetcode.com/problems/max-area-of-island
+     */
+    public static class MaxAreaOfIsland {
+    }
+
+    /**
+     * Count Sub Islands
+     * https://leetcode.com/problems/count-sub-islands
+     */
+    public static class CountSubIslands {
+    }
+
+    /**
+     * Find All Groups of Farmland
+     * https://leetcode.com/problems/find-all-groups-of-farmland
+     */
+    public static class FindAllGroupsOfFarmland {
+    }
+
+    /**
+     * Count Unreachable Pairs of Nodes in an Undirected Graph
+     * https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph
+     */
+    public static class CountUnreachablePairsOfNodesInAnUndirectedGraph {
+    }
+
+    /**
+     * Maximum Number of Fish in a Grid
+     * https://leetcode.com/problems/maximum-number-of-fish-in-a-grid
+     */
+    public static class MaximumNumberOfFishInAGrid {
+    }
+
+    /**
+     * Count Islands With Total Value Divisible by K
+     * https://leetcode.com/problems/count-islands-with-total-value-divisible-by-k
+     */
+    public static class CountIslandsWithTotalValueDivisibleByK {
+    }
 }

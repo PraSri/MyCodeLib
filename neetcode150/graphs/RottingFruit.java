@@ -66,4 +66,32 @@ public class RottingFruit {
             this.y = y;
         }
     }
+
+    /**
+     * Walls and Gates
+     * https://leetcode.com/problems/walls-and-gates
+     */
+    public static class WallsAndGates {
+    }
+
+    /**
+     * Battleships in a Board
+     * https://leetcode.com/problems/battleships-in-a-board
+     */
+    public static class BattleshipsInABoard {
+    }
+
+    /**
+     * Detonate the Maximum Bombs
+     * https://leetcode.com/problems/detonate-the-maximum-bombs
+     */
+    public static class DetonateTheMaximumBombs {
+    }
+
+    /**
+     * Escape the Spreading Fire
+     * https://leetcode.com/problems/escape-the-spreading-fire
+     */
+    public static class EscapeTheSpreadingFire {
+    }
 }

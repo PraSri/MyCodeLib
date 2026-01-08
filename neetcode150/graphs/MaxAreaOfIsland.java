@@ -42,4 +42,46 @@ public class MaxAreaOfIsland {
         int right = dfs(i, j + 1, grid);
         return 1 + up + down + left + right;
     }
+
+    /**
+     * Number of Islands
+     * https://leetcode.com/problems/number-of-islands
+     */
+    public static class NumberOfIslands {
+    }
+
+    /**
+     * Battleships in a Board
+     * https://leetcode.com/problems/battleships-in-a-board
+     */
+    public static class BattleshipsInABoard {
+    }
+
+    /**
+     * Island Perimeter
+     * https://leetcode.com/problems/island-perimeter
+     */
+    public static class IslandPerimeter {
+    }
+
+    /**
+     * Largest Submatrix With Rearrangements
+     * https://leetcode.com/problems/largest-submatrix-with-rearrangements
+     */
+    public static class LargestSubmatrixWithRearrangements {
+    }
+
+    /**
+     * Detonate the Maximum Bombs
+     * https://leetcode.com/problems/detonate-the-maximum-bombs
+     */
+    public static class DetonateTheMaximumBombs {
+    }
+
+    /**
+     * Maximum Number of Fish in a Grid
+     * https://leetcode.com/problems/maximum-number-of-fish-in-a-grid
+     */
+    public static class MaximumNumberOfFishInAGrid {
+    }
 }

@@ -39,4 +39,25 @@ public class CloneGraphNc {
         }
         return node;
     }
+
+    /**
+     * Copy List with Random Pointer
+     * https://leetcode.com/problems/copy-list-with-random-pointer
+     */
+    public static class CopyListWithRandomPointer {
+    }
+
+    /**
+     * Clone Binary Tree With Random Pointer
+     * https://leetcode.com/problems/clone-binary-tree-with-random-pointer
+     */
+    public static class CloneBinaryTreeWithRandomPointer {
+    }
+
+    /**
+     * Clone N-ary Tree
+     * https://leetcode.com/problems/clone-n-ary-tree
+     */
+    public static class CloneNAryTree {
+    }
 }
