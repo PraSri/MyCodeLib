@@ -1,7 +1,9 @@
 package advancedgraphs;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
+//Minimum Number of Lines to Cover Points - https://leetcode.com/problems/minimum-number-of-lines-to-cover-points/
 public class MinCostToConnectPoints {
 
 
@@ -27,16 +29,7 @@ public class MinCostToConnectPoints {
 
 // return minCost
 
-    public static class Edge {
-        int x, y, cost;
-
-        public Edge(int x, int y, int cost) {
-            this.x = x;
-            this.y = y;
-            this.cost = cost;
-        }
-
-    }
+    //This is a Minimum Spanning Tree problem solved using Prims Algorithm with Manhattan distance as edge weights.
 
     public int minCostConnectPoints(int[][] points) {
         int n = points.length;
@@ -72,5 +65,23 @@ public class MinCostToConnectPoints {
 
     public int getCost(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    public static class Edge {
+        int x, y, cost;
+
+        public Edge(int x, int y, int cost) {
+            this.x = x;
+            this.y = y;
+            this.cost = cost;
+        }
+
+    }
+
+    /**
+     * Minimum Number of Lines to Cover Points
+     * https://leetcode.com/problems/minimum-number-of-lines-to-cover-points/
+     */
+    public static class MinimumNumberOfLinesToCoverPoints {
     }
 }

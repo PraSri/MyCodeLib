@@ -1,6 +1,9 @@
 package advancedgraphs;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+//Path With Minimum Effort - https://leetcode.com/problems/path-with-minimum-effort/
 
 public class SwimInRisingWater {
 
@@ -41,7 +44,7 @@ public class SwimInRisingWater {
     //
     //Iska matlab yeh problem basically bolti hai:
     //
-    //“Woh path dhoondo jisme max height sabse kam ho.”
+    //Woh path dhoondo jisme max height sabse kam ho.
 
     /***
      *
@@ -52,7 +55,7 @@ public class SwimInRisingWater {
      *
      * time ka matlab: is path pe ab tak jo maximum height aya, uska value (yehi eventual answer ko decide karega).
      *
-     * Hum BFS-type expansion karte hain lekin priority ke hisaab se —
+     * Hum BFS-type expansion karte hain lekin priority ke hisaab se 
      * hume hamesha us node se expand karna hai jiska time sabse chhota ho (Dijkstra-style).
      *
      * Jab hum bottom-right cell (n-1,n-1) pop karte hain, uska time hi minimum required seconds (answer) hota hai.
@@ -119,4 +122,11 @@ public class SwimInRisingWater {
     }
 
 
+
+    /**
+     * Path With Minimum Effort
+     * https://leetcode.com/problems/path-with-minimum-effort/
+     */
+    public static class PathWithMinimumEffort {
+    }
 }
