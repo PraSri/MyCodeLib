@@ -2,6 +2,17 @@ package oneddynamicprogramming;
 
 import java.util.Arrays;
 
+/**
+ * Decode Ways II (Hard)
+ * ? https://leetcode.com/problems/decode-ways-ii/
+ * <p>
+ * Number of Ways to Separate Numbers (Hard)
+ * ? https://leetcode.com/problems/number-of-ways-to-separate-numbers/
+ * <p>
+ * Count Number of Texts (Medium)
+ * ? https://leetcode.com/problems/count-number-of-texts/
+ */
+
 public class DecodeWays {
 
     public int numDecodings(String s) {
@@ -36,4 +47,25 @@ public class DecodeWays {
         return dp[i] = res;
     }
 
+
+    /**
+     * Decode Ways II
+     * https://leetcode.com/problems/decode-ways-ii
+     */
+    public static class DecodeWaysIi {
+    }
+
+    /**
+     * Number of Ways to Separate Numbers
+     * https://leetcode.com/problems/number-of-ways-to-separate-numbers
+     */
+    public static class NumberOfWaysToSeparateNumbers {
+    }
+
+    /**
+     * Count Number of Texts
+     * https://leetcode.com/problems/count-number-of-texts
+     */
+    public static class CountNumberOfTexts {
+    }
 }
