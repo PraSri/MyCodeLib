@@ -169,40 +169,322 @@ public class Main {
     // https://leetcode.com/problems/group-anagrams
     public static class GroupAnagrams {
 
+        public List<List<String>> groupAnagrams(String[] strs) {
+            Map<String, List<String>> map = new HashMap<>();
+            for (String s : strs) {
+                int[] f = new int[26];
+                for (char ch : s.toCharArray()) {
+                    f[ch - 'a']++;
+                }
+                String key = Arrays.toString(f);
+                map.putIfAbsent(key, new ArrayList<>());
+                map.get(key).add(s);
+            }
+            return new ArrayList<>(map.values());
+        }
+
     }
 
     // https://leetcode.com/problems/triangle
     public static class Triangle {
+        //recurrence - dp[i] = triangle[row][i] + min(dp[i], dp[i+1])
+        public int minimumTotal(List<List<Integer>> triangle) {
 
+            int n = triangle.size();
+            int[] min = new int[n + 1];
+            for (int row = n - 1; row >= 0; row--) {
+                for (int i = 0; i <= row; i++) {
+                    min[i] = Math.min(min[i], min[i + 1]) + triangle.get(row).get(i);
+                }
+            }
+            return min[0];
+        }
     }
 
     // https://leetcode.com/problems/best-time-to-buy-and-sell-stock
     public static class BestTimeToBuyAndSellStock {
 
+        public int maxProfit(int[] prices) {
+
+            int l = 0, r = l + 1;
+
+            int maxP = 0;
+
+            while (r < prices.length) {
+
+                if (prices[l] < prices[r]) {
+
+                    int profit = prices[r] - prices[l];
+                    maxP = Math.max(maxP, profit);
+
+                } else {
+
+                    l = r;
+
+                }
+
+                r++;
+            }
+            return maxP;
+        }
     }
 
     // https://leetcode.com/problems/house-robber
     public static class HouseRobber {
+
+        public int rob(int[] nums) {
+            int[] dp = new int[nums.length];
+            Arrays.fill(dp, -1);
+            return solve(nums, 0, dp);
+        }
+
+        private int solve(int[] nums, int i, int[] dp) {
+            // base case
+            if (i >= nums.length) {
+                return 0;
+            }
+
+            // already computed
+            if (dp[i] != -1) {
+                return dp[i];
+            }
+
+            // choices
+            int rob = nums[i] + solve(nums, i + 2, dp);
+            int skip = solve(nums, i + 1, dp);
+
+            dp[i] = Math.max(rob, skip);
+            return dp[i];
+        }
+
 
     }
 
     // https://leetcode.com/problems/find-the-child-who-has-the-ball-after-k-seconds
     public static class FindTheChildWhoHasTheBallAfterKSeconds {
 
+        int numberOfChild(int n, int k) {
+            // 0,1,2
+            // t=0 0
+            // t=1 1
+            // t=2 2
+            // t=3 1
+            // t=4 0
+            // N = 4
+            // k = 1 x=1
+            // k=2 x=2
+            //k=3 x=3
+            //k=4 x=0
+            //k=5 x=1
+            //k=6 x=2
+            //k=7 x=3
+            //k=8 x=0
+            int N = 2 * n - 2;
+            int x = k % N;
+            return (x < n) ? x : N - x;
+        }
+
+        public int numberOfChild2(int n, int k) {
+            n--; // Decrement n to simplify calculation (so range is now 0 to n-1)
+            int rounds = k / n; // Calculate the number of complete back-and-forth trips
+            int rem = k % n; // Calculate the remaining steps after the last complete trip
+
+            if (rounds % 2 == 0) {
+                // If the number of complete back-and-forth trips is even
+                return rem; // The ball is passed forward from the start
+            } else {
+                // If the number of complete back-and-forth trips is odd
+                return n - rem; // The ball is passed backward from the end
+            }
+        }
+
     }
 
     // https://leetcode.com/problems/minimum-window-substring
     public static class MinimumWindowSubstring {
 
+        // s me aisi window dhudhno, joki minimum ho hai saare t ke chars aa jae
+        public String minWindow(String s, String t) {
+
+            // map with frequency of t
+            // kyuki upper and lower case english alphabets hai sirf
+            int[] f = new int[128];
+
+            for (char c : t.toCharArray()) {
+                f[c - 'A']++;
+            }
+
+            int start = 0;
+            int e = 0;
+            int minLen = Integer.MAX_VALUE;
+            int minStart = 0;
+            int c = t.length();
+            int n = s.length();
+
+
+            while (e < n) {
+
+                char curr = s.charAt(e);
+
+                // if curr char of s is present in t,
+                // i.e, frequency is more than zero, decrease its counter...moving towards valid window
+                if (f[curr - 'A'] > 0) {
+                    c--;
+                }
+
+                // making non-present negative
+                f[curr - 'A']--;
+
+                e++;
+
+                // condition if window is valid, record your results
+                while (c == 0) {
+
+                    // record stats
+                    if (minLen > (e - start)) {
+                        minLen = e - start;
+                        minStart = start;
+                    }
+
+                    // window contraction phase ...to get improved results
+
+                    char windowStart = s.charAt(start);
+                    // restoring the frequency of t..because now we are moving to new window
+                    f[windowStart - 'A']++;
+
+                    if (f[windowStart - 'A'] > 0) {
+                        c++;
+                    }
+                    start++;
+
+                }
+
+            }
+
+            return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+        }
+
     }
 
     // https://leetcode.com/problems/can-place-flowers
     public static class CanPlaceFlowers {
+        public boolean canPlaceFlowers(int[] flowerbed, int n) {
+            for (int i = 0; i < flowerbed.length; i++) {
+                if (flowerbed[i] == 0) {
+                    if (i == 0 && i == flowerbed.length - 1) {
+                        return true;
+                    } else if (i == 0 && flowerbed[i + 1] == 0) {
+                        flowerbed[i] = 1;
+                        n--;
+                    } else if (i == flowerbed.length - 1 && flowerbed[i - 1] == 0) {
+                        flowerbed[i] = 1;
+                        n--;
+                    } else if (i > 0 && flowerbed[i - 1] == 0) {
+                        if (i < flowerbed.length - 1 && flowerbed[i + 1] == 0) {
+                            flowerbed[i] = 1;
+                            n--;
+                        }
+                    }
 
+                }
+            }
+            return n <= 0;
+        }
+
+        public boolean canPlaceFlowers2(int[] flowerbed, int n) {
+            // If no flowers need to be planted, return true immediately
+            if (n <= 0) return true;
+
+            for (int i = 0; i < flowerbed.length && n > 0; i++) {
+                // Skip if current spot already has a flower
+                if (flowerbed[i] == 1) continue;
+
+                // Check if left neighbor is empty or doesn't exist
+                boolean leftEmpty = (i == 0) || (flowerbed[i - 1] == 0);
+                // Check if right neighbor is empty or doesn't exist
+                boolean rightEmpty = (i == flowerbed.length - 1) || (flowerbed[i + 1] == 0);
+
+                // If both neighbors are empty, plant a flower here
+                if (leftEmpty && rightEmpty) {
+                    flowerbed[i] = 1;  // Plant the flower
+                    n--;               // Decrement remaining flowers to plant
+                }
+            }
+
+            // Return true if we planted all required flowers
+            return n <= 0;
+        }
     }
 
     // https://leetcode.com/problems/sort-array-by-increasing-frequency
     public static class SortArrayByIncreasingFrequency {
+
+        // Given an array of integers nums, sort the array in
+        // increasing order based on the frequency of the values.
+        // If multiple values have the same frequency, sort them in decreasing order.
+        //
+        //Return the sorted array.
+        public int[] frequencySort(int[] nums) {
+            // Step 1: Count frequencies
+            Map<Integer, Integer> freqMap = new HashMap<>();
+            for (int num : nums) {
+                freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+            }
+
+            // Step 2: Convert array to list for easier sorting
+            List<Integer> list = new ArrayList<>();
+            for (int num : nums) {
+                list.add(num);
+            }
+
+            // Step 3: Sort with custom comparator
+            // Primary: Sort by frequency in increasing order
+            // Secondary: If frequencies are equal, sort by value in decreasing order
+            Collections.sort(list, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer a, Integer b) {
+                    int freqA = freqMap.get(a);
+                    int freqB = freqMap.get(b);
+
+                    if (freqA != freqB) {
+                        return freqA - freqB;  // Increasing order of frequency
+                    } else {
+                        return b - a;  // Decreasing order of value
+                    }
+                }
+            });
+
+            // Step 4: Convert back to array
+            int[] result = new int[nums.length];
+            for (int i = 0; i < list.size(); i++) {
+                result[i] = list.get(i);
+            }
+
+            return result;
+        }
+
+        public int[] frequencySort2(int[] nums) {
+            // Step 1: Count frequencies
+            Map<Integer, Integer> freqMap = new HashMap<>();
+            for (int num : nums) {
+                freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+            }
+
+            // Step 2: Sort using custom comparator
+            return Arrays.stream(nums)
+                    .boxed()  // Convert int to Integer for sorting
+                    .sorted((a, b) -> {
+                        int freqA = freqMap.get(a);
+                        int freqB = freqMap.get(b);
+                        if (freqA != freqB) {
+                            return freqA - freqB;  // Sort by frequency increasing
+                        } else {
+                            return b - a;  // Sort by value decreasing
+                        }
+                    })
+                    .mapToInt(Integer::intValue)  // Convert back to int
+                    .toArray();
+        }
 
     }
 
