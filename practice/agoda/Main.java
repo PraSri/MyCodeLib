@@ -490,11 +490,50 @@ public class Main {
 
     // https://leetcode.com/problems/move-zeroes
     public static class MoveZeroes {
-
+        public void moveZeroes(int[] nums) {
+            int j = 0;
+            int n = nums.length;
+            for (int i = 0; i < n; i++) {
+                if (nums[i] != 0) {
+                    nums[j++] = nums[i];
+                }
+            }
+            while (j < n) {
+                nums[j++] = 0;
+            }
+        }
     }
 
     // https://leetcode.com/problems/jump-game-ii
     public static class JumpGameII {
+
+        public boolean canJump(int[] nums) {
+            int n = nums.length;
+            int targetIndex = n - 1;
+
+            for (int i = n - 2; i >= 0; i--) {
+                if (targetIndex <= (i + nums[i])) {
+                    targetIndex = i;
+                }
+            }
+
+            return targetIndex == 0;
+        }
+
+        public int jump(int[] nums) {
+
+            int farthestJump = 0;
+            int curJump = 0;
+            int jumps = 0;
+            for (int i = 0; i < nums.length - 1; i++) {
+                farthestJump = Math.max(farthestJump, i + nums[i]);
+                if (i == curJump) {
+                    jumps++;
+                    curJump = farthestJump;
+                }
+            }
+            return jumps;
+        }
 
     }
 
@@ -581,6 +620,24 @@ public class Main {
     // https://leetcode.com/problems/eliminate-maximum-number-of-monsters
     public static class EliminateMaximumNumberOfMonsters {
 
+        public int eliminateMaximum(int[] dist, int[] speed) {
+            PriorityQueue<Double> heap = new PriorityQueue<>();
+            for (int i = 0; i < dist.length; i++) {
+                heap.add((double) dist[i] / speed[i]);
+            }
+
+            int ans = 0;
+            while (!heap.isEmpty()) {
+                if (heap.remove() <= ans) {
+                    break;
+                }
+
+                ans++;
+            }
+
+            return ans;
+        }
+
     }
 
     // https://leetcode.com/problems/permutations
@@ -656,6 +713,28 @@ public class Main {
     // https://leetcode.com/problems/fizz-buzz
     public static class FizzBuzz {
 
+        public List<String> fizzBuzz(int n) {
+            List<String> ret = new ArrayList<>(n);
+            for (int i = 1, fizz = 0, buzz = 0; i <= n; i++) {
+                fizz++;
+                buzz++;
+                if (fizz == 3 && buzz == 5) {
+                    ret.add("FizzBuzz");
+                    fizz = 0;
+                    buzz = 0;
+                } else if (fizz == 3) {
+                    ret.add("Fizz");
+                    fizz = 0;
+                } else if (buzz == 5) {
+                    ret.add("Buzz");
+                    buzz = 0;
+                } else {
+                    ret.add(String.valueOf(i));
+                }
+            }
+            return ret;
+        }
+
     }
 
     // https://leetcode.com/problems/longest-string-chain
@@ -676,11 +755,261 @@ public class Main {
     // https://leetcode.com/problems/sliding-window-maximum
     public static class SlidingWindowMaximum {
 
+        // Humein har sliding window ka maximum chahiye.
+        public int[] maxSlidingWindow(int[] nums, int k) {
+            int n = nums.length;
+            int[] output = new int[n - k + 1];
+//        Hum ek deque (double-ended queue) use karte hain jisme sirf potential maximum candidates rakhte hain.
+//        Key idea:
+//
+//Deque mein sirf indices rakhe jaate hain, values nahi.
+//
+//Deque hamesha values ke decreasing order mein hota hai.
+//
+//Deque ka front current window ka maximum hota hai.
+
+            //Agar new element aaya aur woh kisi purane element se bada hai,
+            //toh woh purana element kabhi window ka maximum nahi ban sakta future mein.
+            // toh usko deque se nikaal do.
+            Deque<Integer> q = new LinkedList<>();
+            int l = 0, r = 0;
+
+            while (r < n) {
+                while (!q.isEmpty() && nums[q.getLast()] < nums[r]) {
+                    q.removeLast();
+                }
+                q.addLast(r);
+
+                if (l > q.getFirst()) {
+                    q.removeFirst();
+                }
+
+                if ((r + 1) >= k) {
+                    output[l] = nums[q.getFirst()];
+                    l++;
+                }
+                r++;
+            }
+
+            return output;
+        }
     }
 
     // https://leetcode.com/problems/happy-number
     public static class HappyNumber {
 
+        public boolean isHappy(int n) {
+
+            int slow = n;
+            int fast = n;
+            //while loop is not used here because initially slow and
+            //fast pointer will be equal only, so the loop won't run.
+            do {
+                //slow moving one step ahead and fast moving two steps ahead
+
+                slow = square(slow);
+                fast = square(square(fast));
+            } while (slow != fast);
+
+            //if a cycle exists, then the number is not a happy number
+            //and slow will have a value other than 1
+
+            return slow == 1;
+        }
+
+        //Finding the square of the digits of a number
+
+        public int square(int num) {
+
+            int ans = 0;
+
+            while (num > 0) {
+                int remainder = num % 10;
+                ans += remainder * remainder;
+                num /= 10;
+            }
+
+            return ans;
+        }
+
     }
 
+
+    public static class HitCounter {
+        // List to store all hit timestamps in chronological order
+        private final List<Integer> timestamps = new ArrayList<>();
+
+        /**
+         * Initialize the hit counter system
+         */
+        public HitCounter() {
+        }
+
+        /**
+         * Record a hit at the given timestamp
+         *
+         * @param timestamp - the current timestamp (in seconds granularity)
+         */
+        public void hit(int timestamp) {
+            timestamps.add(timestamp);
+        }
+
+        /**
+         * Return the number of hits in the past 5 minutes (300 seconds)
+         *
+         * @param timestamp - the current timestamp (in seconds granularity)
+         * @return number of hits in the past 300 seconds from the given timestamp
+         */
+        public int getHits(int timestamp) {
+            // Find the index of the first timestamp that is within the 300-second window
+            // We search for the leftmost position where timestamp >= (currentTime - 299)
+            int leftBoundaryIndex = binarySearchLeftmost(timestamp - 300 + 1);
+
+            // All elements from leftBoundaryIndex to the end are within the 300-second window
+            return timestamps.size() - leftBoundaryIndex;
+        }
+
+        /**
+         * Binary search to find the leftmost index where timestamp >= target
+         *
+         * @param target - the target timestamp to search for
+         * @return the index of the first element >= target, or list size if all elements < target
+         */
+        private int binarySearchLeftmost(int target) {
+            int left = 0;
+            int right = timestamps.size();
+
+            // Binary search for the leftmost position where timestamp >= target
+            while (left < right) {
+                int mid = (left + right) >> 1;  // Equivalent to (left + right) / 2
+
+                if (timestamps.get(mid) >= target) {
+                    // Mid element is >= target, search in left half (including mid)
+                    right = mid;
+                } else {
+                    // Mid element is < target, search in right half (excluding mid)
+                    left = mid + 1;
+                }
+            }
+
+            return left;
+        }
+
+        /**
+         * Your HitCounter object will be instantiated and called as such:
+         * HitCounter obj = new HitCounter();
+         * obj.hit(timestamp);
+         * int param_2 = obj.getHits(timestamp);
+         */
+    }
+
+    public static class CountNumberOfPairsWithAbsoluteDifferenceK {
+        //Given an integer array nums and an integer k,
+        // return the number of pairs (i, j) where i < j
+        // such that |nums[i] - nums[j]| == k.
+
+        public int countKDifference(int[] nums, int k) {
+            Map<Integer, Integer> map = new HashMap<>();
+            int res = 0;
+
+            for (int i = 0; i < nums.length; i++) {
+                if (map.containsKey(nums[i] - k)) {
+                    res += map.get(nums[i] - k);
+                }
+                if (map.containsKey(nums[i] + k)) {
+                    res += map.get(nums[i] + k);
+                }
+                map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+            }
+
+
+            return res;
+        }
+    }
+
+    public static class PalindromicSubstrings {
+        int count = 0;
+
+        public int countSubstrings(String s) {
+            int n = s.length();
+            for (int i = 0; i < n; i++) {
+                extend(s, i, i);
+                extend(s, i, i + 1);
+            }
+            return count;
+        }
+
+        private void extend(String s, int left, int right) {
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+                count++;
+            }
+        }
+    }
+
+    public static class KokoEatingBananas {
+
+        // Input: piles = [1,4,3,2], h = 9
+        //
+        //Output: 2
+
+        //Explanation: With an eating rate of 2, you can eat the bananas in 6 hours.
+        // With an eating rate of 1, you would need 10 hours to eat all the bananas (which exceeds h=9),
+        // thus the minimum eating rate is 2.
+
+        // tumhe aisa number dhoona hai jisme tum h hours ke andar bananas kahatam kr pao, aur har hour tum k bananas hi
+        // kha skte ho. wo k minimum hona chahiye
+
+        public int minEatingSpeed(int[] piles, int h) {
+            int s = 1; // kam se kam tumhe ek banana toh khana hi hoga khatam krne ko
+
+            int e = Arrays.stream(piles).max().getAsInt(); // maximum tum har baar sabse jada wala pile ke barabar agr khaoge
+            // toh sabse jaldi khatam hoga
+
+            // hume iske beech me ek value dhundni hai, jo h se choti ho aur minimum ho
+
+            // hum binary search krege in the range [1, max(piles[])]
+            // ek example lete hai
+            // piles = [1,4,3,2], h = 9
+            // range = [1, 4]
+
+            while (s < e) {
+
+                int mid = s + (e - s) / 2;
+
+                // maine range [1,4] me mid value nikali
+                // wo hai 2
+                // abb main dekhuga ki 2, kya possible answer jo ye satisfy kre
+                // ki main har ghante 2 banana khao aur saare banana 9 ghante me khatam ho jae
+                // piles = [ 1 -> 1h, 4 -> 2h, 3 -> 2h, 2 -> 1h] total hours = 6h
+                // toh ye ek answer ho skta hai
+                // but ye minimum value hai ki nahi, iske liye hume binary search continue krna padega
+                if (isPossible(piles, mid, h)) {
+                    e = mid; // e = 2
+                } else {
+                    s = mid + 1;
+                }
+            }
+
+            return s;
+        }
+
+        private boolean isPossible(int[] piles, int bananasAllowedPerHour, int expectedHours) {
+            int actualHours = 0;
+            int i = 0;
+            int n = piles.length;
+            while (i < n) {
+                // time to eat ith pile
+                int timeTakenPerPile = piles[i] / bananasAllowedPerHour;
+                actualHours += timeTakenPerPile;
+                if (piles[i] % bananasAllowedPerHour != 0) {
+                    actualHours++;
+                }
+                i++;
+            }
+            return actualHours <= expectedHours;
+        }
+    }
 }
+
