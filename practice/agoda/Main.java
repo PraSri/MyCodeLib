@@ -31,7 +31,6 @@ public class Main {
             return res;
         }
 
-
     }
 
     // https://leetcode.com/problems/3sum
@@ -540,81 +539,505 @@ public class Main {
     // https://leetcode.com/problems/lexicographically-smallest-string-after-substring-operation
     public static class LexicographicallySmallestStringAfterSubstringOperation {
 
+        public String smallestString(String s) {
+            int i = 0;
+            int n = s.length();
+            char[] A = s.toCharArray();
+            while (i < n && A[i] == 'a')
+                i++;
+            if (i == n)
+                A[n - 1] = 'z';
+            while (i < n && A[i] != 'a')
+                --A[i++];
+            return String.valueOf(A);
+        }
+
     }
 
     // https://leetcode.com/problems/reverse-substrings-between-each-pair-of-parentheses
     public static class ReverseSubstringsBetweenEachPairOfParentheses {
+        public String reverseParentheses(String s) {
+            int n = s.length();
+            int[] index_pairs = new int[n];
+            Deque<Integer> stack_start_ind = new LinkedList<>();
+
+            for (int char_ind = 0; char_ind < n; ++char_ind) {
+                char char_s = s.charAt(char_ind);
+                if (char_s == '(') {
+                    stack_start_ind.push(char_ind);
+                } else if (char_s == ')') {
+                    int start_ind = stack_start_ind.pop();
+                    index_pairs[char_ind] = start_ind;
+                    index_pairs[start_ind] = char_ind;
+                }
+            }
+
+            StringBuilder res = new StringBuilder();
+            int cur_ind = 0;
+            int cur_dir = 1;
+
+            while (cur_ind < n) {
+                char char_s = s.charAt(cur_ind);
+                if (char_s == '(' || char_s == ')') {
+                    cur_ind = index_pairs[cur_ind];
+                    cur_dir *= -1;
+                } else {
+                    res.append(char_s);
+                }
+                cur_ind += cur_dir;
+            }
+
+            return res.toString();
+        }
 
     }
 
     // https://leetcode.com/problems/decode-string
     public static class DecodeString {
 
+        public String decodeString(String s) {
+            StringBuilder res = new StringBuilder();
+
+            Stack<Integer> countStack = new Stack<>();
+            Stack<StringBuilder> strStack = new Stack<>();
+
+            int count = 0;
+
+            for (char ch : s.toCharArray()) {
+
+                // when you get digit, save in count variable
+
+                if (Character.isDigit(ch)) {
+                    count = count * 10 + (ch - '0');
+                }
+
+                // for open bracket, push in stack, initialize variables
+                else if (ch == '[') {
+                    countStack.push(count);
+                    count = 0;
+                    strStack.push(res);
+                    res = new StringBuilder();
+                }
+
+                // for closed bracket, pop from stacks & build final string
+                else if (ch == ']') {
+                    StringBuilder tmp = res;
+                    res = strStack.pop();
+                    int freq = countStack.pop();
+                    res.append(String.valueOf(tmp).repeat(Math.max(0, freq)));
+                } else {
+                    res.append(ch);
+                }
+            }
+
+            return res.toString();
+        }
+
+
     }
 
     // https://leetcode.com/problems/unique-paths-ii
     public static class UniquePathsII {
+        int[][] dp;
+
+        public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+            int m = obstacleGrid.length;
+            int n = obstacleGrid[0].length;
+            dp = new int[m + 1][n + 1];
+            for (int[] a : dp) {
+                Arrays.fill(a, -1);
+            }
+            return path(obstacleGrid, 0, 0, m, n);
+        }
+
+        int path(int[][] grid, int i, int j, int m, int n) {
+            if (i < 0 || j < 0 || i >= m || j >= n)
+                return 0;
+            if (grid[i][j] == 1)
+                return 0;
+            if (i == m - 1 && j == n - 1)
+                return 1;
+            if (dp[i][j] != -1) {
+                return dp[i][j];
+            }
+            return dp[i][j] = path(grid, i + 1, j, m, n) + path(grid, i, j + 1, m, n);
+        }
 
     }
 
     // https://leetcode.com/problems/insert-delete-getrandom-o1
     public static class InsertDeleteGetRandomO1 {
 
+        ArrayList<Integer> nums;
+        HashMap<Integer, Integer> locs;
+        java.util.Random rand = new java.util.Random();
+
+        /**
+         * Initialize your data structure here.
+         */
+        public InsertDeleteGetRandomO1() {
+            nums = new ArrayList<Integer>();
+            locs = new HashMap<Integer, Integer>();
+        }
+
+        /**
+         * Inserts a value to the set. Returns true if the set did not already contain the specified element.
+         */
+        public boolean insert(int val) {
+            boolean contain = locs.containsKey(val);
+            if (contain) return false;
+            locs.put(val, nums.size());
+            nums.add(val);
+            return true;
+        }
+
+        /**
+         * Removes a value from the set. Returns true if the set contained the specified element.
+         */
+        public boolean remove(int val) {
+            boolean contain = locs.containsKey(val);
+            if (!contain) return false;
+            int loc = locs.get(val);
+            if (loc < nums.size() - 1) { // not the last one than swap the last one with this val
+                int lastone = nums.get(nums.size() - 1);
+                nums.set(loc, lastone);
+                locs.put(lastone, loc);
+            }
+            locs.remove(val);
+            nums.remove(nums.size() - 1);
+            return true;
+        }
+
+        /**
+         * Get a random element from the set.
+         */
+        public int getRandom() {
+            return nums.get(rand.nextInt(nums.size()));
+        }
+
+
     }
 
     // https://leetcode.com/problems/integer-to-roman
     public static class IntegerToRoman {
+        public String intToRoman(int num) {
+
+            int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+            String[] strs = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < values.length; i++) {
+                while (num >= values[i]) {
+                    num -= values[i];
+                    sb.append(strs[i]);
+                }
+            }
+            return sb.toString();
+        }
 
     }
 
     // https://leetcode.com/problems/next-greater-element-i
     public static class NextGreaterElementI {
+        public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+            Stack<Integer> stack = new Stack<>();
+            Map<Integer, Integer> map = new HashMap<>();
 
+            // iterate over nums2
+            for (int current : nums2) {
+                // while stack is not empty and current element is greater than the top element of the stack
+                while (!stack.empty() && current > stack.peek()) {
+                    // update the map with the current element as the value for the popped element
+                    map.put(stack.pop(), current);
+                }
+                // push the current element to the stack
+                stack.push(current);
+            }
+
+            // iterate over remaining elements in the stack, pop them and set their values to -1 in the map
+            while (!stack.empty()) {
+                map.put(stack.pop(), -1);
+            }
+
+            int[] ans = new int[nums1.length];
+            // iterate over nums1 and add the corresponding value from the map to ans
+            for (int i = 0; i < nums1.length; i++) {
+                ans[i] = map.get(nums1[i]);
+            }
+
+            return ans;
+        }
     }
 
     // https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold
     public static class FindTheSmallestDivisorGivenAThreshold {
+        public int smallestDivisor(int[] nums, int threshold) {
 
+            int s = 1;
+            int e = Arrays.stream(nums).max().getAsInt();
+
+            while (s < e) {
+                int mid = s + (e - s) / 2;
+                if (isPossible(mid, nums, threshold)) {
+                    e = mid;
+                } else {
+                    s = mid + 1;
+                }
+            }
+
+            return s;
+
+        }
+
+        private boolean isPossible(int mid, int[] nums, int threshold) {
+
+            int sum = 0;
+
+            for (int num : nums) {
+                sum += Math.ceil((double) (num) / (double) (mid));
+            }
+
+            return sum <= threshold;
+
+        }
     }
 
     // https://leetcode.com/problems/minimum-absolute-difference
     public static class MinimumAbsoluteDifference {
-
+        public List<List<Integer>> minimumAbsDifference(int[] arr) {
+            List<List<Integer>> res = new ArrayList();
+            //sort elements
+            Arrays.sort(arr);
+            //init our min difference value
+            int min = Integer.MAX_VALUE;
+            //start looping over array to find real min element. Each time we found smaller difference
+            //we reset resulting list and start building it from scratch. If we found pair with the same
+            //difference as min - add it to the resulting list
+            for (int i = 0; i < arr.length - 1; i++) {
+                int diff = arr[i + 1] - arr[i];
+                if (diff < min) {
+                    min = diff;
+                    res.clear();
+                    res.add(Arrays.asList(arr[i], arr[i + 1]));
+                } else if (diff == min) {
+                    res.add(Arrays.asList(arr[i], arr[i + 1]));
+                }
+            }
+            return res;
+        }
     }
 
     // https://leetcode.com/problems/squares-of-a-sorted-array
     public static class SquaresOfASortedArray {
+        public int[] sortedSquares(int[] nums) {
 
+            int n = nums.length;
+            int[] res = new int[n];
+
+            int i = 0, j = n - 1, k = n - 1;
+
+            while (k >= 0) {
+
+                if (Math.abs(nums[i]) > Math.abs(nums[j])) {
+                    res[k] = nums[i] * nums[i];
+                    i++;
+                } else {
+                    res[k] = nums[j] * nums[j];
+                    j--;
+                }
+
+                k--;
+
+            }
+
+            return res;
+
+        }
     }
 
     // https://leetcode.com/problems/daily-temperatures
     public static class DailyTemperatures {
 
+        public int[] dailyTemperatures(int[] temperatures) {
+            int n = temperatures.length; // Get the number of days
+
+            int[] output = new int[n]; // Initialize the output array with all elements set to 0
+
+            Stack<Integer> stack = new Stack<>(); // Initialize an empty stack to hold indices of temperatures
+
+            for (int i = 0; i < n; i++) { // Loop through each day
+                // While the stack is not empty and the current temperature is higher than the temperature
+                // at the index stored at the top of the stack
+                while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
+                    int j = stack.pop(); // Pop the top index from the stack
+                    output[j] = i - j; // Calculate the number of days until a warmer temperature and store it in the output array
+                }
+                stack.push(i); // Push the current index onto the stack
+            }
+
+            return output; // Return the output array after processing all temperatures
+        }
     }
 
     // https://leetcode.com/problems/merge-sorted-array
     public static class MergeSortedArray {
+        public void merge(int[] nums1, int m, int[] nums2, int n) {
+            int p1 = m - 1;
+            int p2 = n - 1;
 
+            for (int p = m + n - 1; p >= 0; p--) {
+                if (p2 < 0) {
+                    break;
+                }
+                if (p1 >= 0 && nums1[p1] > nums2[p2]) {
+                    nums1[p] = nums1[p1];
+                    p1 -= 1;
+                } else {
+                    nums1[p] = nums2[p2];
+                    p2 -= 1;
+                }
+            }
+        }
     }
 
     // https://leetcode.com/problems/two-sum
     public static class TwoSum {
+        public int[] twoSum(int[] nums, int target) {
 
+            int[] ans = new int[2];
+
+            int n = nums.length;
+            Map<Integer, Integer> map = new HashMap<>();
+
+            for (int i = 0; i < n; i++) {
+
+                if (map.containsKey(target - nums[i])) {
+                    ans[0] = map.get(target - nums[i]);
+                    ans[1] = i;
+                    break;
+                }
+                map.put(nums[i], i);
+
+            }
+
+            return ans;
+        }
     }
 
     // https://leetcode.com/problems/subarray-product-less-than-k
     public static class SubarrayProductLessThanK {
+        //Input: nums = [10,5,2,6], k = 100
+        //Output: 8
+        public int numSubarrayProductLessThanK(int[] nums, int k) {
 
+            if (k <= 1)
+                return 0;
+
+            int prod = 1, ans = 0, left = 0, right = 0, n = nums.length;
+
+            while (right < n) {
+
+                prod = prod * nums[right]; // 10 -> 50 -> 100 -> 600
+
+                while (prod >= k) {
+                    prod = prod / nums[left]; // 60,
+                    left++; // 1
+                }
+
+                ans = ans + (right - left + 1); // 1 -> 3 -> 6 ->
+
+                right++; // 1 2 3
+
+            }
+
+            return ans;
+
+        }
     }
 
     // https://leetcode.com/problems/backspace-string-compare
     public static class BackspaceStringCompare {
+        //Input: s = "ab#c", t = "ad#c"
+        //Output: true
+        //Explanation: Both s and t become "ac".
+        public boolean backspaceCompare(String s, String t) {
 
+            int n = s.length() - 1;
+            int m = t.length() - 1;
+
+            // backspace count for s & t
+            int bs = 0, bt = 0;
+
+            int i = n, j = m;
+
+            while (i >= 0 || j >= 0) {
+
+                while (i >= 0) {
+                    if (s.charAt(i) == '#') {
+                        bs++;
+                        i--;
+                    } else if (bs > 0) {
+                        bs--;
+                        i--;
+                    } else {
+                        break;
+                    }
+                }
+
+                while (j >= 0) {
+
+                    if (t.charAt(j) == '#') {
+                        bt++;
+                        j--;
+                    } else if (bt > 0) {
+                        bt--;
+                        j--;
+                    } else {
+                        break;
+                    }
+
+                }
+
+                // after backspaces removed, the leftover string should be same, so to check at i,j have same chars
+
+                if (i >= 0 && j >= 0 && s.charAt(i) != t.charAt(j)) {
+                    return false;
+                }
+
+                // if anyone string is exhausted
+
+                if ((i >= 0) != (j >= 0)) {
+                    return false;
+                }
+
+                i--;
+                j--;
+
+            }
+
+            return true;
+
+        }
     }
 
     // https://leetcode.com/problems/find-pivot-index
     public static class FindPivotIndex {
-
+        public int pivotIndex(int[] nums) {
+            int n = nums.length;
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                sum += nums[i];
+            }
+            int ls = 0, rs = sum;
+            for (int i = 0; i < n; i++) {
+                rs = rs - nums[i];
+                if (ls == rs)
+                    return i;
+                ls += nums[i];
+            }
+            return -1;
+        }
     }
 
     // https://leetcode.com/problems/eliminate-maximum-number-of-monsters
@@ -643,10 +1066,91 @@ public class Main {
     // https://leetcode.com/problems/permutations
     public static class Permutations {
 
+        public List<List<Integer>> permute(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            boolean[] pick = new boolean[nums.length];
+            backtrack(nums, res, pick, new ArrayList<>());
+            return res;
+        }
+
+        private void backtrack(int[] nums, List<List<Integer>> res,
+                               boolean[] pick, List<Integer> temp) {
+            // base case
+            if (temp.size() >= nums.length) {
+                res.add(new ArrayList<>(temp));
+                return;
+            }
+            for (int i = 0; i < nums.length; i++) {
+                if (!pick[i]) {
+                    temp.add(nums[i]);
+                    pick[i] = true;
+                    backtrack(nums, res, pick, temp);
+                    temp.remove(temp.size() - 1);
+                    pick[i] = false;
+                }
+            }
+        }
+
     }
 
     // https://leetcode.com/problems/longest-increasing-subsequence
     public static class LongestIncreasingSubsequence {
+
+        public int lengthOfLIS(int[] nums) {
+            boolean useBinarySearch = true;
+            if (useBinarySearch) {
+                return lisBinarySearch(nums);
+            }
+            int n = nums.length;
+            int[][] dp = new int[n][n + 1];
+            Arrays.stream(dp).forEach(i -> Arrays.fill(i, -1));
+            int curr = 0;
+            int prev = -1;
+            return len(nums, curr, prev, dp);
+        }
+
+        private int lisBinarySearch(int[] a) {
+            int n = a.length;
+            List<Integer> temp = new ArrayList<>();
+            temp.add(a[0]);
+            int len = 1;
+            for (int i = 1; i < n; i++) {
+                if (a[i] > temp.get(temp.size() - 1)) {
+                    temp.add(a[i]);
+                    len++;
+                } else {
+                    int ind = Collections.binarySearch(temp, a[i]);
+                    if (ind < 0) {
+                        ind = -ind - 1;
+                    }
+                    temp.set(ind, a[i]);
+                }
+            }
+            return len;
+        }
+
+        private int len(int[] nums, int curr, int prev, int[][] dp) {
+
+            // base case
+            if (curr == nums.length) {
+                return 0;
+            }
+
+            if (dp[curr][prev + 1] != -1) {
+                return dp[curr][prev + 1];
+            }
+
+            // not pick
+            int ex = len(nums, curr + 1, prev, dp);
+            int in = Integer.MIN_VALUE;
+            // pick
+            if (prev == -1 || nums[curr] > nums[prev]) {
+                in = 1 + len(nums, curr + 1, curr, dp);
+            }
+
+            return dp[curr][prev + 1] = Math.max(ex, in);
+
+        }
 
     }
 
@@ -739,16 +1243,97 @@ public class Main {
 
     // https://leetcode.com/problems/longest-string-chain
     public static class LongestStringChain {
+        public int longestStrChain(String[] words) {
 
+            if (words == null || words.length == 0) return 0;
+            int res = 0;
+            Arrays.sort(words, (a, b) -> a.length() - b.length());  // Sort the words based on their lengths
+            HashMap<String, Integer> map = new HashMap();       //Stores each word and length of its max chain.
+
+            for (String w : words) {                             //From shortest word to longest word
+                map.put(w, 1);                                  //Each word is atleast 1 chain long
+                for (int i = 0; i < w.length(); i++) {               //Form next word removing 1 char each time for each w
+                    StringBuilder sb = new StringBuilder(w);
+                    String next = sb.deleteCharAt(i).toString();
+                    if (map.containsKey(next) && map.get(next) + 1 > map.get(w))
+                        map.put(w, map.get(next) + 1);            //If the new chain is longer, update the map
+                }
+                res = Math.max(res, map.get(w));                //Store max length of all chains
+            }
+            return res;
+        }
     }
 
     // https://leetcode.com/problems/reorganize-string
     public static class ReorganizeString {
 
+        public String reorganizeString(String str) {
+
+            Map<Character, Integer> charCounter = new HashMap<>();
+
+            for (char c : str.toCharArray()) {
+                int freq = charCounter.getOrDefault(c, 0) + 1;
+                charCounter.put(c, freq);
+            }
+
+            PriorityQueue<Map.Entry<Character, Integer>> maxFreqChar = new PriorityQueue<>(
+                    (item1, item2) -> item2.getValue() - item1.getValue());
+
+            maxFreqChar.addAll(charCounter.entrySet());
+
+            Map.Entry<Character, Integer> previous = null;
+            StringBuilder result = new StringBuilder(str.length());
+            while (!maxFreqChar.isEmpty() || previous != null) {
+
+                if (previous != null && maxFreqChar.isEmpty())
+                    return "";
+
+                Map.Entry<Character, Integer> currentEntry = maxFreqChar.poll();
+                int count = currentEntry.getValue() - 1;
+                result.append(currentEntry.getKey());
+
+                if (previous != null) {
+                    maxFreqChar.add(previous);
+                    previous = null;
+                }
+
+                if (count != 0) {
+                    previous = new AbstractMap.SimpleEntry<>(currentEntry.getKey(), count);
+
+                }
+            }
+
+            return result.toString();
+        }
+
     }
 
     // https://leetcode.com/problems/climbing-stairs
     public static class ClimbingStairs {
+
+        public int climbStairs(int n) {
+            int[] dp = new int[n + 1];
+
+            // initialize with -1
+            for (int i = 0; i <= n; i++) {
+                dp[i] = -1;
+            }
+
+            return solve(n, dp);
+        }
+
+        private int solve(int n, int[] dp) {
+            if (n == 0) return 1;
+            if (n < 0) return 0;
+
+            if (dp[n] != -1) {
+                return dp[n];
+            }
+
+            dp[n] = solve(n - 1, dp) + solve(n - 2, dp);
+            return dp[n];
+        }
+
 
     }
 
@@ -1010,6 +1595,75 @@ public class Main {
             }
             return actualHours <= expectedHours;
         }
+    }
+
+    static class NextPermutation {
+        public void nextPermutation(int[] a) {
+
+            // reverse se aisa number dhoono ki aane waala number usse chota ho
+
+            int n = a.length; // ex : [2,3,1]
+
+            int i = n - 1; // i = 2
+
+            while (i > 0 && a[i - 1] >= a[i]) {
+                i--; // i = 1
+            }
+
+            i--; // i = 0 a[0] = 2
+
+            // agr waisa nhi milta toh wo last permutation hai aur wo tum sort kodro in ascending order
+
+            // agr milta hai, iska matlab i>=0 hai
+
+            if (i >= 0) {
+
+                // abb firse reverse se aisa number serach kro jo just bada ho tumhare upar searched number se i.e just greater than a[i]
+
+                int j = n - 1;
+
+                while (j >= 0 && a[j] <= a[i]) {
+                    j--;
+                }
+
+                // agr aisa number milta hai toh usko swap krdo ith number se
+
+                if (j >= 0) {
+                    swap(a, i, j);
+                }
+            }
+
+            // abb baaki jo i+1 se end tak numbers unko reverse krdo, actually me ye lowest sorting krni thi but
+            // reverse bhi same kaam krega, but kyu??  yha pe reverse krne ke baad muhje lowest sorting hi milege
+            // above ex: [2,3,1] ki baat kre toh wo swap step ke baad aisa hoga [3,2,1]
+            // abb baccha 2,1 reverse krege toh 1,2 milega aur final answer [3,1,2] hoga
+            // iska genarailize solution ye keh skte hai ki jo
+            // 1st while loop hai i wali usme hum ye ensure kr rhe hai ki left se elements descending order (matlab bade se chota)
+            // me ho aur jaise hi ye order break hota hai, hum loop exit kr dete hai,
+
+            reverse(a, i);
+        }
+
+        public void swap(int[] a, int i, int j) {
+
+            int t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+
+        }
+
+        public void reverse(int[] a, int i) {
+            int s = i + 1;
+            int e = a.length - 1;
+            while (s < e) {
+                if (a[s] > a[e]) {
+                    swap(a, s, e);
+                }
+                s++;
+                e--;
+            }
+        }
+
     }
 }
 
