@@ -1,0 +1,48 @@
+Stock Buy & Sell – Full Series Map (Interview Ready)
+1?? Best Time to Buy and Sell Stock (I)
+
+? Single transaction (1 buy + 1 sell)
+? Focus: min price so far
+? https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+
+? Interview use: Basics, greedy thinking
+
+2?? Best Time to Buy and Sell Stock II
+
+? Unlimited transactions
+? Buy today, sell tomorrow if profit
+? https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
+
+? Interview use: Greedy vs DP intuition
+
+3?? Best Time to Buy and Sell Stock III
+
+? At most 2 transactions
+? DP with states or buy/sell arrays
+? https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+
+? Interview use: State-machine DP introduction
+
+4?? Best Time to Buy and Sell Stock IV
+
+? At most k transactions
+? Generalized version of III
+? https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+
+? Interview use: DP optimization, constraints discussion
+
+5?? Best Time to Buy and Sell Stock with Cooldown
+
+? Unlimited transactions + 1 day cooldown after sell
+? DP with 3 states: buy / sell / rest
+? https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+
+? Interview use: Real-world constraint modeling ?
+
+6?? Best Time to Buy and Sell Stock with Transaction Fee
+
+? Unlimited transactions + fee per transaction
+? DP or greedy with adjusted profit
+? https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
+
+? Interview use: Cost-aware DP

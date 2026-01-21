@@ -2,6 +2,8 @@ package twoddynamicprogramming;
 
 import java.util.Arrays;
 
+//Number of Increasing Paths in a Grid - https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/
+
 public class LongestIncreasingPathInMatrix {
 
     int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
@@ -48,4 +50,11 @@ public class LongestIncreasingPathInMatrix {
     }
 
 
+
+    /**
+     * Number of Increasing Paths in a Grid
+     * https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/
+     */
+    public static class NumberOfIncreasingPathsInAGrid {
+    }
 }
