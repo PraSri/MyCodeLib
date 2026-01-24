@@ -1,6 +1,17 @@
 package greedy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Merge Intervals (Medium)
+ * https://leetcode.com/problems/merge-intervals/
+ * <p>
+ * Optimal Partition of String (Medium)
+ * https://leetcode.com/problems/optimal-partition-of-string/
+ **/
 
 public class PartitionLabels {
 
@@ -13,7 +24,7 @@ public class PartitionLabels {
 
     //Har character ka last occurrence pata kar lo
     //Phir left se scan karo aur jab tak current
-    // part ke sab characters ka last index cover na ho jaaye — tab tak partition band mat karo.
+    // part ke sab characters ka last index cover na ho jaaye  tab tak partition band mat karo.
 
     public List<Integer> partitionLabels(String s) {
         Map<Character, Integer> lastIndex = new HashMap<>();
@@ -42,4 +53,18 @@ public class PartitionLabels {
 
 // Output: [5, 5, 1, 1, 1]
 // Explanation: The string can be split into ["xyxxy", "zbzbb", "i", "s", "l"].
+
+    /**
+     * Merge Intervals
+     * https://leetcode.com/problems/merge-intervals
+     */
+    public static class MergeIntervals {
+    }
+
+    /**
+     * Optimal Partition of String
+     * https://leetcode.com/problems/optimal-partition-of-string
+     */
+    public static class OptimalPartitionOfString {
+    }
 }

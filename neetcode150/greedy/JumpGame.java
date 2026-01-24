@@ -1,5 +1,25 @@
 package greedy;
 
+/**
+ * Jump Game II (Medium)
+ * https://leetcode.com/problems/jump-game-ii/
+ * <p>
+ * Jump Game III (Medium)
+ * https://leetcode.com/problems/jump-game-iii/
+ * <p>
+ * Jump Game VII (Medium)
+ * https://leetcode.com/problems/jump-game-vii/
+ * <p>
+ * Jump Game VIII (Medium)
+ * https://leetcode.com/problems/jump-game-viii/
+ * <p>
+ * Minimum Number of Visited Cells in a Grid (Hard)
+ * https://leetcode.com/problems/minimum-number-of-visited-cells-in-a-grid/
+ * <p>
+ * Largest Element in an Array after Merge Operations (Medium)
+ * https://leetcode.com/problems/largest-element-in-an-array-after-merge-operations/
+ */
+
 public class JumpGame {
 
     //Tumhe ek array nums diya hai.
@@ -22,7 +42,8 @@ public class JumpGame {
     //
     //End me agar targetIndex == 0, matlab start se end tak pahunch sakte ho
 
-    //“Last index ko catch karte hue peeche aao; agar 0 pakad liya, game jeet gaye.”
+    //Last index ko catch karte hue peeche aao; agar 0 pakad liya, game jeet gaye.
+
     public boolean canJump(int[] nums) {
         int n = nums.length;
         int targetIndex = n - 1;
@@ -32,5 +53,47 @@ public class JumpGame {
             }
         }
         return targetIndex == 0;
+    }
+
+    /**
+     * Jump Game II
+     * https://leetcode.com/problems/jump-game-ii
+     */
+    public static class JumpGameIi {
+    }
+
+    /**
+     * Jump Game III
+     * https://leetcode.com/problems/jump-game-iii
+     */
+    public static class JumpGameIii {
+    }
+
+    /**
+     * Jump Game VII
+     * https://leetcode.com/problems/jump-game-vii
+     */
+    public static class JumpGameVii {
+    }
+
+    /**
+     * Jump Game VIII
+     * https://leetcode.com/problems/jump-game-viii
+     */
+    public static class JumpGameViii {
+    }
+
+    /**
+     * Minimum Number of Visited Cells in a Grid
+     * https://leetcode.com/problems/minimum-number-of-visited-cells-in-a-grid
+     */
+    public static class MinimumNumberOfVisitedCellsInAGrid {
+    }
+
+    /**
+     * Largest Element in an Array after Merge Operations
+     * https://leetcode.com/problems/largest-element-in-an-array-after-merge-operations
+     */
+    public static class LargestElementInAnArrayAfterMergeOperations {
     }
 }
