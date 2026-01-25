@@ -2,6 +2,8 @@ package intervals;
 
 import java.util.*;
 
+// Number of Flowers in Full Bloom - https://leetcode.com/problems/number-of-flowers-in-full-bloom/
+
 public class MinimumIntervalToIncludeEachQuery {
 
     //Har query q ke liye batao smallest length ka interval jo q ko cover karta ho.
@@ -24,7 +26,7 @@ public class MinimumIntervalToIncludeEachQuery {
         //Jaise jaise query badhegi, aur zyada intervals eligible honge
         int[] sortedQueries = Arrays.stream(queries).sorted().toArray();
         for (int q : sortedQueries) {
-            //Agar interval ka start ? query
+            //Agar interval ka start <= query
             //To wo potential candidate hai
             //Heap me daal do
             while (i < intervals.length && intervals[i][0] <= q) {
@@ -58,7 +60,14 @@ public class MinimumIntervalToIncludeEachQuery {
     //
     //Space: O(n)
 
-    //“I sort queries and intervals. As queries increase,
+    //I sort queries and intervals. As queries increase,
     // I push all valid intervals into a min-heap by size,
-    // remove expired intervals, and the heap top always gives the minimum interval covering the query.”
+    // remove expired intervals, and the heap top always gives the minimum interval covering the query.
+
+    /**
+     * Number of Flowers in Full Bloom
+     * https://leetcode.com/problems/number-of-flowers-in-full-bloom/
+     */
+    public static class NumberOfFlowersInFullBloom {
+    }
 }

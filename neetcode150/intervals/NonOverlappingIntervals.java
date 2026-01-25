@@ -1,6 +1,17 @@
 package intervals;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+
+/**
+ * *Minimum Number of Arrows to Burst Balloons
+ * <a href="https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/">...</a>
+ * <p>
+ * Determine if Two Events Have Conflict
+ * <a href="https://leetcode.com/problems/determine-if-two-events-have-conflict/">...</a>
+ * <p>
+ *
+ */
 
 public class NonOverlappingIntervals {
 
@@ -13,12 +24,12 @@ public class NonOverlappingIntervals {
         int res = 0;
         //Pehle interval ka end = prevEnd maan lo
         int prevEnd = intervals[0][1];
-        for(int i = 1; i<intervals.length;i++) {
+        for (int i = 1; i < intervals.length; i++) {
             int start = intervals[i][0];
             int end = intervals[i][1];
             //Agar current start < prevEnd ? overlap ho raha hai
             // is interval ko remove karna padega (res++)
-            if(start < prevEnd) {
+            if (start < prevEnd) {
                 res++;
             } else {
                 //Else ? overlap nahi hai
@@ -27,5 +38,19 @@ public class NonOverlappingIntervals {
             }
         }
         return res;
+    }
+
+    /**
+     * Minimum Number of Arrows to Burst Balloons
+     * https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/">...</a>
+     */
+    public static class MinimumNumberOfArrowsToBurstBalloons {
+    }
+
+    /**
+     * Determine if Two Events Have Conflict
+     * https://leetcode.com/problems/determine-if-two-events-have-conflict/">...</a>
+     */
+    public static class DetermineIfTwoEventsHaveConflict {
     }
 }
