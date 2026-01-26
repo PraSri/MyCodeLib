@@ -1,6 +1,16 @@
 package mathandgeometry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/***Spiral Matrix II (Medium)
+ https://leetcode.com/problems/spiral-matrix-ii/
+
+ Spiral Matrix III (Medium)
+ https://leetcode.com/problems/spiral-matrix-iii/
+
+ Spiral Matrix IV (Medium)
+ https://leetcode.com/problems/spiral-matrix-iv/*/
 
 public class SpiralMatrix {
     public List<Integer> spiralOrder(int[][] matrix) {
@@ -33,5 +43,26 @@ public class SpiralMatrix {
             left++;
         }
         return res;
+    }
+
+    /**
+     * Spiral Matrix II
+     * https://leetcode.com/problems/spiral-matrix-ii
+     */
+    public static class SpiralMatrixIi {
+    }
+
+    /**
+     * Spiral Matrix III
+     * https://leetcode.com/problems/spiral-matrix-iii
+     */
+    public static class SpiralMatrixIii {
+    }
+
+    /**
+     * Spiral Matrix IV
+     * https://leetcode.com/problems/spiral-matrix-iv
+     */
+    public static class SpiralMatrixIv {
     }
 }
