@@ -1,5 +1,9 @@
 package bitmanipulation;
 
+/**
+ * Add Two Numbers
+ * https://leetcode.com/problems/add-two-numbers/
+ **/
 public class SumOfTwoIntegers {
 
     // Hume do integers a aur b ka sum nikalna
@@ -13,13 +17,13 @@ public class SumOfTwoIntegers {
     //
     //Jab tak carry hai, add karte raho
     public int getSum(int a, int b) {
-        while(b!=0) {
+        while (b != 0) {
             //a & b ? jahan dono bits 1 hain,
             // wahi carry aayega
             //
             //<< 1 ? carry ko next higher bit me
             // shift karna (binary addition rule)
-            int carry = (a&b) << 1;// a = 1 , b = 2 , a = 001, b=010
+            int carry = (a & b) << 1;// a = 1 , b = 2 , a = 001, b=010
             // a&b=000, carry = 0
             // XOR ka matlab: same bits ? 0, different bits ? 1
             //Ye hume sum without carry deta hai
@@ -35,4 +39,11 @@ public class SumOfTwoIntegers {
         return a;
     }
 
+
+    /**
+     * Add Two Numbers
+     * https://leetcode.com/problems/add-two-numbers
+     */
+    public static class AddTwoNumbers {
+    }
 }

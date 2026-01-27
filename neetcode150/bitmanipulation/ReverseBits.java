@@ -1,8 +1,16 @@
 package bitmanipulation;
 
+/***Reverse Integer (Medium)
+ https://leetcode.com/problems/reverse-integer/
+
+ Number of 1 Bits (Easy)
+ https://leetcode.com/problems/number-of-1-bits/
+
+ A Number After a Double Reversal (Easy)
+ https://leetcode.com/problems/a-number-after-a-double-reversal/*/
 public class ReverseBits {
 
-    //“Har bit ko extract karke uski mirror position pe place kar do.”
+    //Har bit ko extract karke uski mirror position pe place kar do.
     public int reverseBits(int n) {
         int res = 0;
 
@@ -18,5 +26,26 @@ public class ReverseBits {
 
         }
         return res;
+    }
+
+    /**
+     * Reverse Integer
+     * https://leetcode.com/problems/reverse-integer
+     */
+    public static class ReverseInteger {
+    }
+
+    /**
+     * Number of 1 Bits
+     * https://leetcode.com/problems/number-of-1-bits
+     */
+    public static class NumberOf1Bits {
+    }
+
+    /**
+     * A Number After a Double Reversal
+     * https://leetcode.com/problems/a-number-after-a-double-reversal
+     */
+    public static class ANumberAfterADoubleReversal {
     }
 }
