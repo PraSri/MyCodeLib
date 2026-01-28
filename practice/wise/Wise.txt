@@ -1,0 +1,54 @@
+
+Q1.
+I was asked to implement a circuit breaker with below requirements in HackerRank Pair Programming Round.
+
+1.In a network of multiple services, for any service-service communication via APIs,
+Circuit Breaker should open the circuit and API should failfast if the API error count for last X minutes >= Y.
+2.The circuit breaker should be closed and the service should start receiving requests after a cool off period of Z minutes.
+3.How can we make this implementation thread-safe ?
+
+A API is there which usually get's overburdened by req, so we want to control this behaviour,
+if in last 1 min the server throws error for more than 4 times then just don't send the req to server
+rather just throw error along with a message.
+
+I did it using map, so interview asked the following follow ups :
+
+Since the response of req received 1 min ago doesn't matter to us, so can we optimize the code?
+-> Ans was by using queue, you can just maintain response of req of just last 1 min.
+
+Let's say we face error from client side eg wrong auth token, then should be break those req?
+-> Ans was no, rather do circuit breaking only when response code received from server >= 500.
+
+Let's say, if after circuit breaker, we wanted to cool off the server for few seconds (it'll be given to you),
+then how will you add a cool off time?
+Let's say, if this code is in a multi threaded environment then how will you handle this and How will you make this thread safe?
+-> Ans is by using locks, immutable objects or Atomic instances.
+
+What other changes will you do before pushing this code to production?
+
+
+Prompt:
+Write a simple OOPs java code to implement following requirement:
+implement a circuit breaker with below requirements
+1.In a network of multiple services, for any service-service communication via APIs,
+Circuit Breaker should open the circuit and API should failfast if the API error count for last X minutes >= Y.
+2.The circuit breaker should be closed and the service should start receiving requests after a cool off period of Z minutes.
+
+Note: Don't use multi-threading, write comments for better understanding.
+
+
+Q2.
+NxN tic tac toe with wincount given,
+if number of consecutive Os or Xs in a line equals "wincount" then the player wins.
+Write the win condition logic.
+
+Prompt:
+Write a simple OOPs Java code to implement NxN tic tac toa with wincount given,
+if number of consecutive Os or Xs in a line equals "wincount" then the player wins.Write the win condition logic.
+Note: Don't use multi-threading, write comments for better understanding.
+
+
+
+
+
+
