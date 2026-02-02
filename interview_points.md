@@ -30,6 +30,28 @@ Here are your key achievements elaborated using the **STAR method (Situation, Ta
     *   Implemented **chunked processing** (or backpressure handling) to process records typically in constant memory space.
 *   **Result:** completely eliminated OOM crashes related to file processing. The system can now handle files **10x-100x larger** than before (e.g., scaling from MBs to GBs) with consistent performance and lower resource utilization.
 
+<details>
+<summary>Efficiency of File upload & download feature</summary>
+
+STAR
+
+1. **Situation**:
+   1. Advertisers sometimes want to upload/download items data directly in bulk through our campaign creation portal instead of searching and then adding.
+   2. Our legacy system was processing the files in-memory completely. Means, if user request for download, it will be downloaded via and if user wants to upload, the file will be uploaded as a whole.
+   3. This is nice, till we have small users and small catalog of products.
+   4. But as customers base increases and high volume of products catalog merged, system started having severe issuses.
+   5. First, due to heavy processing on server side, our thread contention started elevating and due to which our simple read apis calls were affected impacting the user experience.
+   6. Second, large files starting causing OOM, server crashes, new server, service downtime, re-work for new request.
+
+2. **Task**: 
+   1. I had to re-design the file processing system to handle the GBs scale datasets reliably, which improves the overall user experience without affecting any SLAs
+3. **Action**:
+   1. Purposed a design 
+4. **Result**:
+    1.
+
+</details>
+
 ---
 
 ## 3. MCP Server for Catalog Services
