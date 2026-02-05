@@ -31,7 +31,7 @@ Here are your key achievements elaborated using the **STAR method (Situation, Ta
 *   **Result:** completely eliminated OOM crashes related to file processing. The system can now handle files **10x-100x larger** than before (e.g., scaling from MBs to GBs) with consistent performance and lower resource utilization.
 
 <details>
-<summary>Efficiency of File upload & download feature</summary>
+<summary>Optimization of legacy File upload & download feature</summary>
 
 STAR
 
@@ -44,11 +44,23 @@ STAR
    6. Second, large files starting causing OOM, server crashes, new server, service downtime, re-work for new request.
 
 2. **Task**: 
-   1. I had to re-design the file processing system to handle the GBs scale datasets reliably, which improves the overall user experience without affecting any SLAs
+   1. It was Operational Excellence task, where I had to re-design the file processing system to handle approx 100MB data scale datasets upload/download functionality reliably, to improves the overall user experience without affecting any SLAs
+
 3. **Action**:
-   1. Purposed a design 
+   1. Purposed a HLD design to stakeholders 
+   2. HLD involves the system components in write and read path which were affected by this change
+   3. We had metrics which shows that downloads were more than uploads, giving insight that it is read heavy application
+   4. Also we decided that in write path processing can be async with SLA of 1 min, but data validation will be with minimal latency of around ~2s.
+   5. Means user can upload via a POST REST call, and get to know about the data is valid within 2s, but the actual processing of data can take time upto 1 min by that time, user will get in progress status and which will either get completed or failed
+   6. For the initial phase we took that oncall should handle the failed uploads, but in later phase we implemented the retry job for the failed ones.
+   7. In read path, the file was downloaded from GCS by streaming i/o support provided by GCS sdk and scala support of in-memory akka streams.
+
 4. **Result**:
-    1.
+    1. The APIs for upload and download became more resilient and their performance got optimized
+    2. There were almost negligible timeout issues in upload & download APIs, giving very smooth user experience
+    3. There were no integration efforts needed from UI, as this migration to new design was done in a backward compatible manner
+    4. There were some downstream batch jobs as well, which use to download files in a regular intervals, the failures for those also got reduced.
+    5. For user, it increased the capacity of upload in a single file saving much of the time and monotonous efforts in multiple uploads and downloads.
 
 </details>
 
