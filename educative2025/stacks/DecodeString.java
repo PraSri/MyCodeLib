@@ -4,6 +4,7 @@ import java.util.Stack;
 
 public class DecodeString {
     public static String decodeString(String s) {
+
         // Initialize two stacks: one for numbers (repeat counts) and one for strings
         Stack<Integer> countStack = new Stack<>();
         Stack<String> stringStack = new Stack<>();
