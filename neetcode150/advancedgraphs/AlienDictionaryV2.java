@@ -4,22 +4,26 @@ import java.util.*;
 
 /**
  * Alien Dictionary Problem - Find character ordering from sorted alien words.
- * 
+ * <p>
  * Solution: Graph + Topological Sort (Kahn's Algorithm)
- * 
+ * <p>
  * Topological sort is used for DAG (Directed Acyclic Graph) where each edge u -> v
  * means u comes before v in the ordering.
- * 
+ * <p>
  * Approach:
  * 1. Build a directed graph from character ordering constraints
  * 2. Track in-degree count for each character
  * 3. Process nodes with in-degree 0 first (BFS)
  * 4. If all nodes are processed, we have a valid ordering; otherwise, a cycle exists
- * 
+ * <p>
  * Time Complexity: O(C) where C is total length of all words
  * Space Complexity: O(U) where U is number of unique characters
  */
 public class AlienDictionaryV2 {
+
+    // Input: ["hrn","hrf","er","enn","rfnn"]
+    //
+    //Output: "hernf"
 
     private final Map<Character, Set<Character>> adjacencyList;
     private final Map<Character, Integer> inDegree;
@@ -29,6 +33,13 @@ public class AlienDictionaryV2 {
         this.adjacencyList = new HashMap<>();
         this.inDegree = new HashMap<>();
         this.uniqueCharacters = new LinkedHashSet<>();
+    }
+
+    /**
+     * Static convenience method for quick usage.
+     */
+    public static String alienOrderV2(List<String> words) {
+        return new AlienDictionaryV2().alienOrder(words);
     }
 
     /**
@@ -78,7 +89,7 @@ public class AlienDictionaryV2 {
             String nextWord = words.get(i + 1);
 
             // Validate: prefix word should not come after the longer word
-            if (currentWord.length() > nextWord.length() 
+            if (currentWord.length() > nextWord.length()
                     && currentWord.startsWith(nextWord)) {
                 return false;
             }
@@ -94,7 +105,7 @@ public class AlienDictionaryV2 {
      */
     private void addEdgeFromDifference(String word1, String word2) {
         int minLength = Math.min(word1.length(), word2.length());
-        
+
         for (int i = 0; i < minLength; i++) {
             char from = word1.charAt(i);
             char to = word2.charAt(i);
@@ -102,7 +113,7 @@ public class AlienDictionaryV2 {
             if (from != to) {
                 // Only add edge if it doesn't already exist (Set handles duplicates)
                 if (adjacencyList.get(from).add(to)) {
-                    inDegree.merge(to, 1, Integer::sum);
+                    inDegree.merge(to, 1, Integer::sum); // increase indegree of 'to'
                 }
                 break; // Only first difference matters
             }
@@ -131,7 +142,7 @@ public class AlienDictionaryV2 {
 
             // Reduce in-degree for all neighbors
             for (char neighbor : adjacencyList.getOrDefault(current, Collections.emptySet())) {
-                int newDegree = inDegree.merge(neighbor, -1, Integer::sum);
+                int newDegree = inDegree.merge(neighbor, -1, Integer::sum); // reduce indegree
                 if (newDegree == 0) {
                     queue.offer(neighbor);
                 }
@@ -144,12 +155,5 @@ public class AlienDictionaryV2 {
         }
 
         return result.toString();
-    }
-
-    /**
-     * Static convenience method for quick usage.
-     */
-    public static String alienOrderV2(List<String> words) {
-        return new AlienDictionaryV2().alienOrder(words);
     }
 }
