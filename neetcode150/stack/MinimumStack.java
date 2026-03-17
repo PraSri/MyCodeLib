@@ -1,12 +1,14 @@
 package stack;
 
-import java.util.*;
+import java.util.Stack;
 
-/**Sliding Window Maximum (Hard)
-https://leetcode.com/problems/sliding-window-maximum/
-
-Max Stack (Hard)
-https://leetcode.com/problems/max-stack/*/
+/**
+ * Sliding Window Maximum (Hard)
+ * https://leetcode.com/problems/sliding-window-maximum/
+ * <p>
+ * Max Stack (Hard)
+ * https://leetcode.com/problems/max-stack/
+ */
 
 public class MinimumStack {
     //Input: ["MinStack", "push", 1, "push", 2, "push", 0, "getMin", "pop", "top", "getMin"]
@@ -25,38 +27,38 @@ public class MinimumStack {
 
     static class MinStack {
 
-        Stack<Integer> s1, s2;
+        Stack<Integer> mainStack, minTrackStack;
 
         public MinStack() {
-            s1 = new Stack<>();
-            s2 = new Stack<>(); // keeps min value
+            mainStack = new Stack<>();
+            minTrackStack = new Stack<>(); // keeps min value
         }
 
         public void push(int val) {
-            s1.push(val);
-            if(s2.empty()) {
-                s2.push(val);
+            mainStack.push(val);
+            if (minTrackStack.empty()) {
+                minTrackStack.push(val);
             } else {
-                Integer currMin = s2.peek();
-                if(currMin < val) {
-                    s2.push(currMin);
+                Integer currMin = minTrackStack.peek();
+                if (currMin < val) {
+                    minTrackStack.push(currMin);
                 } else {
-                    s2.push(val);
+                    minTrackStack.push(val);
                 }
             }
         }
 
         public void pop() {
-            s1.pop();
-            s2.pop();
+            mainStack.pop();
+            minTrackStack.pop();
         }
 
         public int top() {
-            return s1.peek();
+            return mainStack.peek();
         }
 
         public int getMin() {
-            return s2.peek();
+            return minTrackStack.peek();
         }
     }
 

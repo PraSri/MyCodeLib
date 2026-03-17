@@ -57,6 +57,33 @@ public class UniquePaths {
      * https://leetcode.com/problems/unique-paths-ii
      */
     public static class UniquePathsIi {
+        public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+            int m = obstacleGrid.length;
+            int n = obstacleGrid[0].length;
+            if (obstacleGrid[0][0] == 1 || obstacleGrid[m - 1][n - 1] == 1) {
+                return 0;
+            }
+            int[][] dp = new int[m][n];
+            for (int[] row : dp) {
+                Arrays.fill(row, -1);
+            }
+            return dfs(0, 0, m, n, obstacleGrid, dp);
+        }
+
+        private int dfs(int i, int j, int m, int n, int[][] obstacleGrid, int[][] dp) {
+            if (i == m - 1 && j == n - 1) {
+                return 1;
+            }
+            if (i >= m || j >= n || obstacleGrid[i][j] == 1) {
+                return 0;
+            }
+            if (dp[i][j] != -1) {
+                return dp[i][j];
+            }
+            int right = dfs(i, j + 1, m, n, obstacleGrid, dp);
+            int down = dfs(i + 1, j, m, n, obstacleGrid, dp);
+            return dp[i][j] = right + down;
+        }
     }
 
     /**

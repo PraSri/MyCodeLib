@@ -1,9 +1,6 @@
 package intervals;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /***### Similar Questions  Merge Intervals (LeetCode 56)
 
@@ -96,6 +93,37 @@ public class MergeIntervals {
      * https://leetcode.com/problems/insert-interval/">...</a>](https://leetcode.com/problems/insert-interval/)
      */
     public static class InsertInterval {
+
+        public int[][] insert(int[][] intervals, int[] newInterval) {
+            int n = intervals.length;
+            int i = 0;
+            List<int[]> res = new ArrayList<>();
+
+            while (i < n) {
+                // newInterval se phele wale
+                while (i < n && intervals[i][0] < newInterval[0]) {
+                    res.add(intervals[i]);
+                    i++;
+                }
+                // newInterval se overlapping
+
+                while (i < n && newInterval[1] >= intervals[i][0]) {
+                    newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+                    newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+                    i++;
+                }
+
+                res.add(newInterval);
+
+                // newInterval ke baad
+                while (i < n) {
+                    res.add(intervals[i]);
+                    i++;
+                }
+            }
+
+            return res.toArray(new int[res.size()][]);
+        }
     }
 
     /**
@@ -103,6 +131,16 @@ public class MergeIntervals {
      * https://leetcode.com/problems/meeting-rooms/](https://leetcode.com/problems/meeting-rooms/)
      */
     public static class MeetingRooms {
+        public boolean canAttendMeetings(List<Interval> intervals) {
+            //if current meeting ka start pichli meeting ke end se jada hai toh false
+            intervals.sort(Comparator.comparing(a -> a.start));
+            for (int i = 1; i < intervals.size(); i++) {
+                if (intervals.get(i - 1).end > intervals.get(i).start) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     /**
@@ -110,6 +148,17 @@ public class MergeIntervals {
      * https://leetcode.com/problems/meeting-rooms-ii/](https://leetcode.com/problems/meeting-rooms-ii/)
      */
     public static class MeetingRoomsIi {
+        public int minMeetingRooms(List<Interval> intervals) {
+            intervals.sort(Comparator.comparing(a -> a.start));
+            PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+            for (Interval interval : intervals) {
+                if (!minHeap.isEmpty() && minHeap.peek() <= interval.start) {
+                    minHeap.poll();
+                }
+                minHeap.offer(interval.end);
+            }
+            return minHeap.size();
+        }
     }
 
     /**

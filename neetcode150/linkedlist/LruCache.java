@@ -1,37 +1,27 @@
 package linkedlist;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-/**LFU Cache (Hard)
-https://leetcode.com/problems/lfu-cache/
-
-Design In-Memory File System (Hard)
-https://leetcode.com/problems/design-in-memory-file-system/
-
-Design Compressed String Iterator (Easy)
-https://leetcode.com/problems/design-compressed-string-iterator/
-
-Design Most Recently Used Queue (Medium)
-https://leetcode.com/problems/design-most-recently-used-queue/*/
+/**
+ * LFU Cache (Hard)
+ * https://leetcode.com/problems/lfu-cache/
+ * <p>
+ * Design In-Memory File System (Hard)
+ * https://leetcode.com/problems/design-in-memory-file-system/
+ * <p>
+ * Design Compressed String Iterator (Easy)
+ * https://leetcode.com/problems/design-compressed-string-iterator/
+ * <p>
+ * Design Most Recently Used Queue (Medium)
+ * https://leetcode.com/problems/design-most-recently-used-queue/
+ */
 
 public class LruCache {
-
-    private static class Node {
-        int key;
-        int value;
-        Node prev;
-        Node next;
-
-        public Node(int k, int v) {
-            key = k;
-            value = v;
-        }
-    }
 
     Node tail = new Node(0, 0);
     Node head = new Node(0, 0);
     Map<Integer, Node> map = new HashMap<>();
-
     int capacity;
 
     public LruCache(int capacity) {
@@ -76,6 +66,18 @@ public class LruCache {
 
     }
 
+    private static class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+
+        public Node(int k, int v) {
+            key = k;
+            value = v;
+        }
+    }
+
     /**
      * <a href="https://leetcode.com/problems/lfu-cache/">LeetCode - LFU Cache</a>
      */
@@ -94,7 +96,8 @@ public class LruCache {
      * <a href="https://leetcode.com/problems/design-compressed-string-iterator/">LeetCode - Design Compressed String Iterator</a>
      */
     public static class DesignCompressedStringIterator {
-        // placeholder
+        // solution - https://www.hellointerview.com/community/questions/file-system-design/cm5eguhab02gq838obxubceit
+        
     }
 
     /**

@@ -43,16 +43,6 @@ public class MeetingRooms {
         return true;
     }
 
-    //   Definition of Interval:
-    public static class Interval {
-        public int start, end;
-
-        public Interval(int start, int end) {
-            this.start = start;
-            this.end = end;
-        }
-    }
-
     //Meeting Rooms I sirf overlap detect karta hai,
     //Meeting Rooms II overlap ka maximum count nikalta hai.
 
