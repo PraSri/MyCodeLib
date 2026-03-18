@@ -3,18 +3,18 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/fingertips" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/javaspecific" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/leetcode" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/practice" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/lc-classifier" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/educative2025" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/striver" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/random" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/design" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/phonepe" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/neetcode150" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/design" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/educative2025" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/fingertips" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/javaspecific" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/lc-classifier" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/leetcode" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/phonepe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/practice" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/random" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/archived/striver" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
