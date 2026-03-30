@@ -1,0 +1,13 @@
+
+
+1. intl expansion -> onboarding multi tenants across global markets with minimum disruptions
+2. streaming download/upload functionality
+3. inclusion of variants in catalog -> making user search experience pleasant by aggregating all the variant under a single base variant before that search was scattered
+4. rolling out sandbox env for AB testing - stable env than stage, with lenient SLAs
+5. Migration from monolithic code base to mono repo - segregation of microservices
+6. MCP server for Walmart catalog -
+    to Facilitate interaction of the catalog data with AI Agents in a secure and fault-tolerant way,
+    so that LLMs can query and understand the user context
+    Enabling data serving capacity from our catalog serving APIs
+    Enabling semantic search on top REST API via introducing vector Db like ChromaDb
+7. Fixed prod issue, with GC, max heap size, leakage in kafak consumer pods restarts
