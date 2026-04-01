@@ -443,7 +443,7 @@ store [https://leetcode.com/discuss/interview-question/279913/key-value-store-wi
 Round 2[Lean - Hire]: Design News Aggregator and feed
 system. [Interviewer was not good; he started asking questions before I fully grasped what he was asking ... there are all kind of people who are Engineering Manager nowadays, I guess :)] [Tough luck]
 
-Round 3[Hire]: Design Stack overflow API end-2-end and other questions related to designing etc.
+Round 3[Hire]: Design StackNc overflow API end-2-end and other questions related to designing etc.
 
 * 1:30 minutes round
 * Divided in 2 parts 45 minutes each. You need to code end to end API in 45 minutes with working and prod ready code.
