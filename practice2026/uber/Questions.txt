@@ -1,0 +1,67 @@
+
+Number of Islands II
+
+
+Problem Summary
+You’re given:
+
+A list of distinct words
+
+A corresponding list of positive costs
+
+You must construct a Binary Search Tree (BST) such that:
+
+Inorder traversal gives words in lexicographical order
+
+The total cost of the tree is minimized
+
+Cost Formula
+If a word is placed at level L:
+
+Contribution = (L + 1) × cost(word)
+The goal is to minimize the total weighted cost.
+
+Example (Simplified)
+Input
+
+One Optimal Tree:
+
+Words: ["apple", "banana", "cherry"]
+Costs: [3, 2, 4]
+
+banana (0)
+       /       \
+  apple (1)   cherry (1)
+TotalCost:
+
+banana ? (1 × 2) = 2
+
+apple ? (2 × 3) = 6
+
+cherry ? (2 × 4) = 8 Total = 16
+
+What This Problem Really Was
+This wasn’t a simple BST question.
+
+It was a classic Optimal Binary Search Tree (OBST) / Dynamic Programming problem in disguise.
+
+You needed to:
+
+Realize that not all BSTs are equal
+
+Use DP to decide which word should be the root to minimize weighted depth
+
+Think in terms of subproblems over sorted ranges
+
+Key takeaway:
+Uber tests your ability to:
+
+Identify known problem patterns
+
+Translate problem statements into DP formulations
+
+Reason about cost trade-offs, not just code
+
+LLD questions in Uber:
+http://reddit.com/r/leetcode/comments/1ota2ac/uber_low_level_design_interview_questions/
+

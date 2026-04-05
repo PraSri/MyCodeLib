@@ -1,0 +1,93 @@
+Here is a curated list of DSA and related technical questions asked for Uber's L5A (Senior Software Engineer) role, based on recent candidate experiences from the last two months.
+
+---
+
+## ? Graph Algorithms & Union-Find
+1. **Number of Islands II (LC #305)**: Dynamically adding nodes and tracking connected components in a grid, solved with **Union-Find (DSU)**, path compression, and union by rank[reference:0].
+2. **Disjoint Set Union (DSU) Problem**: Asked in an elimination round; required an optimal solution with thorough follow-ups[reference:1].
+3. **Parallel Courses (LC #1136) / Course Schedule II (LC #210)**: Topological sort and BFS/DFS problems related to course dependencies[reference:2].
+4. **Multiple-Source BFS**: A problem where a BFS was required to propagate from multiple sources simultaneously[reference:3].
+5. **Bus Routes (LC #815)**: Finding the minimum number of buses required to reach a destination by modeling bus stops and routes as a graph and performing BFS[reference:4].
+6. **Alien Dictionary (LC #269)**: Deriving a character order from a list of words using a graph and topological sort (Kahn's algorithm)[reference:5].
+7. **Clone Graph (LC #133)**: Deep copy of an undirected graph using BFS/DFS[reference:6].
+8. **Minimum Edge Reversals**: A problem where you need to reverse the minimum number of edges so that every node is reachable from a given source[reference:7].
+9. **Grid Robots & Nearest Blockers**: Precomputing nearest blockers in four cardinal directions for a 2D grid to answer movement queries in O(1)[reference:8].
+
+## ? Arrays, Hashing & Two Pointers
+10. **Merge Intervals (LC #56)**: Classic interval merging; sorting + linear scan is key[reference:9].
+11. **Trapping Rain Water (LC #42)**: Hard array problem solved with two pointers from both ends to calculate trapped water[reference:10].
+12. **Squares of a Sorted Array (LC #977)**: Given a sorted array, reorder elements based on the sorted order of their squares using a two-pointer merge approach. Follow-up: return the k-th element from the square-sorted order[reference:11].
+13. **Container With Most Water (LC #11)**: Two-pointer technique on array heights to maximize area[reference:12].
+14. **Product of Array Except Self (LC #238)**: Prefix and suffix products without division[reference:13].
+15. **Two Sum (LC #1)**: Hashmap-based solution for O(n) time[reference:14].
+16. **Valid Parentheses (LC #20)**: Stack-based validation[reference:15].
+17. **Spiral Matrix (LC #54)**: Traversing a matrix in spiral order[reference:16].
+18. **Word Search (LC #79)**: Modified version with 8-direction movement and path constraints[reference:17].
+
+## ? Strings
+19. **Palindrome Problems**: Number/string manipulation focusing on palindrome logic and edge cases[reference:18].
+20. **Find the Closest Palindrome (LC #564)**: Finding the nearest palindrome to a given number[reference:19].
+21. **Basic Calculator II (LC #227)**: Evaluate arithmetic expressions with +, -, *, /[reference:20].
+22. **Expression Add Operators (LC #282)**: Adding operators to a string to reach a target value using backtracking[reference:21].
+
+## ? Dynamic Programming (DP)
+23. **Optimal BST / Weighted BST Minimization**: Minimize total weighted cost where cost = (depth + 1) × cost(word); this is a disguised **Optimal Binary Search Tree (OBST)** problem solved with DP[reference:22].
+24. **2D DP Problem**: A 2D DP question where a brute-force recursive solution was not enough and required optimization[reference:23].
+25. **Edit Distance (LC #72)**: Hard DP measuring minimum operations to convert one string to another[reference:24].
+26. **Longest Increasing Subsequence (LC #300)**: Classic DP with binary search optimization[reference:25].
+27. **Maximum Product Subarray (LC #152)**: DP tracking both min and max products[reference:26].
+28. **Recursion with DP Follow-Up**: A recursion problem that extended into a DP optimization[reference:27].
+
+## ? Trees & Binary Search Trees (BST)
+29. **Tree DP (Root vs Leaf Race)**: Given a tree with parent pointers, two parties race from root and leaf; compute maximum points based on arrival times using DFS distance calculation[reference:28].
+30. **Insert into Complete Binary Tree (LC #919)**: Using BFS level-order traversal to find the insertion point[reference:29].
+31. **Serialize and Deserialize Binary Tree (LC #297)**: Hard tree problem; understanding traversal and serialization trade-offs[reference:30].
+32. **Kth Smallest Element in a BST (LC #230)**: Inorder traversal or recursive counting[reference:31].
+33. **Tree Traversal Problems**: BST traversal requiring optimal solution[reference:32].
+34. **Lowest Common Ancestor (LCA)**: Tree-based LCA problems frequently appear.
+
+## ? Data Structure Design
+35. **LRU Cache (LC #146)**: **Very high-frequency**—design a Least Recently Used cache using **hashmap + doubly linked list** for O(1) operations[reference:33][reference:34].
+36. **Design a Data Structure for Insert, Delete, GetRandom in O(1) (LC #380)**: Using a hashmap + array list[reference:35].
+37. **Design Bounded Blocking Queue (LC #1188)**: Thread-safe blocking queue design[reference:36].
+38. **Flatten Nested List Iterator (LC #341)**: Depth-first traversal and iterator design[reference:37].
+39. **Design Hit Counter (LC #362)**: Tracking hits in the last 5 minutes using a queue or circular array[reference:38].
+40. **Top K Frequent Elements (LC #347)**: Heap or bucket sort[reference:39].
+41. **Design TinyURL (LC #535)**: URL shortening service[reference:40].
+
+## ? Search, Backtracking & Miscellaneous
+42. **Sliding Puzzle (LC #773)**: BFS on state space to solve a 2x3 sliding puzzle[reference:41].
+43. **Permutations (LC #46)**: Backtracking for all permutations[reference:42].
+44. **Reconstruct Itinerary (LC #332)**: Eulerian path in a graph[reference:43].
+45. **Evaluate Division (LC #399)**: Graph-based calculation of variable ratios[reference:44].
+46. **Random Pick with Weight (LC #528)**: Prefix sums + binary search[reference:45].
+47. **Longest Continuous Subarray With Absolute Diff ? Limit (LC #1438)**: Sliding window + deques[reference:46].
+
+## ?? System Design (High-Level Design) – for L5A
+48. **Design a Distributed Message Broker (Kafka-like)**: Topic-based pub/sub, partitioned ordered storage, consumer groups, at-least-once delivery[reference:47].
+49. **Design Uber Eats (Near Real-Time Metrics)**: Order value + Top-K items for 1h/1d/1w windows; focus on real-time aggregation[reference:48].
+50. **Design a Rate Limiter**: Token bucket or sliding window for API rate limiting[reference:49].
+51. **Design a Ride-Matching System / Uber Ride Matching**: Geospatial indexing, real-time location streams, and matching algorithms[reference:50].
+52. **Design a HeatMap of Drivers**: Tracking driver locations via geohashing and Redis aggregation[reference:51].
+53. **Design a Key-Value Cache (In-Memory)**: Single-node cache with eviction strategies (LRU, TTL), concurrency, and Write-Ahead Log[reference:52].
+54. **Design a News Feed (Twitter/Instagram-style)**: Post distribution, fan-out, and ranking[reference:53].
+55. **Design Uber's Surge Pricing**: Dynamic pricing based on supply and demand[reference:54].
+56. **Design Google Maps / Navigation System**: Route planning and real-time traffic[reference:55].
+57. **Design a Meeting Scheduler**: Finding common free slots across multiple calendars[reference:56].
+
+## ? Low-Level Design (LLD) & Object-Oriented Design
+58. **Meeting-Room Booking System with History & Scheduling Constraints**: Design with availability checks, conflict resolution, and booking history[reference:57].
+59. **API + Data Structure Design for Employee-Manager Hierarchy**: Implement `get(employee)`, `changeManager()`, `addEmployee()` with at least 2 O(1) operations (hashmaps + reverse mappings)[reference:58].
+60. **Linux Command System Design (Trie-based)**: Autocomplete or command suggestion using a trie[reference:59].
+61. **Event Tracking / Counting System**: Scalable design for counting events with time windows[reference:60].
+62. **Shopping Cart Design**: Class design for cart operations and persistence[reference:61].
+
+## ? Preparation Tips Based on Recent Experiences
+- **DSA rounds are elimination-focused** and expect optimized solutions, not just brute force[reference:62].
+- **Graphs and Union-Find** are heavily emphasized; be comfortable with DSU, BFS/DFS, and topological sort[reference:63].
+- **DP appears at medium-hard levels**; practice state definition and space optimization[reference:64][reference:65].
+- **For L5A, system design rounds are critical** and often involve real-world Uber scenarios like ride-matching, surge pricing, and real-time metrics[reference:66].
+- **LLD rounds require complete working code** with good design patterns and test cases[reference:67].
+- **Use LeetCode's Uber-tagged questions** as a primary resource—many candidates report encountering exact or similar problems[reference:68].
+
+Good luck with your interview preparation!

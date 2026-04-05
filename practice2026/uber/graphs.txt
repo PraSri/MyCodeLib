@@ -1,0 +1,65 @@
+
+
+graphs represented in 2 ways
+1. adjacency list
+2. matrix
+
+graphs => nodes(vertices) + edges
+
+connected graph - there is a path between every pair of nodes
+
+tree = connected graph with no cycles
+
+graphs
+1. directed  - one direction
+2. undirected - both directions
+
+traversals
+dfs - keep track of visited nodes
+bfs - level-by-level traversal - explore all nodes at the current level
+
+
+DFS:
+Counting connected components
+Boundary DFS
+Explore all possible paths
+traverse hierarchical structures
+find connected components
+detect cycles
+process nodes in a specific order (pre-order, post-order, in-order)
+
+BFS:
+Shortest Path in a Graph
+Topological Sort
+
+Topological sort:
+DAG -> linear ordering of nodes, such that directed edges only point forward from left to right
+Kahn's Algorithm:
+indegree - no. of incoming edges to that node
+BFS where nodes with lower indegrees are placed on the queue before nodes with
+higher indegrees
+1. cal all indegree of each node
+2. add all nodes with an indegree of 0 to a queue
+3. while the queue is not empty:
+    a. dequeue first node and add it to topological order
+    b. for each neighbour of the node, decrement its indegree by 1,
+    if neighbor's indegree is now 0, add it to the queue
+4. return the topological order
+complexity = O(V+E)
+
+
+Graphs algorithms:
+
+1. Dijkstra (Shortest path - non-negative weights, single source, greedy) - O(ElogV)/O(V)
+2. Bellman-Ford (handles negative weights, negative cycles)  - O(V*E)
+3. Floyd-Warshall (all pairs shortest path) - O(V^3)
+4. Prim's (Minimum Spanning Tree, connected graph) - O(ElogV) - Minimum cost to connect
+5. Kruskal's  (MST using DSU)
+
+MST => Minimum Spanning Tree
+in a graph :
+connects all vertices (nodes)
+has no cycles
+uses exactly V-1 edges
+Minimum total edge weight (cost)
+
