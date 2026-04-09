@@ -1,43 +1,25 @@
 ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
-1,https://leetcode.com/problems/two-sum,Two Sum,Easy,,57.1%,62.5%
-2,https://leetcode.com/problems/add-two-numbers,Add Two Numbers,Medium,,47.9%,37.5%
 3,https://leetcode.com/problems/longest-substring-without-repeating-characters,Longest Substring Without Repeating Characters,Medium,,38.5%,37.5%
 4,https://leetcode.com/problems/median-of-two-sorted-arrays,Median of Two Sorted Arrays,Hard,,45.9%,25.0%
 5,https://leetcode.com/problems/longest-palindromic-substring,Longest Palindromic Substring,Medium,,37.3%,25.0%
-7,https://leetcode.com/problems/reverse-integer,Reverse Integer,Medium,,31.5%,37.5%
-8,https://leetcode.com/problems/string-to-integer-atoi,String to Integer (atoi),Medium,,20.6%,50.0%
-9,https://leetcode.com/problems/palindrome-number,Palindrome Number,Easy,,60.2%,25.0%
 10,https://leetcode.com/problems/regular-expression-matching,Regular Expression Matching,Hard,,30.4%,50.0%
 11,https://leetcode.com/problems/container-with-most-water,Container With Most Water,Medium,,59.5%,37.5%
-13,https://leetcode.com/problems/roman-to-integer,Roman to Integer,Easy,,66.2%,50.0%
-14,https://leetcode.com/problems/longest-common-prefix,Longest Common Prefix,Easy,,47.1%,37.5%
-15,https://leetcode.com/problems/3sum,3Sum,Medium,,38.6%,25.0%
 17,https://leetcode.com/problems/letter-combinations-of-a-phone-number,Letter Combinations of a Phone Number,Medium,,65.5%,62.5%
-20,https://leetcode.com/problems/valid-parentheses,Valid Parentheses,Easy,,43.7%,37.5%
 22,https://leetcode.com/problems/generate-parentheses,Generate Parentheses,Medium,,78.2%,50.0%
 23,https://leetcode.com/problems/merge-k-sorted-lists,Merge k Sorted Lists,Hard,,58.8%,62.5%
 24,https://leetcode.com/problems/swap-nodes-in-pairs,Swap Nodes in Pairs,Medium,,68.9%,50.0%
-26,https://leetcode.com/problems/remove-duplicates-from-sorted-array,Remove Duplicates from Sorted Array,Easy,,62.2%,25.0%
-27,https://leetcode.com/problems/remove-element,Remove Element,Easy,,61.3%,25.0%
 31,https://leetcode.com/problems/next-permutation,Next Permutation,Medium,,44.7%,50.0%
 32,https://leetcode.com/problems/longest-valid-parentheses,Longest Valid Parentheses,Hard,,38.0%,25.0%
 33,https://leetcode.com/problems/search-in-rotated-sorted-array,Search in Rotated Sorted Array,Medium,,44.1%,62.5%
-34,https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array,Find First and Last Position of Element in Sorted Array,Medium,,48.3%,37.5%
 36,https://leetcode.com/problems/valid-sudoku,Valid Sudoku,Medium,,64.1%,62.5%
 37,https://leetcode.com/problems/sudoku-solver,Sudoku Solver,Hard,,65.4%,62.5%
 39,https://leetcode.com/problems/combination-sum,Combination Sum,Medium,,76.1%,50.0%
 42,https://leetcode.com/problems/trapping-rain-water,Trapping Rain Water,Hard,,66.8%,37.5%
 46,https://leetcode.com/problems/permutations,Permutations,Medium,,81.6%,37.5%
-48,https://leetcode.com/problems/rotate-image,Rotate Image,Medium,,79.3%,50.0%
-49,https://leetcode.com/problems/group-anagrams,Group Anagrams,Medium,,72.2%,62.5%
-53,https://leetcode.com/problems/maximum-subarray,Maximum Subarray,Medium,,53.0%,37.5%
-54,https://leetcode.com/problems/spiral-matrix,Spiral Matrix,Medium,,56.1%,62.5%
 56,https://leetcode.com/problems/merge-intervals,Merge Intervals,Medium,,51.1%,37.5%
 57,https://leetcode.com/problems/insert-interval,Insert Interval,Medium,,44.7%,37.5%
 64,https://leetcode.com/problems/minimum-path-sum,Minimum Path Sum,Medium,,67.8%,37.5%
 68,https://leetcode.com/problems/text-justification,Text Justification,Hard,,50.4%,75.0%
-69,https://leetcode.com/problems/sqrtx,Sqrt(x),Easy,,41.4%,37.5%
-70,https://leetcode.com/problems/climbing-stairs,Climbing Stairs,Easy,,53.9%,25.0%
 73,https://leetcode.com/problems/set-matrix-zeroes,Set Matrix Zeroes,Medium,,62.4%,25.0%
 76,https://leetcode.com/problems/minimum-window-substring,Minimum Window Substring,Hard,,46.9%,62.5%
 78,https://leetcode.com/problems/subsets,Subsets,Medium,,82.0%,50.0%
@@ -47,10 +29,7 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 84,https://leetcode.com/problems/largest-rectangle-in-histogram,Largest Rectangle in Histogram,Hard,,49.3%,50.0%
 91,https://leetcode.com/problems/decode-ways,Decode Ways,Medium,,37.6%,62.5%
 98,https://leetcode.com/problems/validate-binary-search-tree,Validate Binary Search Tree,Medium,,35.3%,25.0%
-104,https://leetcode.com/problems/maximum-depth-of-binary-tree,Maximum Depth of Binary Tree,Easy,,77.9%,62.5%
-121,https://leetcode.com/problems/best-time-to-buy-and-sell-stock,Best Time to Buy and Sell Stock,Easy,,56.4%,75.0%
 124,https://leetcode.com/problems/binary-tree-maximum-path-sum,Binary Tree Maximum Path Sum,Hard,,42.0%,37.5%
-125,https://leetcode.com/problems/valid-palindrome,Valid Palindrome,Easy,,52.8%,50.0%
 127,https://leetcode.com/problems/word-ladder,Word Ladder,Hard,,44.9%,37.5%
 128,https://leetcode.com/problems/longest-consecutive-sequence,Longest Consecutive Sequence,Medium,,47.0%,37.5%
 133,https://leetcode.com/problems/clone-graph,Clone Graph,Medium,,64.7%,50.0%
@@ -58,47 +37,34 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 138,https://leetcode.com/problems/copy-list-with-random-pointer,Copy List with Random Pointer,Medium,,62.4%,50.0%
 139,https://leetcode.com/problems/word-break,Word Break,Medium,,49.1%,62.5%
 140,https://leetcode.com/problems/word-break-ii,Word Break II,Hard,,55.1%,50.0%
-141,https://leetcode.com/problems/linked-list-cycle,Linked List Cycle,Easy,,53.9%,25.0%
 146,https://leetcode.com/problems/lru-cache,LRU Cache,Medium,,46.8%,75.0%
 153,https://leetcode.com/problems/find-minimum-in-rotated-sorted-array,Find Minimum in Rotated Sorted Array,Medium,,53.8%,37.5%
 155,https://leetcode.com/problems/min-stack,Min Stack,Medium,,57.7%,50.0%
 161,https://leetcode.com/problems/one-edit-distance,One Edit Distance,Medium,,34.5%,50.0%
 162,https://leetcode.com/problems/find-peak-element,Find Peak Element,Medium,,46.8%,37.5%
-169,https://leetcode.com/problems/majority-element,Majority Element,Easy,,66.1%,25.0%
-171,https://leetcode.com/problems/excel-sheet-column-number,Excel Sheet Column Number,Easy,,67.2%,50.0%
 174,https://leetcode.com/problems/dungeon-game,Dungeon Game,Hard,,40.8%,50.0%
 186,https://leetcode.com/problems/reverse-words-in-a-string-ii,Reverse Words in a String II,Medium,,56.6%,50.0%
 198,https://leetcode.com/problems/house-robber,House Robber,Medium,,52.9%,50.0%
 199,https://leetcode.com/problems/binary-tree-right-side-view,Binary Tree Right Side View,Medium,,69.5%,50.0%
 200,https://leetcode.com/problems/number-of-islands,Number of Islands,Medium,,63.8%,87.5%
-202,https://leetcode.com/problems/happy-number,Happy Number,Easy,,59.2%,50.0%
-205,https://leetcode.com/problems/isomorphic-strings,Isomorphic Strings,Easy,,48.0%,25.0%
-206,https://leetcode.com/problems/reverse-linked-list,Reverse Linked List,Easy,,80.2%,50.0%
 207,https://leetcode.com/problems/course-schedule,Course Schedule,Medium,,50.8%,62.5%
 208,https://leetcode.com/problems/implement-trie-prefix-tree,Implement Trie (Prefix Tree),Medium,,69.2%,50.0%
 210,https://leetcode.com/problems/course-schedule-ii,Course Schedule II,Medium,,55.0%,62.5%
 212,https://leetcode.com/problems/word-search-ii,Word Search II,Hard,,38.1%,75.0%
 214,https://leetcode.com/problems/shortest-palindrome,Shortest Palindrome,Hard,,41.8%,37.5%
-215,https://leetcode.com/problems/kth-largest-element-in-an-array,Kth Largest Element in an Array,Medium,,68.8%,37.5%
-217,https://leetcode.com/problems/contains-duplicate,Contains Duplicate,Easy,,64.1%,25.0%
 218,https://leetcode.com/problems/the-skyline-problem,The Skyline Problem,Hard,,45.0%,37.5%
 224,https://leetcode.com/problems/basic-calculator,Basic Calculator,Hard,,46.5%,62.5%
 230,https://leetcode.com/problems/kth-smallest-element-in-a-bst,Kth Smallest Element in a BST,Medium,,76.5%,87.5%
 238,https://leetcode.com/problems/product-of-array-except-self,Product of Array Except Self,Medium,,68.6%,75.0%
 239,https://leetcode.com/problems/sliding-window-maximum,Sliding Window Maximum,Hard,,48.4%,37.5%
 240,https://leetcode.com/problems/search-a-2d-matrix-ii,Search a 2D Matrix II,Medium,,56.8%,25.0%
-242,https://leetcode.com/problems/valid-anagram,Valid Anagram,Easy,,67.8%,62.5%
-246,https://leetcode.com/problems/strobogrammatic-number,Strobogrammatic Number,Easy,,47.5%,25.0%
 249,https://leetcode.com/problems/group-shifted-strings,Group Shifted Strings,Medium,,67.7%,50.0%
 253,https://leetcode.com/problems/meeting-rooms-ii,Meeting Rooms II,Medium,,52.5%,62.5%
 254,https://leetcode.com/problems/factor-combinations,Factor Combinations,Medium,,50.5%,50.0%
 262,https://leetcode.com/problems/trips-and-users,Trips and Users,Hard,,37.7%,50.0%
-266,https://leetcode.com/problems/palindrome-permutation,Palindrome Permutation,Easy,,68.6%,50.0%
 269,https://leetcode.com/problems/alien-dictionary,Alien Dictionary,Hard,,37.1%,87.5%
 274,https://leetcode.com/problems/h-index,H-Index,Medium,,41.1%,25.0%
-283,https://leetcode.com/problems/move-zeroes,Move Zeroes,Easy,,63.5%,37.5%
 286,https://leetcode.com/problems/walls-and-gates,Walls and Gates,Medium,,63.8%,50.0%
-290,https://leetcode.com/problems/word-pattern,Word Pattern,Easy,,43.8%,50.0%
 291,https://leetcode.com/problems/word-pattern-ii,Word Pattern II,Medium,,48.8%,50.0%
 295,https://leetcode.com/problems/find-median-from-data-stream,Find Median from Data Stream,Hard,,54.2%,50.0%
 297,https://leetcode.com/problems/serialize-and-deserialize-binary-tree,Serialize and Deserialize Binary Tree,Hard,,60.3%,62.5%
@@ -116,7 +82,6 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 368,https://leetcode.com/problems/largest-divisible-subset,Largest Divisible Subset,Medium,,49.4%,25.0%
 373,https://leetcode.com/problems/find-k-pairs-with-smallest-sums,Find K Pairs with Smallest Sums,Medium,,41.5%,50.0%
 380,https://leetcode.com/problems/insert-delete-getrandom-o1,Insert Delete GetRandom O(1),Medium,,55.3%,75.0%
-383,https://leetcode.com/problems/ransom-note,Ransom Note,Easy,,65.6%,25.0%
 384,https://leetcode.com/problems/shuffle-an-array,Shuffle an Array,Medium,,59.5%,62.5%
 399,https://leetcode.com/problems/evaluate-division,Evaluate Division,Medium,,64.0%,75.0%
 410,https://leetcode.com/problems/split-array-largest-sum,Split Array Largest Sum,Hard,,59.8%,37.5%
@@ -153,7 +118,6 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 699,https://leetcode.com/problems/falling-squares,Falling Squares,Hard,,47.3%,50.0%
 723,https://leetcode.com/problems/candy-crush,Candy Crush,Medium,,77.3%,37.5%
 729,https://leetcode.com/problems/my-calendar-i,My Calendar I,Medium,,58.2%,75.0%
-733,https://leetcode.com/problems/flood-fill,Flood Fill,Easy,,67.8%,50.0%
 735,https://leetcode.com/problems/asteroid-collision,Asteroid Collision,Medium,,47.1%,50.0%
 741,https://leetcode.com/problems/cherry-pickup,Cherry Pickup,Hard,,39.1%,62.5%
 752,https://leetcode.com/problems/open-the-lock,Open the Lock,Medium,,61.1%,50.0%
@@ -176,14 +140,12 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 934,https://leetcode.com/problems/shortest-bridge,Shortest Bridge,Medium,,59.3%,62.5%
 953,https://leetcode.com/problems/verifying-an-alien-dictionary,Verifying an Alien Dictionary,Easy,,55.9%,37.5%
 959,https://leetcode.com/problems/regions-cut-by-slashes,Regions Cut By Slashes,Medium,,77.5%,50.0%
-977,https://leetcode.com/problems/squares-of-a-sorted-array,Squares of a Sorted Array,Easy,,73.6%,87.5%
 981,https://leetcode.com/problems/time-based-key-value-store,Time Based Key-Value Store,Medium,,49.7%,62.5%
 983,https://leetcode.com/problems/minimum-cost-for-tickets,Minimum Cost For Tickets,Medium,,67.4%,37.5%
 986,https://leetcode.com/problems/interval-list-intersections,Interval List Intersections,Medium,,72.9%,37.5%
 992,https://leetcode.com/problems/subarrays-with-k-different-integers,Subarrays with K Different Integers,Hard,,67.5%,37.5%
 994,https://leetcode.com/problems/rotting-oranges,Rotting Oranges,Medium,,58.1%,50.0%
 1011,https://leetcode.com/problems/capacity-to-ship-packages-within-d-days,Capacity To Ship Packages Within D Days,Medium,,73.5%,25.0%
-1064,https://leetcode.com/problems/fixed-point,Fixed Point,Easy,,63.8%,50.0%
 1136,https://leetcode.com/problems/parallel-courses,Parallel Courses,Medium,,62.0%,50.0%
 1152,https://leetcode.com/problems/analyze-user-website-visit-pattern,Analyze User Website Visit Pattern,Medium,,44.2%,25.0%
 1039,https://leetcode.com/problems/minimum-score-triangulation-of-polygon,Minimum Score Triangulation of Polygon,Medium,,67.4%,50.0%
@@ -192,17 +154,12 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 1428,https://leetcode.com/problems/leftmost-column-with-at-least-a-one,Leftmost Column with at Least a One,Medium,,55.1%,62.5%
 1326,https://leetcode.com/problems/minimum-number-of-taps-to-open-to-water-a-garden,Minimum Number of Taps to Open to Water a Garden,Hard,,51.0%,25.0%
 1334,https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance,Find the City With the Smallest Number of Neighbors at a Threshold Distance,Medium,,72.1%,50.0%
-1385,https://leetcode.com/problems/find-the-distance-value-between-two-arrays,Find the Distance Value Between Two Arrays,Easy,,71.4%,50.0%
 1400,https://leetcode.com/problems/construct-k-palindrome-strings,Construct K Palindrome Strings,Medium,,68.6%,50.0%
-1389,https://leetcode.com/problems/create-target-array-in-the-given-order,Create Target Array in the Given Order,Easy,,86.5%,25.0%
-1378,https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier,Replace Employee ID With The Unique Identifier,Easy,,83.5%,25.0%
 1438,https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit,Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit,Medium,,57.3%,87.5%
 1462,https://leetcode.com/problems/course-schedule-iv,Course Schedule IV,Medium,,59.7%,50.0%
 1519,https://leetcode.com/problems/number-of-nodes-in-the-sub-tree-with-the-same-label,Number of Nodes in the Sub-Tree With the Same Label,Medium,,55.3%,50.0%
-1539,https://leetcode.com/problems/kth-missing-positive-number,Kth Missing Positive Number,Easy,,63.2%,25.0%
 1579,https://leetcode.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable,Remove Max Number of Edges to Keep Graph Fully Traversable,Hard,,70.2%,50.0%
 1584,https://leetcode.com/problems/min-cost-to-connect-all-points,Min Cost to Connect All Points,Medium,,70.3%,37.5%
-1603,https://leetcode.com/problems/design-parking-system,Design Parking System,Easy,,87.1%,37.5%
 1642,https://leetcode.com/problems/furthest-building-you-can-reach,Furthest Building You Can Reach,Medium,,50.7%,25.0%
 1635,https://leetcode.com/problems/hopper-company-queries-i,Hopper Company Queries I,Hard,,48.1%,50.0%
 1645,https://leetcode.com/problems/hopper-company-queries-ii,Hopper Company Queries II,Hard,,39.7%,50.0%
@@ -282,7 +239,6 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 3342,https://leetcode.com/problems/find-minimum-time-to-reach-last-room-ii,Find Minimum Time to Reach Last Room II,Medium,,67.9%,50.0%
 2914,https://leetcode.com/problems/minimum-number-of-changes-to-make-binary-string-beautiful,Minimum Number of Changes to Make Binary String Beautiful,Medium,,76.4%,25.0%
 1229,https://leetcode.com/problems/meeting-scheduler,Meeting Scheduler,Medium,,55.2%,25.0%
-258,https://leetcode.com/problems/add-digits,Add Digits,Easy,,68.6%,37.5%
 1166,https://leetcode.com/problems/design-file-system,Design File System,Medium,,65.1%,37.5%
 1861,https://leetcode.com/problems/rotating-the-box,Rotating the Box,Medium,,79.2%,62.5%
 668,https://leetcode.com/problems/kth-smallest-number-in-multiplication-table,Kth Smallest Number in Multiplication Table,Hard,,53.8%,25.0%
@@ -320,15 +276,12 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 679,https://leetcode.com/problems/24-game,24 Game,Hard,,59.3%,25.0%
 1429,https://leetcode.com/problems/first-unique-number,First Unique Number,Medium,,57.0%,75.0%
 505,https://leetcode.com/problems/the-maze-ii,The Maze II,Medium,,55.0%,50.0%
-415,https://leetcode.com/problems/add-strings,Add Strings,Easy,,52.1%,25.0%
 2101,https://leetcode.com/problems/detonate-the-maximum-bombs,Detonate the Maximum Bombs,Medium,,49.9%,37.5%
 1423,https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards,Maximum Points You Can Obtain from Cards,Medium,,57.2%,37.5%
 312,https://leetcode.com/problems/burst-balloons,Burst Balloons,Hard,,62.9%,37.5%
 2636,https://leetcode.com/problems/promise-pool,Promise Pool,Medium,,79.5%,25.0%
 3443,https://leetcode.com/problems/maximum-manhattan-distance-after-k-changes,Maximum Manhattan Distance After K Changes,Medium,,54.2%,25.0%
 1293,https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination,Shortest Path in a Grid with Obstacles Elimination,Hard,,46.1%,25.0%
-680,https://leetcode.com/problems/valid-palindrome-ii,Valid Palindrome II,Easy,,44.0%,25.0%
-1005,https://leetcode.com/problems/maximize-sum-of-array-after-k-negations,Maximize Sum Of Array After K Negations,Easy,,53.5%,25.0%
 1139,https://leetcode.com/problems/largest-1-bordered-square,Largest 1-Bordered Square,Medium,,52.0%,25.0%
 795,https://leetcode.com/problems/number-of-subarrays-with-bounded-maximum,Number of Subarrays with Bounded Maximum,Medium,,54.7%,25.0%
 1627,https://leetcode.com/problems/graph-connectivity-with-threshold,Graph Connectivity With Threshold,Hard,,49.2%,25.0%
@@ -349,7 +302,6 @@ ID,URL,Title,Difficulty,progress,Acceptance %,Frequency %
 397,https://leetcode.com/problems/integer-replacement,Integer Replacement,Medium,,37.1%,25.0%
 650,https://leetcode.com/problems/2-keys-keyboard,2 Keys Keyboard,Medium,,59.3%,25.0%
 549,https://leetcode.com/problems/binary-tree-longest-consecutive-sequence-ii,Binary Tree Longest Consecutive Sequence II,Medium,,50.0%,25.0%
-643,https://leetcode.com/problems/maximum-average-subarray-i,Maximum Average Subarray I,Easy,,47.0%,25.0%
 474,https://leetcode.com/problems/ones-and-zeroes,Ones and Zeroes,Medium,,53.0%,25.0%
 1235,https://leetcode.com/problems/maximum-profit-in-job-scheduling,Maximum Profit in Job Scheduling,Hard,,54.6%,25.0%
 1475,https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop,Final Prices With a Special Discount in a Shop,Easy,,84.0%,50.0%

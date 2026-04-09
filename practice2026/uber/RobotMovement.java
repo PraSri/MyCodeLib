@@ -189,10 +189,10 @@ public class RobotMovement {
             for (int r = 0; r < rows; r++) {
                 for (int c = 0; c < cols; c++) {
                     if (grid[r][c] == 'O') {
-                        if (leftDist[r][c] == query[0] &&
-                                upDist[r][c] == query[1] &&
-                                downDist[r][c] == query[2] &&
-                                rightDist[r][c] == query[3]) {
+                        if (leftDist[r][c] + 1 == query[0] &&
+                                upDist[r][c] + 1 == query[1] &&
+                                downDist[r][c] + 1 == query[2] &&
+                                rightDist[r][c] + 1 == query[3]) {
                             result.add(new int[]{r, c});
                         }
                     }

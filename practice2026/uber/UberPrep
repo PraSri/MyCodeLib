@@ -1,0 +1,989 @@
+
+
+
+
+Graph Algorithms & Union Find
+
+1. Number of Islands II
+2. Disjoint Set Union Problem
+3. Parallel Courses/Course schedule II -> Topological sort
+4. Multi Source BFS
+5. Bus Routes
+6. Alien Dictionary
+7. Clone Graph
+8. Minimum Edge Reversals
+9. Grid Robots & Nearest Blockers
+
+
+
+
+1. Number of Islands II
+
+its prequel questions - find number of islands
+simple - grid traversal and dfs and count of islands
+for(i:0 to n)
+	for(j:0 to m)
+		if(grid[i][j]==1)
+			dfs(i, j, grid)
+			count++;
+return count;
+
+This questions asks to return number of islands after each addition of islands(1) 
+dynamically adds land positions and ask track number of islands
+means when some land (1) is added between 2 land masses, it merges to one island
+
+It is a dynamic connectivity problem
+Use DSU data structure
+
+class UnionFind{
+	int[] parent;
+	int[] rank;
+	UnionFind(int n) {
+	this.parent = new int[n];
+	this.rank = new int[n];
+		for(int i = 0;i<n;i++) {
+			parent[i] = i;
+			rank[i] = 1;
+		}
+	}
+
+	public int find(int x) {
+		if(parent[x] != x) {
+			parent[x] = find(parent[x]);
+		}
+	return parent[x];
+	}
+
+	public boolean union(int x, int y) {
+		int rootX = find(x);
+		int rootY = find(y);
+		if(rootX == rootY) {
+			return false;
+		}
+		if(rank[x] > rank[y]) {
+			parent[y] = x;
+			rank[x] = rank[x] + rank[y];
+		} else {
+			parent[x] = y;
+			rank[y] = rank[y] + ranl[x];
+		}
+		return true;
+	}
+
+}
+
+// rows in grid - m
+// cols in grid - n
+// positions[][] - where land is added
+
+public List<Integer> numberOfIslands(int m, int n, int[][] positions) {
+	int[][] grid = new int[m][n];
+	int[][] directions = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+	UnionFind uf = new UnionFind(m*n); // each cell is index = i*n + j
+	int islandCount = 0;
+	List<Integer> result = new ArrayList<>();
+	for(int[] position: positions) {
+		int row = position[0];
+		int col = position[1];
+		if(grid[row][col] == 1) {
+			result.add(islandCount);
+			continue;
+		}
+		grid[row][col] = 1;
+		islandCount++;
+		for(int[] dirs: directions) {
+			int newRow = row + dirs[0];
+			int newCol = col + dirs[1];
+			// check adjacent is valid and has land
+			if(isValid()) {
+				int currentIndex = row * n + col;
+				int adjacentIndex = newRow * n + newCol;
+				if(uf.union(currentIndex, adjacentIndex)) {
+					islandCount--;
+				}
+			}
+		}
+		result.add(islandCount);
+	}
+	return result;
+
+}
+
+time complexity = O(positions.len * alpha * (m*n))
+alpha = inverse ackerman function
+
+space complexity = O(m*n)
+
+key point to remember = convert each cell to 1D index = row * n + col = i * (number of columns) + j
+use DSU, union function returns true when actual union happens signifying that there is merge of land masses
+
+
+2. Disjoint Set Union Problem
+
+3. 
+
+a). Course schedule II
+
+n -> num of courses
+
+List<Integer> sortedOrder = new LinkedList<>();
+
+public boolean canfinish(int n, int[][] prerequisites) {
+
+Map<Integer, List<Intger>> graph = new HashMap<>();
+for(int i = 0;i<n;i++) {
+	graph.put(i, new ArrayList<>());
+}
+
+int[] indegree = new int[n];
+
+
+for(int[] pre: prerequisites) {
+	int u = pre[0];
+	int v = pre[1];
+	indegree[v]++;
+	graph.get(u).add(v);
+
+}
+
+Queue<Integer> q = new LinkedList<>();
+for(int i = 0;i<n;i++) {
+	if(indegree[i] == 0) {
+		q.add(i);
+	}
+}
+
+int counter = 0;
+
+while(!q.isEmpty()) {
+	int curr = q.poll();
+	counter++;
+	sortedOrder.add(curr);
+	for(int neigh: graph.get(curr)) {
+		indegree[neigh]--;
+		if(indegree[neigh] == 0) {
+			q.add(neigh);
+		}
+	}
+}
+
+return n==counter;
+	
+}
+
+b). Parallel Courses
+
+public int minimumSemesters(int n, int[][] relations) {
+
+	// build adjacency list graph
+	List<Integer>[] adj = new List[n]; // array of arrayList
+	Arrays.setAll(adj, new ArrayList<>());
+
+	
+	int[] indegree = new int[n];
+
+	for(int[] rel: relations) {
+		int u = rel[0];
+		int v = rel[1];
+		indgree[v]++;
+		adj[u].add(v);
+	}
+
+	// put indegree 0 to queue
+
+	Queue<Integer> queue = new LinkedList<>();
+	for(int i = 0;i<n;i++) {
+		if(indegree[i] ==0) {
+			queue.add(i);
+		}
+	}
+
+	// poll the all the courses in queue, and reduce in degree and check if in degree is 0, put them in queue till queue is empty
+
+	int remaining  = n;
+	int semesters = 0;
+
+	while(!queue.isEmpty()) {
+		semester++;
+		int size = queue.size();
+		for(int i =0;i<size;i++) {
+			remaining--;
+			int curr = queue.poll();
+			for(int neigh : adj[curr]) {
+				if(indegree[neigh] == 0) {
+					queue.add(neigh);
+				}
+			}
+		}
+	}
+
+	return remaining == 0 ? semesters : -1;
+
+}
+
+
+4. Multi Source BFS
+
+5. Bus Routes
+
+given - routes[][], source, target
+ex routes[0] = [1,5,7], means 0th bus travel by route 1->5->7->1->5->7....
+
+output - least number of buses to travel from source to target
+
+Input: routes = [[1,2,7],[3,6,7]], source = 1, target = 6
+Output: 2 => routes bus 0 - [1 -> 2 -> 7], bus 1 - [7->3->6]
+
+public int numBusesToDestination(int[][] routes, int source, int target) {
+	Ma<Integer, List<Integer>> map = new HashMap<>();
+	Set<Intger> visitedBus = new HashSet<>();
+	Dequeu<int[]> queue = new ArrayDeque<>();
+
+	// each bus stop is a node - O(M*K)
+	for(int i = 0;i<routes.length;i++) {
+		for(int stop: routes[i]) {
+			if(!map.contains(stop)) {
+				map.put(stop, new ArrayList<>());
+			}
+			map.get(stop).add(i);
+		}
+	}
+
+    // stop, busCount
+	queue.add(new int[]{source, 0});
+
+	// O(M*K*M)
+	while(!queue.isEmpty()) {
+
+		int[] current = queue.poll();
+		int stop = current[0];
+		int busCount = current[1];
+
+		if(stop == target) {
+			return busCount;
+		}
+
+		if(map.containsKey(stop)) {
+			for(int bus : map.get(stop)) {
+				if(!visitedBus.contains(bus)) {
+					for(int s: routes[i]) {
+						queue.add(new int[] {s, busCount+1});
+					}
+				}
+				visitedBus.add(bus);
+			}
+		}
+
+	}
+
+	return -1;
+}
+
+Complexity:
+Time - O(M^2 * K) - M = size of routes, K = maximum size of routes[i]
+Space - O(M*K)
+
+6. Alien Dictionary
+
+public String alienDictionary(List<String> words) {
+	// graph
+	// indegree array
+	// set for unique characters
+
+	Map<Character, Set<Character>> adjList = new HashMap<>();
+	Map<Character, Integer> indegree = new HashMap<>();
+	Set<Character> uniqueCharacters = new HashSet<>();
+
+	// early return empty string by eliminating scenarios
+
+	if(words == null || words.isEmpty()) return "";
+
+
+	// initialize graph, indegree, set
+
+	for(String w: words) {
+		for(char c: w.toCharArray()) {
+			uniqueCharacters.add(c);
+			indegree.putIfAbsent(c, 0);
+			adjList.putIfAbsent(c, new HashSet<>());
+		}
+	}
+
+	// build graph from word pairs comparisons - remember words are lexicographically sorted
+
+	for(int i = 0; i < words.size() - 1; i++) {
+		String curr = words.get(i);
+		String next = words.get(i+1);
+		if(curr.length() > next.length() && curr.startsWith(next)) {
+			return "";
+		}
+		int minLen = Math.min(curr.length(), next.length());
+		for(int j = 0;j<minLen; j++) {
+			char u = curr.charAt(j);
+			char v = next.charAt(j);
+			if(u != v) {
+				if(adjList.get(u).add(v)) {
+					indegree.put(v, indegree.getOrDefault(v, 0) + 1);
+				}
+				break;
+			}
+
+		}
+	}
+
+	// apply topological sorting for getting character ordering
+	Queue<Character> queue = new LinkedList<>();
+	StringBuilder res = new StringBuilder();
+	for(char c: uniqueCharacters) {
+		if(indegree.get(c) == 0) {
+			queue.add(c);
+		}
+	}
+
+	while(!queue.isEmpty()) {
+		char curr = queue.poll();
+		res.append(curr);
+		for(char neigh: adjList.getOrDefault(curr, Collections.emptySet())) {
+			indegree.put(neigh, indegree.getOrDefault(neigh, 0) - 1);
+			if(indegree.getOrDefault(neigh, 0) == 0) {
+				queue.add(neigh);
+			}
+		}
+	}
+
+	if(res.length() < uniqueCharacters.size()) { 
+		return "";
+	}
+
+	return res.toString();
+
+}
+
+7. Clone Graph
+
+use dfs
+
+class Node {
+	int val;
+	List<Node> neighbours;
+	public Node() {
+		val = 0;
+		neighbours = new ArrayList<>();
+	}
+}
+
+public Node cloneGraph(Node node) {
+	Map<Integer, Node> map = new HashMap<>();
+	return dfs(node, map);
+}
+
+private Node dfs(Node src, Map<Intger, Node> map) {
+	if(src == null) {
+		return src;
+	}
+	if(map.containsKey(node.val)) {
+		return map.get(node.val);
+	}
+	Node node = new Node();
+	node.val = src.val;
+	map.put(node.val, node);
+
+	for(Node neigh: src.neighbours) {
+		node.neighbours.add(dfs(neigh, map));
+	}
+
+	return node;
+}
+
+8. Minimum Edge Reversals
+
+Minimum Edge Reversals So Every Node Is Reachable
+
+given: 
+directed graph
+n nodes
+int[][] edges
+
+output: answer[], where answer[i] is minimum number of edges reversal required so that it is possible to reach any node from ith node.
+
+Naive solution - O(n^2)
+
+for each starting node, do a traversal and count minimum reversal. each n node will take O(n) time, hence O(n^2)
+
+public int[] minReversals(int n, int[][] edges) {
+	int[] result = new int[n];
+	for(int start = 0; start<n;start++) {
+		result[start] = countReversalNeeded(start, n, edges);
+	}
+	return result;
+}
+
+private int countReversalNeeded(int src, int n, int[][] edges) {
+	//build graph & do BFS/DFS from src
+	//count how many edges need to be reversed
+	/ O(n) per node
+}
+
+Optimized solution - O(n)
+
+Avoid recomputation
+I am solving the same tree n times, just with different roots everytime.  
+there must be a relationship with adjacent nodes
+if i know the answer for node a, and b is adjacent of a, what changes when i make b as root?
+when i change the root from a to b, entire tree remains same except one edge, edge between a and b flips.
+
+if i know result[a], i can get result[b], just by flipping edge:
+
+if a->b cost = 0, then b->a cost = 1, change = +1
+if b->a cost = 1, then a->b cost = 0, change = -1
+
+2 steps approach :
+- pick any node (say 0) and compute its result using dfs - O(n)
+- use dfs again to propogate results to all other nodes, using the relationship - O(n)
+
+---- A tree with n nodes, has exactly n-1 edges, and there is exactly one path between any two nodes
+
+List<int[]>[] graph;
+int[] result;
+
+public int[] minReversals(int n, int[][] edges) {
+
+// build bi-directional graph with edge costs
+// cost = 0 for original direction, cost = 1 for reverse direction
+
+	graph = new List[n];
+	for(int i = 0; i<n; i++) {
+		graph[i] = new ArrayList<>();
+	}
+
+	for(int[] edge: edges) {
+		int u = edge[0], v = edge[1];
+		graph[u].add(new int[]{v, 0}); // original edge, cost = 0
+		graph[v].add(new int[]{u, 1}); // reverse edge, cost = 1
+	}
+
+	result = new int[n];
+
+	// Step 1: Calculate result for node 0 using DFS
+	boolean[] visited = new boolean[n];
+	result[0] = dfs(0, visited);
+
+
+	// Step 2: Re-root to calculate results for all other nodes
+	Arrays.fill(visited, false);
+	reroot(0, visited);
+
+	return result;
+} 
+
+private int dfs(int src, boolean[] visited) {
+	visited[src] = true;
+	int reversals = 0;
+	for(int[] neighbor: graph[src]) {
+		int nextNode = neighbor[0];
+		int cost = neighbor[1];
+		if(!visited[nextNode]) {
+			reversals += cost + dfs(nextNode, visited);
+		}	
+	}
+	return reversals;
+}
+
+private void reroot(int node, boolean[] visited) {
+	visited[node] = true;
+	for(int[] neighbor: graph[node]) {
+		int nextNode = neighbor[0];
+		int cost = neighbor[1]; // 0 -> original or 1 -> reversed
+		if(!visited[nextNode]) {
+		// if cost = 0, means original => result[nextNode] = result[node] + 1 => node -> nextNode so to reach node from nextNode i.e. node<-nextNode, there is cost=1
+		// if cost = 1, means reversed => result[nextNode] = result[node] - 1;
+			result[nextNode] = result[node] + (1 - 2 * cost);
+			reroot(nextNode, visited);
+		}
+	}
+}
+
+
+9. Grid Robots & Nearest Blockers
+
+Grid with Robots = O, Empty = E, Blockers = X
+Given query distance [left, top, bottom, right], return all robots matching the distance
+
+public List<int[]> findRobotsMeet(char[][] grid, int[] query) {
+	int n = row.length;
+	int m = col[0].length;
+	int[][] leftDist = new int[n][m];
+	int[][] rightDist = new int[n][m];
+	int[][] topDist = new int[n][m];
+	int[][] bottomDist = new int[n][m];
+
+	// left distance, consecutive empty cells to the left
+
+	for(int i = 0; i<n; i++) {
+		for(int j = 0; j<m; j++) {
+			if(grid[i][j] == 'X' || j == 0 || grid[i][j-1] == 'X') {
+				leftDist[i][j] = 0;
+			} else {
+				leftDist[i][j] = leftDist[i][j-1] + 1;
+			}
+		}
+	}
+
+	// right distance
+
+	for(int i=0; i<n; i++) {
+		for(int j = m-1; j>=0; j--) {
+			if(grid[i][j] == 'X' || j == m-1 || grid[i][j+1]=='X') {
+				rightDist[i][j] = 0;
+			} else {
+				rightDist[i][j] = rightDist[i][j+1] + 1;
+			}
+		}
+	}
+
+	// up distance
+	for(int i = 0;i<n;i++) {
+		for(int j = 0; j<m; j++) {
+			if(grid[i][j] == 'X' || i == 0 || grid[i-1][j] == 'X') {
+				topDist[i][j] = 0;
+			} else {
+				topDist[i][j] = topDist[i-1][j] + 1;
+			}
+		}
+	}
+
+	// down distance
+	for(int i = n-1; i>=0; i--) {
+		for(int j = 0; j<m; j++) {
+			if(grid[i][j] == 'X' || i == n-1 || grid[i+1][j] == 'X') {
+				bottomDist[i][j] = 0;
+			} else {
+				bottomDist[i][j] = bottomDist[i+1][j] + 1;
+			}
+		}
+	}
+
+	// check robots
+	List<int[]> result = new ArrayList<>();
+	for(int i = 0;i<n;i++) {
+		for(int j =0; j<m; j++) {
+			if(grid[i][j] == 'O') {
+				if(leftDist[i][j] + 1 == query[0] && 
+				rightDist[i][j] + 1 == query[1] &&
+				topDist[i][j] + 1 == query[2] &&
+				bottomDist[i][j] + 1 == query[3]) {
+					resutl.add(new int[]{i,j});
+				}
+			}
+		}
+	}
+
+	return result;
+
+}
+
+
+
+
+
+Trees & Binary Search Trees (BST)
+
+
+1. Tree DP (Root vs Leaf Race)
+
+2. Insert into complete binary tree
+3. Serialize and deserialize binary tree
+4. Kth smallest element in a BST
+5. Tree Traversal problems - like BST traversal
+6. LCA
+
+1. Tree DP (Root vs Leaf Race)
+
+similar questions :
+
+Path sum - root to leaf there is targetSum, returns true.
+
+TreeNode {
+	int val;
+	TreeNode left, right;
+}
+
+boolean hasPathSum(TreeNode root, int targetSum) {
+	if(root == null) {
+		return false;
+	}
+
+	TreeNode left = root.left;
+	TreeNode right = root.right;
+
+	if(left == null && rigth == null  && targetSum == root.val) {
+		return true;
+	}
+
+	return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
+}
+
+
+Path Sum II - root to leaf nodes sum = targetSum, each path should return list of node values -- backtrack
+
+public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+
+	List<List<Integer>> res = new ArrayList<>();
+	List<Integer> curr = new ArrayList<>();
+
+	path(root, targetSum, curr, res);
+
+	return res;
+}
+
+private void path(TreeNode root, int targetSum, List<Integer> curr, List<List<Integer>> res) {
+	if(root == null) {
+		return;
+	}
+
+	curr.add(root.value);
+
+	if(root.left == null && root.right == null && root.val == targetSum) {
+		res.add(new ArrayList<>(curr));
+	} else {
+		path(root.left, targetSum - root.val, curr, res);
+		path(root.right, targetSum - root.val, curr, res);
+	}
+	curr.remove(curr.size() - 1);
+}
+
+Path Sum III - given root & targetSum, return number of paths (any path not just root to leaf), where sum of values along the path is targetSum
+
+brute force - O(n*n)
+
+public int pathSum(TreeNode root, int sum) {
+	if(root == null) return 0;
+	return pathSumFrom(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+}
+
+private int pathSumFrom(TreeNode root, int sum) {
+	if(root == null) return 0;
+	return (root.val == sum ? 1 : 0) + pathSumFrom(root.left, sum - root.val) + pathSumFrom(root.right, sum - root.val);
+}
+
+optimized - prefix sum method - O(n)
+
+public int pathSum(TreeNode root, int sum) {
+	Map<Integer, Integer> preSum = new HashMap<>();
+	preSum.put(0, 1);
+	return helper(root, 0, sum ,preSum);
+}
+
+private int helper(TreeNode root, int curSum, int target, Map<Integer, Integer> preSum) {
+	if(root == null) {
+		return 0;
+	}
+	curSum += root.val;
+	int res = preSum.getOrDefault(curSum - target, 0);
+	preSum.put(curSum, preSum.getDefault(curSum, 0) + 1);
+	res += helper(root.left, curSum, target, preSum) + helper(root.right, curSum, target, preSum);
+	preSum.put(curSum, preSum.getDefault(curSum, 0) - 1);
+	return res;
+}
+
+
+=> Binary Tree with parent pointers: A starts at root moving down, B starts at a leaf moving up. Scoring depends on who visits the nodes first.
+Score can be full, zero, half if tie. Compute the maximum score A can collect.
+
+
+Breakdown : 
+root's parent = -1
+We want to chose a leaf for B, that maximizes the total points collected by A, and return that maximum value.
+
+suppose depth is D,
+path : (root)v0 -> v1 -> ....vD (leaf)
+A reaches node vi at time i
+B reaches node vi at time D-i
+
+if(i < D-i) OR i < D/2 -> A collects full point at vi 
+if i = D-i & D is even -> A collects half
+if i > D-i, A gets 0
+
+full depth = floor(D-1/2)
+
+A points = sum(values[v0..v_full_depth]) + if(D is even then 0.5 * value[v_D/2]) else 0
+
+we compute this for every leaf and then take the maximum
+
+
+Algo: 
+1. build adjacency list for parent pointers (undirected tree)
+2. perform dfs from the root, keeping track of 
+	a. depth of current node
+	b. prefixSum[depth] = cumulative sum of nodes from root to current node
+	c. pathNodes[depth] = node at that depth (for middle node when D is even)
+3. When leaf is reached (no child), compute A_points
+4. Update the global maximum
+5. handle the trivial case N == 1 (root == leaf)
+
+Code:
+
+class RootLeafRace {
+	
+	double maxPoints = 0.0;
+	int[] values;
+	List<List<Integer>> tree;
+	int root;
+	int[] parent;
+	int n; // no. of nodes
+
+	public void maxPointsA() {
+
+	// take input, if parent[i] == -i, root = i;
+
+	// build undirected tree
+	tree = new ArrayList<>;
+	for(int i = 0;i<n;i++) tree.add(new ArrayList<>());
+	for(int i =0;i<n;i++) {
+		if(parent[i]!=-1) {
+			tree.get(i).add(parent[i]);
+			tree.get(parent[i]).add(i);
+		}
+	}
+
+	// trivial case
+	if(n==1) {
+		maxPoints = values[0]/2.0;
+		return;
+	}
+
+	// arrays for dfs
+	int[] pathNodes = new int[n];
+	double[] prefixSum = new double[n];
+
+	dfs(root, -1, 0, pathNodes, prefixSum);
+
+	sout(maxPoints);
+
+	}
+
+	void dfs(int node, int parent, int depth, int[] pathNodes, double[] prefixSum) {
+
+		pathNodes[depth] = node;
+
+		if(depth == 0) {
+			prefixSum[depth] = values[node];
+		} else {
+			prefixSum[depth] = prefixSum[depth - 1] + values[node];
+		}
+
+		// check if this node is a leaf, means no children
+
+		boolean isLeaf = true;
+
+		for(int neighbor: tree.get(node)) {
+			if(neighbor != parent) {
+				isLeaf= false;
+				dfs(neighbor, node, depth + 1, pathNodes, prefixSum);
+			}
+		}
+
+		if(isLeaf) {
+			int D = depth; // depth of this leaf
+
+			// largest depth with full points: floor((D-1)/2)
+			int fullDepth = (D-1)/2;
+			double points = (fullDepth >= 0) ? prefixSum[fullDepth] : 0.0;
+
+			if(D%2==0) { 
+				int midDepth = D/2;
+				points += 0.5 * values[pathNodes[midDepth]];
+			}
+
+			if(points > maxPoints) maxPoints = points;
+
+		}
+
+
+	}
+
+}
+
+
+
+2. Insert into complete binary tree
+
+class TreeNode {
+	TreeNode left, right;
+	int val;
+}
+
+class CBInserter {
+
+	TreeNode root;
+	Queue<TreeNode> queue; 
+
+// O(N)
+	public CBInserter(TreeNode root) {
+
+		this.root = root;
+		this.queue = new LinkedList<>();
+
+		queue.offer(root);
+
+		while(true) {
+			TreeNode curr = queue.peek();
+			if(curr.left!=null && curr.right!=null) {
+				queue.offer(curr.left);
+				queue.offer(curr.right);
+				queue.poll();
+			} else {
+				break;
+			}
+		}
+
+	}
+
+	// O(1)
+
+	public int insert(int val) {
+
+		TreeNode curr = queue.peek();
+		if(curr.left == null) {
+			curr.left = new TreeNode(val);
+		} else {
+			curr.right = new TreeNode(v);
+			// now level is completed
+			queue.offer(curr.left);
+			queue.offer(curr.right);
+			queue.poll();
+		}
+
+		return curr.val;
+
+	}
+
+	public int insertLinearTC(int val) {
+		queue = new LinkedList<>();
+		queue.offer(root);
+		while(!queue.isEmpty()) {
+			TreeNode curr = queue.poll();
+			if(curr.left!=null) {
+				queue.offer(curr.left);
+			} else {
+				curr.left = new TreeNode(val);
+				return curr.val;
+			}
+			if(curr.right!=null) {
+				queue.offer(curr.right);
+			} else {
+				curr.right = new TreeNode(val);
+				return curr.val;
+			}
+		}
+		return 0;
+	}
+
+// O(1)
+	public TreeNode get_root() {
+
+		return root;
+
+	}
+}
+
+
+
+3. Serialize and deserialize binary tree
+
+public String serialize(TreeNode root) {
+
+	List<String> res = new ArrayList<>();
+	serializeDfs(root, res);
+	return String.join(",", res);
+	
+}
+
+private void serializeDfs(TreeNode root, List<String> res) {
+	if(root == null) {
+		res.add("N");
+		return;
+	}
+
+	res.add(String.valueOf(root.val));
+	serializeDfs(root.left, res);
+	serializeDfs(root.right, res);
+}
+
+public TreeNode deserialize(String data) {
+
+	String[] vals = data.split(",");
+	int[] i = {0};
+	return deserializeDfs(vals, i);
+}
+
+private TreeNode deserializeDfs(String[] vals, int[] i) {
+	if(vals[i[0]].equals("N")) {
+		i[0]++;
+		return null;
+	}
+
+	TreeNode node = new TreeNode(Integer.parseInt(vals[i[0]]));
+	i[0]++;
+	node.left = deserializeDfs(vals, i);
+	node.right = deserializeDfs(vals, i);
+	return node;
+
+}
+
+4. Kth smallest element in a BST
+
+int count = 0;
+int result = -1;
+public int kthSmallestInBST(TreeNode root, int k) {
+
+inorder(root,k);
+return result;
+	
+}
+
+private void inorder(TreeNode root, int k) {
+	if(root == null) {
+		return;
+	}
+	inorder(root.left, k);
+	count++;
+	if(count == k) {
+		result = root.val;
+		return;
+	}
+	inorder(root.right, k);
+}
+
+
+6. LCA of BST
+
+public TreeNode lca(TreeNode root, TreeNode a, TreeNode b) {
+	if(root == null) {
+		return null;
+	}
+
+	if(root.val > a.val && root.val > b.val) {
+		lca(root.left, a, b);
+	}
+
+	if(root.val < a.val && root.val < b.val) {
+		lca(root.right, a, b);
+	}
+	return root;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
