@@ -45,6 +45,29 @@ public class NonOverlappingIntervals {
      * https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/">...</a>
      */
     public static class MinimumNumberOfArrowsToBurstBalloons {
+
+        public int findMinArrowShots(int[][] points) {
+            return eraseOverlapIntervals(points);
+        }
+
+        public int eraseOverlapIntervals(int[][] intervals) {
+            //Intervals ko end time ke basis par sort kar do (jo pehle khatam ho, usko priority).
+            Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
+            int arrows = 1;
+            //Pehle interval ka end = prevEnd maan lo
+            int prevEnd = intervals[0][1];
+            for (int i = 1; i < intervals.length; i++) {
+                int start = intervals[i][0];
+                int end = intervals[i][1];
+                if (prevEnd >= start) { // found a ballon that start after current arrow
+                    continue;
+                }
+                prevEnd = end;
+                arrows++;
+            }
+            return arrows;
+        }
+
     }
 
     /**

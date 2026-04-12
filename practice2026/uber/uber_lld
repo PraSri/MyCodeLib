@@ -1,0 +1,256 @@
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PriorityQueue;
+
+/**
+ * A counter that automatically expires elements after a given number of seconds.
+ * Each call to putElement(key) creates a separate entry that expires after T seconds.
+ * getElementCount(key) returns the number of non‑expired entries for that key.
+ * getTotalElements() returns the total number of non‑expired entries across all keys.
+ */
+public class ExpiryCounter {
+    private final long expiryDurationMillis;          // expiry time in milliseconds
+    private final PriorityQueue<ExpiryEntry> heap;    // min‑heap sorted by expiry time
+    private final Map<String, Integer> keyCounts;     // current count per key (non‑expired)
+    private int totalCount;                           // total non‑expired entries
+
+    /**
+     * Represents an entry in the heap: when it expires and which key it belongs to.
+     */
+    private static class ExpiryEntry {
+        private final long expiryTime;   // timestamp (ms) when this entry expires
+        private final String key;
+
+        private ExpiryEntry(long expiryTime, String key) {
+            this.expiryTime = expiryTime;
+            this.key = key;
+        }
+    }
+
+    /**
+     * Constructs an ExpiryCounter with the given expiry duration.
+     * @param expirySeconds number of seconds after which an element expires
+     */
+    public ExpiryCounter(long expirySeconds) {
+        this.expiryDurationMillis = expirySeconds * 1000L;
+        this.heap = new PriorityQueue<>(Comparator.comparingLong(e -> e.expiryTime));
+        this.keyCounts = new HashMap<>();
+        this.totalCount = 0;
+    }
+
+    /**
+     * Removes all expired entries from the heap and updates the counts.
+     * Called at the beginning of every public method to keep data fresh.
+     */
+    private void cleanUp() {
+        long now = System.currentTimeMillis();
+        while (!heap.isEmpty() && heap.peek().expiryTime <= now) {
+            ExpiryEntry expired = heap.poll();
+            String key = expired.key;
+            // Decrement the count for this key
+            Integer current = keyCounts.get(key);
+            if (current != null) {
+                if (current == 1) {
+                    keyCounts.remove(key);
+                } else {
+                    keyCounts.put(key, current - 1);
+                }
+                totalCount--;
+            }
+        }
+    }
+
+    /**
+     * Adds a new element (key) to the counter. It will expire after the configured duration.
+     * @param key the element to add
+     */
+    public void putElement(String key) {
+        cleanUp();  // remove any expired entries before adding a new one
+        long expiry = System.currentTimeMillis() + expiryDurationMillis;
+        heap.offer(new ExpiryEntry(expiry, key));
+        keyCounts.merge(key, 1, Integer::sum);
+        totalCount++;
+    }
+
+    /**
+     * Returns the number of non‑expired occurrences of the given key.
+     * @param key the key to query
+     * @return count of active entries for that key
+     */
+    public int getElementCount(String key) {
+        cleanUp();  // ensure we only count non‑expired entries
+        return keyCounts.getOrDefault(key, 0);
+    }
+
+    /**
+     * Returns the total number of non‑expired entries across all keys.
+     * @return total active element count
+     */
+    public int getTotalElements() {
+        cleanUp();  // ensure the total is up‑to‑date
+        return totalCount;
+    }
+}
+
+
+
+
+import java.util.*;
+
+/**
+ * Employee Hierarchy Manager
+ * Supports:
+ * - Query total employees (direct + indirect) under a manager in O(1)
+ * - Change manager of an employee (moves entire subtree)
+ * - Add new employee-manager relationships
+ */
+public class EmployeeHierarchy {
+    // parent map: employee -> direct manager (null for root)
+    private final Map<String, String> parent = new HashMap<>();
+    // size map: employee -> total number of employees in its subtree (including itself)
+    private final Map<String, Integer> subtreeSize = new HashMap<>();
+    // direct reports: manager -> list of immediate subordinates
+    private final Map<String, List<String>> directReports = new HashMap<>();
+
+    /**
+     * Initializes the hierarchy from a list of edges.
+     * Each edge [a, b] means a is manager of b.
+     */
+    public EmployeeHierarchy(List<List<String>> edges) {
+        for (List<String> edge : edges) {
+            String manager = edge.get(0);
+            String employee = edge.get(1);
+            addNewRelation(manager, employee);
+        }
+    }
+
+    /**
+     * Adds a new employee under a manager.
+     * Assumes the employee does not already exist in the hierarchy.
+     */
+    public void addNewRelation(String manager, String employee) {
+        if (parent.containsKey(employee)) {
+            throw new IllegalArgumentException("Employee " + employee + " already exists");
+        }
+        // Initialize new employee
+        parent.put(employee, manager);
+        subtreeSize.put(employee, 1);
+        // Add to direct reports of manager
+        directReports.computeIfAbsent(manager, k -> new ArrayList<>()).add(employee);
+        // Update subtree sizes of all ancestors of manager
+        updateAncestors(manager, 1);
+    }
+
+    /**
+     * Returns the total number of employees (direct + indirect) under the given manager.
+     * Excludes the manager himself.
+     */
+    public int getEmployeeCountUnder(String manager) {
+        if (!subtreeSize.containsKey(manager)) {
+            return 0;
+        }
+        return subtreeSize.get(manager) - 1;
+    }
+
+    /**
+     * Changes the manager of an employee.
+     * The entire subtree rooted at that employee moves to the new manager.
+     */
+    public void changeManager(String employee, String newManager) {
+        if (!parent.containsKey(employee)) {
+            throw new IllegalArgumentException("Employee " + employee + " does not exist");
+        }
+        if (!parent.containsKey(newManager)) {
+            throw new IllegalArgumentException("Manager " + newManager + " does not exist");
+        }
+        if (employee.equals(newManager)) {
+            throw new IllegalArgumentException("Cannot set an employee as their own manager");
+        }
+        // Check for cycle: newManager cannot be a descendant of employee
+        if (isDescendant(employee, newManager)) {
+            throw new IllegalArgumentException("Cannot move manager under its own subordinate");
+        }
+
+        String oldManager = parent.get(employee);
+        int movedSubtreeSize = subtreeSize.get(employee);
+
+        // Remove from old manager's direct reports
+        if (oldManager != null) {
+            directReports.get(oldManager).remove(employee);
+            // Update ancestors of old manager (including old manager) by subtracting moved subtree size
+            updateAncestors(oldManager, -movedSubtreeSize);
+        }
+
+        // Attach to new manager
+        parent.put(employee, newManager);
+        directReports.computeIfAbsent(newManager, k -> new ArrayList<>()).add(employee);
+        // Update ancestors of new manager (including new manager) by adding moved subtree size
+        updateAncestors(newManager, movedSubtreeSize);
+    }
+
+    // Helper: Update subtree sizes for all ancestors of a node (including the node itself)
+    private void updateAncestors(String node, int delta) {
+        String current = node;
+        while (current != null) {
+            subtreeSize.put(current, subtreeSize.get(current) + delta);
+            current = parent.get(current);
+        }
+    }
+
+    // Helper: Check if 'ancestor' is an ancestor of 'descendant'
+    private boolean isDescendant(String ancestor, String descendant) {
+        String current = descendant;
+        while (current != null) {
+            if (current.equals(ancestor)) {
+                return true;
+            }
+            current = parent.get(current);
+        }
+        return false;
+    }
+
+    // Optional: Print the hierarchy for debugging
+    public void printHierarchy() {
+        for (String mgr : directReports.keySet()) {
+            System.out.println(mgr + " -> " + directReports.get(mgr));
+        }
+        System.out.println("Sizes: " + subtreeSize);
+    }
+
+    // ---------- Main method to demonstrate usage ----------
+    public static void main(String[] args) {
+        // Example edges: [a,b], [b,c], [d,f], [f,g]
+        List<List<String>> edges = Arrays.asList(
+            Arrays.asList("a", "b"),
+            Arrays.asList("b", "c"),
+            Arrays.asList("d", "f"),
+            Arrays.asList("f", "g")
+        );
+
+        EmployeeHierarchy hierarchy = new EmployeeHierarchy(edges);
+        System.out.println("Initial hierarchy:");
+        hierarchy.printHierarchy();
+
+        // Query: employees under a
+        System.out.println("Employees under a: " + hierarchy.getEmployeeCountUnder("a")); // 2 (b and c)
+        // Query: under b
+        System.out.println("Employees under b: " + hierarchy.getEmployeeCountUnder("b")); // 1 (c)
+        // Query: under d
+        System.out.println("Employees under d: " + hierarchy.getEmployeeCountUnder("d")); // 2 (f and g)
+
+        // Change manager: move c under f
+        System.out.println("\nMoving c under f...");
+        hierarchy.changeManager("c", "f");
+        hierarchy.printHierarchy();
+        System.out.println("Employees under b: " + hierarchy.getEmployeeCountUnder("b")); // 0 (c moved away)
+        System.out.println("Employees under f: " + hierarchy.getEmployeeCountUnder("f")); // 2 (g and c)
+        System.out.println("Employees under a: " + hierarchy.getEmployeeCountUnder("a")); // 1 (b only)
+
+        // Add new relation: c -> d (but d already exists as manager? Actually we add new employee? Let's add new employee x under a)
+        System.out.println("\nAdding new employee x under a...");
+        hierarchy.addNewRelation("a", "x");
+        System.out.println("Employees under a: " + hierarchy.getEmployeeCountUnder("a")); // 2 (b and x)
+        hierarchy.printHierarchy();
+    }
+}

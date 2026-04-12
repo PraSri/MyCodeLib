@@ -13,7 +13,86 @@ Graph Algorithms & Union Find
 7. Clone Graph
 8. Minimum Edge Reversals
 9. Grid Robots & Nearest Blockers
+10. Evaluate Divisions
 
+
+MinCostGridWithArrows
+
+import java.util.*;
+
+public class MinCostGridWithArrows {
+
+    // Directions: up, down, left, right and their corresponding row, col deltas
+    private static final int[] dRow = {-1, 1, 0, 0};
+    private static final int[] dCol = {0, 0, -1, 1};
+    private static final char[] dirChars = {'U', 'D', 'L', 'R'};
+
+    public static int minCost(char[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        // Distance matrix, initialize with a large value
+        int[][] dist = new int[n][m];
+        for (int[] row : dist) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        dist[0][0] = 0;
+
+        // Deque for 0-1 BFS
+        Deque<int[]> deque = new ArrayDeque<>();
+        deque.addFirst(new int[]{0, 0});
+
+        while (!deque.isEmpty()) {
+            int[] cell = deque.pollFirst();
+            int r = cell[0];
+            int c = cell[1];
+            int currentCost = dist[r][c];
+
+            // If we already reached destination, we can optionally break early
+            if (r == n - 1 && c == m - 1) {
+                // Not breaking because there might be a better path? No, 0-1 BFS guarantees first time we pop destination is optimal.
+                // But careful: we might have popped it earlier with a non-optimal distance? Actually in 0-1 BFS, when we pop a node, its distance is final.
+                // So we can break.
+                break;
+            }
+
+            // Explore all 4 neighbors
+            for (int i = 0; i < 4; i++) {
+                int nr = r + dRow[i];
+                int nc = c + dCol[i];
+
+                // Check bounds
+                if (nr < 0 || nr >= n || nc < 0 || nc >= m) continue;
+
+                // Cost for this move: 0 if moving in the direction of the current cell's arrow, else 1
+                int moveCost = (grid[r][c] == dirChars[i]) ? 0 : 1;
+                int newCost = currentCost + moveCost;
+
+                if (newCost < dist[nr][nc]) {
+                    dist[nr][nc] = newCost;
+                    if (moveCost == 0) {
+                        deque.addFirst(new int[]{nr, nc}); // 0-cost -> front
+                    } else {
+                        deque.addLast(new int[]{nr, nc});  // 1-cost -> back
+                    }
+                }
+            }
+        }
+
+        return dist[n - 1][m - 1];
+    }
+
+    // Example usage
+    public static void main(String[] args) {
+        char[][] grid = {
+            {'R', 'R', 'D'},
+            {'L', 'D', 'D'},
+            {'U', 'U', 'R'}
+        };
+        // Expected answer: 2 (path: (0,0)->(0,1) cost 0, (0,1)->(0,2) cost 0, (0,2)->(1,2) cost 1, (1,2)->(2,2) cost 1)
+        System.out.println("Minimum cost: " + minCost(grid));
+    }
+}
 
 
 
@@ -130,7 +209,7 @@ List<Integer> sortedOrder = new LinkedList<>();
 
 public boolean canfinish(int n, int[][] prerequisites) {
 
-Map<Integer, List<Intger>> graph = new HashMap<>();
+Map<Integer, List<Integer>> graph = new HashMap<>();
 for(int i = 0;i<n;i++) {
 	graph.put(i, new ArrayList<>());
 }
@@ -206,7 +285,7 @@ public int minimumSemesters(int n, int[][] relations) {
 	while(!queue.isEmpty()) {
 		semester++;
 		int size = queue.size();
-		for(int i =0;i<size;i++) {
+		for(int i = 0; i < size; i++) {
 			remaining--;
 			int curr = queue.poll();
 			for(int neigh : adj[curr]) {
@@ -235,7 +314,7 @@ Input: routes = [[1,2,7],[3,6,7]], source = 1, target = 6
 Output: 2 => routes bus 0 - [1 -> 2 -> 7], bus 1 - [7->3->6]
 
 public int numBusesToDestination(int[][] routes, int source, int target) {
-	Ma<Integer, List<Integer>> map = new HashMap<>();
+	Map<Integer, List<Integer>> map = new HashMap<>();
 	Set<Intger> visitedBus = new HashSet<>();
 	Dequeu<int[]> queue = new ArrayDeque<>();
 
@@ -266,7 +345,7 @@ public int numBusesToDestination(int[][] routes, int source, int target) {
 		if(map.containsKey(stop)) {
 			for(int bus : map.get(stop)) {
 				if(!visitedBus.contains(bus)) {
-					for(int s: routes[i]) {
+					for(int s: routes[bus]) {
 						queue.add(new int[] {s, busCount+1});
 					}
 				}
@@ -381,8 +460,8 @@ private Node dfs(Node src, Map<Intger, Node> map) {
 	if(src == null) {
 		return src;
 	}
-	if(map.containsKey(node.val)) {
-		return map.get(node.val);
+	if(map.containsKey(src.val)) {
+		return map.get(src.val);
 	}
 	Node node = new Node();
 	node.val = src.val;
@@ -584,6 +663,113 @@ public List<int[]> findRobotsMeet(char[][] grid, int[] query) {
 
 
 
+10. Evaluate Divisions
+
+Given :  array of equations equations[][], values[], queries[][]
+equations[i] = [a,b], values[i] = a/b, queries[j] = [c,d], find value of c/d or -1 for all queries 
+
+Approch:
+each variable as a node in graph, where a/b=quotient defines a directed edge with a multiplicative weight
+use weighted DSU(Union-find) data structure
+it tracks connectivity between variables, and relative ratio between any variable and set root.
+parent -> varibale to root variable
+weight -> map of variable to its multiplicative factor that relates to its parent
+
+variable = x, its parent = p
+x/p = weight.get(x)
+OR
+x = weight.get(x) * p
+
+for root x, x = p, weight = 1.0, so x/x = 1
+
+a. find(x) operation:
+- find the root of variable x, do path compression, then ratio will be directly with root.
+- basically finds that two variables of same component and connects it to root/parent.
+- O(alpha(V)) - practically constant
+
+b. union(x, y) - merging two sets based on given equation
+- merge two sets containing divident & divisor using known ratio dividend/divisor = quotient
+- if either is new, set its weight = 1.0
+- after finding the root, we put rootDivident under rootDivisor, means rootDivisor is choosen as parent
+- rootDividend = w * rootDivisor
+- O(alpha(V))
+ // Compute weight for rootDividend so that the equation holds
+        // We know: dividend / divisor = quotient
+        // Also: dividend = weight[dividend] * rootDividend
+        //       divisor  = weight[divisor]  * rootDivisor
+        // After merging, we set rootDividend -> rootDivisor with weight w such that:
+        //   dividend = weight[dividend] * (w * rootDivisor)
+        //   divisor  = weight[divisor]  * rootDivisor
+        // Dividing: (weight[dividend] * w) / weight[divisor] = quotient
+        // => w = quotient * weight[divisor] / weight[dividend]
+
+Map<String, String> parent = new HashMap<>();
+Map<String, Double> weight = new HashMap<>();
+
+public String find(String v) {
+	if(!parent.containsKey(x)) return null;
+	if(!v.equals(parent.get(v))) {
+		String originalParent = parent.get(v);
+		parent.put(v, find(originalParent));
+		weight.put(v, weight.get(v) * weight.get(originalParent));
+	}
+	return parent.get(v);
+}
+
+public void union(String dividend, String divisor, double quotient) {
+	// check exist, if not put it 
+	if(!parent.containsKey(dividend)) {
+
+		parent.put(dividend, dividend);
+		weight.put(dividend, 1.0);
+	}
+
+	if(!parent.containsKey(divisor)) {
+		parent.put(divisor, divisor);
+		weight.put(divisor, 1.0);
+		
+	}
+
+	// find roots
+
+	String rootDividend = find(dividend);
+	String rootDivisor = find(divisor);
+
+	// do merging if not equal roots
+
+	if(!rootDividend.equals(rootDivisor)) {
+		parent.put(rootDividend, rootDivisor);
+		weight.put(rootDividend, quotient * weight.get(divisor)/weight.get(dividend));
+	}
+}
+
+public double[] evaluateDivisions(List<List<String>> equations, double[] values, List<List<String>> queries) {
+	for(int i : 0 to equations.size) {
+		String dividend = equations.get(i).get(0);
+		String divisor = equations.get(i).get(1);
+		double quotient = values[i];
+		union(dividend, divisor, quotient);
+	}
+	double[] result = new double[queries.size()];
+	for(int i : 0  to queries.size) {
+		String var1 = queries.get(i).get(0);
+		String var2 = queries.get(i).get(1);
+		if(!parent.containsKey(var1) || !parent.containsKey(var2)) {
+			return -1.0;
+		} else {
+			String root1 = find(var1);
+			String root2 = find(var2);
+			// no relationship exist
+			if(!root1.equals(root2)) {
+				result[i] = -1.0;
+			} else {
+				result[i] = weight.get(var1)/weight.get(var2);
+			}
+		}
+	}
+	return results;
+}
+
 
 
 Trees & Binary Search Trees (BST)
@@ -704,7 +890,7 @@ if(i < D-i) OR i < D/2 -> A collects full point at vi
 if i = D-i & D is even -> A collects half
 if i > D-i, A gets 0
 
-full depth = floor(D-1/2)
+full depth = floor((D-1)/2)
 
 A points = sum(values[v0..v_full_depth]) + if(D is even then 0.5 * value[v_D/2]) else 0
 
@@ -734,7 +920,7 @@ class RootLeafRace {
 
 	public void maxPointsA() {
 
-	// take input, if parent[i] == -i, root = i;
+	// take input, if parent[i] == -1, root = i;
 
 	// build undirected tree
 	tree = new ArrayList<>;
@@ -972,6 +1158,263 @@ public TreeNode lca(TreeNode root, TreeNode a, TreeNode b) {
 	}
 	return root;
 }
+
+
+
+
+Given a n*m 2-D matrix with arrows in different directions, find out the minimum cost to travel from top-left grid to bottom-right grid if the cost to travel in the direction of the grid arrow costs you nothing but if you want to travel in any other direction, it would cost you 1 quantity.
+
+In this round, I was asked to find the next greater palindrome number of the given number. I had done a similar question before and was able to write a working solution by the end of the hour. The solution approach is unique (Mirror and Carry Propagation), but if you know that, it is relatively easy to code and to handle different scenarios.
+(This is the standard “next greater palindrome” interview problem; plenty of online references use that exact wording.)
+
+
+Next higher palindrome
+
+public String nextPalindrome(String s) {
+
+	char[] num = s.toCharArray();
+	int n = s.length();
+
+	if(n<=3) {
+		return "Not Possible";
+	}
+
+	char temp;
+	int mid = n / 2 - 1;
+	int i, j;
+
+// find 1st digit, that is smaller than the next digit
+	for(i = mid - 1; i>=0; i--) {
+		if(num[i] < num[i+1]) {
+			break;
+		}
+	}
+
+	if(i < 0) {
+		return "Not possible";
+	}
+
+	// find smallest digit on right side of ith digit which is greater than num[i] up to index mid
+
+	int smallest = i + 1;
+	for(j = i+2; j<=mid; j++) {
+		if(num[j] > num[i] && num[j]<=num[smallest]) {
+			smallest = j;
+		}
+	}
+
+	// swap num[i] with num[smallest]
+
+	temp = num[i];
+	num[i] = num[smallest];
+	num[smallest] = temp;
+
+	// same swap in 2nd half
+
+	temp = num[n-i-1];
+	num[n-i-1] = num[i-smallest-1];
+	num[n-smallest-1] = temp;
+
+	// reverse 1st half i+1 to mid
+	reverse(num, i+1, mid);
+
+	// if n is even, then reverse (mid+1, n-i-2), else for odd reverse (mid+2, n-i-2)
+	if(n%2 == 0) {
+		reverse(num, mid+1, n-i-2);
+	} else {
+		reverse(num, mid+2, n-i-2);
+	}
+
+	return num;
+
+
+}
+
+Next Smallest Palindrome - strictly larger than given number
+
+
+Using carry and mirror propagation - O(n)
+
+
+
+
+
+GCD(a,b) {
+	while(b!=0) { 
+		temp = b;
+		b = a%b;
+		a = temp;
+	}
+	return a;
+}
+
+
+Questions : 
+There are n riders and 1 car with infinite space. Each rider has a range of number of other riders that they are comfortable with. Ex: ith rider is comfortable with 3 to 5 other riders. If this condition is not met they do not ride in the car. Find out the maximum no of riders that is possible to fit in the car.
+
+We have n riders and a car with infinite capacity. Each rider i has a comfort interval [L_i, R_i] representing the number of other riders they are comfortable with.
+If the car contains k riders (including themselves), rider i is comfortable iff L_i <= k-1 <= R_i.
+We want the maximum number of riders that can be in the car such that every rider in the car is comfortable.
+
+==> sweep line or binary search problem => feasibility search type problem
+
+n riders => each have range [l,r] to be comfortable => max number of rider so each is comfortable => find the intersection point which satisfys all conditions.
+
+
+
+public int maxRiders(int n, int[][] ranges) {
+	int diff = new int[n+2];
+	for(int i = 0;i<n;i++) {
+		int start = ranges[i][0];
+		int end = ranges[i][1];
+		if(start <= end) {
+			diff[start] += 1;
+			diff[end+1] -= 1;
+		}
+	}
+	int count = 0;
+	int answer = 0;
+	for(int k = 1; k<=n; k++) {
+		count += diff[k];
+		if(count >= k) { 
+			answer++;
+		}
+	}
+
+	return answer;
+} 
+
+similar question: 
+2848. Points That Intersect With Cars
+
+
+Minimum Interval to Include Each Query
+
+Given: intervals[][], queries[], for each query tell the smallest interval which includes the query, if not return -1
+
+public int[] minIntervals(int[][] intervals, int[] queries) {
+	// sort intervals on start
+	// sort queries
+	// priority queue with element (size, end) and min size on top
+	// map for res, because order of queries will changes after sorting
+
+	Arrays.sort(intervals, (a, b) -> (a[0], b[0]));
+	PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> (a[0], b[0]));
+	int[] sortedQueries = Arrays.stream(queries).sorted().toArray();
+
+	Map<Integer, Integer> res = new HashMap<>();
+	int i = 0;
+
+	for(int q: sortedQueries) {
+		while(i>intervals.length && interval[i][0]<=q) {
+			int l = interval[i][0];
+			int r = interval[i][1];
+			int size = r-l+1;
+			pq.offer(new int[]{size, r});
+			i++;
+		}
+		while(!pq.isEmpty() && pq.peek()[1] < q) {
+			pq.poll();
+		}
+		res.put(q, pq.isEmpty()?-1:pq.pq.peek()[0]);
+	}
+
+	int[] result = new int[queries.length];
+	for(int j = 0;j<queries.length; j++) {
+		result[j] = res.get(queries[j]);
+	}
+	return result;
+}
+
+
+564. Find the Closest Palindrome
+
+example: n = "12345"
+Possibilities : 
+1st - palindrome formed by first half - 12321
+2nd - palindrome formed by first half incremented by 1 - 12421
+3rd - palindrome formed by first half decremented by 1 - 12221
+4th - nearest palindrome of the form 99, 999, ... - 9999
+5th - nearest palindrome of the form 101, 1001, ... - 10001
+
+minimum diff with first, so answer is 12321
+
+Time & space complexity = O(n)
+
+public String nearestPalindrome(String n) {
+	int len = n.length()/2;
+	int i = len%2==0 ? len/2-1 : len/2;
+	long firstHalf = Long.parseLong(n.substring(0, i+1));
+
+	// all possibilities
+	long p1 = palin(firstHalf, len%2==0);
+	long p2 = palin(firstHalf + 1, len%2 ==0);
+	long p3 = palin(firstHalf - 1, len%2==0);
+	long p4 = (long) (Math.pow(10, len-1) - 1);
+	long p5 = (long) (Math.pow(10, len-1) + 1);
+
+	List<Long> possibilities = List.of(p1,p2,p3,p4,p5);
+
+	// find candidate with minimum difference and minimum value
+	long diff = Long.MAX_VALUE, res = 0 , nl = Long.parseLong(n);
+
+	for(long cand : possibilities) {
+		if(cand == nl) continue;
+		if(Math.abs(cand - nl) < diff) {
+			diff = Math.abs(cand - nl);
+			res = cand;
+		} else if(Math.abs(cand-nl) == diff) {
+			res = Math.min(res, cand);
+		}
+	}
+
+	return String.valueOf(res);
+
+}
+
+private long palin(long left, boolean even) {
+	long res = left;
+	if(!even) left = left/10;
+	while(left > 0) {
+		res = res*10 + (left%10);
+		left = left/10;
+	}
+	return res;
+}
+
+
+12345
+len = 5
+i = len/2 = 2
+
+left = 123
+res = 123
+left = left/10 
+left=12
+res = 123*10+(12%10)=1230+2=1232, left = 12/10=1
+res = 12320+1%10 = 12320+1=12321
+
+
+
+
+
+Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+
+given: nums[], limit
+return size of the longest subarray, where absolute diff bw any 2 elements of this subarray <= limit
+
+ex: nums[8,2,4,7], limit = 4
+
+8 : 8-8=0<=4
+8,2 : 6
+8,2,4 : 4
+8,2,4,7
+2
+2,4
+2,4,7
+4
+4,7
+7
 
 
 

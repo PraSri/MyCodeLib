@@ -45,7 +45,8 @@ public class EvaluateDivision {
         if (!parent.containsKey(variable)) return null;
         if (!variable.equals(parent.get(variable))) {
             String originalParent = parent.get(variable);
-            parent.put(variable, find(originalParent));
+            parent.put(variable,
+                    (originalParent));
             weight.put(variable, weight.get(variable) * weight.get(originalParent));
         }
         return parent.get(variable);
@@ -101,18 +102,6 @@ public class EvaluateDivision {
         return results;
     }
 
-    public static class Rate {
-        String from;
-        String to;
-        double value;
-
-        public Rate(String from, String to, double value) {
-            this.from = from;
-            this.to = to;
-            this.value = value;
-        }
-    }
-
     public double currencyConversion(Rate[] rates, String[] convert) {
         List<List<String>> equations = new ArrayList<>();
         double[] values = new double[rates.length];
@@ -131,6 +120,18 @@ public class EvaluateDivision {
         temp.add(convert[1]);
         queries.add(temp);
         return evaluateEquations(equations, values, queries)[0];
+    }
+
+    public static class Rate {
+        String from;
+        String to;
+        double value;
+
+        public Rate(String from, String to, double value) {
+            this.from = from;
+            this.to = to;
+            this.value = value;
+        }
     }
 
     static class Main {
