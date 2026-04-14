@@ -150,11 +150,79 @@ This topic appears frequently in PayPal interviews. Study payment gateway archit
 
 -Design a Secure Login & Authentication System
 
--Discuss Microservices vs. Monolith Architecture:
+-Discuss Microservices vs. Monolith Architecture
+
+
+Uber:
+
+Design Uber's Ride-Matching & Dispatch System
+Design a HeatMap of Active Drivers
+Design the Uber Eats Homepage
+Design Near Real-Time Uber Eats Metrics for Restaurant Owners
+Design a Search Function for Uber Eats
+Design a Scalable Real-Time Tracking System
+Design a System to Track & Count Real-Time Events
+
+
+
+OCC - Optimistic Concurrency Control => Optimistic Locking
+
+Strategic trade off between throughput and data integrity
+
+Look before you leap
+
+Assumes low contention (that most transactions will not interfere with each other)
+
+no locking (locking is pessimistic)
+
+system allows transaction to proceed & only checks the conflicts at the very end.
+
+3 phase life cycle : 
+1. Read/execution phase
+2. Validation phase
+3. Commit/Write phase
+
+Implementation strategies:
+1. Version number
+2. Timestamp (last_updated_at)
+3. Checksum/hash/fingerprinting (check hash of entire record)
+
+Key trade offs:
+
+Pros : 
+1. high concurrency: No "stop the world", excellent for read heavy workloads
+2. deadlock prevention: no locks
+3. Scalability: better for stateless architecture
+
+Cons:
+1. Contention Penalty: if many users fight for same resource(eg, flash sale), the high abort/retry rate waste more CPU and IO, giving worse performance than pessimistic locking.
+
+2. the "ABA" problem: if value changes from A to B and back to A, system won't detect (version number can)
+
+3. Starvation: a larger slow transaction might keep getting abort by smaller fast transactions.
+
+When to choose:
+Choose OCC when cost of retry is lower than cost of waiting (eg, collab tools, google docs, git, inventory management, etc.)
+choose pessimistic locking, when contention is high & latency of a retry is not affordable.(banking, ledger, etc.)
+
+SSE - Server side events
+
+- real time, unidirectional data streaming from server to client over http
+- alternative of web sockets, where one way push is needed
+- long lived http connection
+- text/event-stream format 
+- eg. stock tickers, cryptocurrency prices, real time notifications, LLM streaming
 
 
 
 
+Payment System
+
+NFR 
+- highly secure
+- gurantee durability & auditability
+- guarntee transaction safety & financial integrity 
+- highly scalable (10k+ tps)
 
 
 
