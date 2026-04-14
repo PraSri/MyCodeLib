@@ -1,3 +1,9 @@
+
+Low-Level Design (LLD)
+Design a Meeting-Room Booking System:
+Design a Train-Platform Management System:
+
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;

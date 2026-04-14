@@ -1394,6 +1394,27 @@ left=12
 res = 123*10+(12%10)=1230+2=1232, left = 12/10=1
 res = 12320+1%10 = 12320+1=12321
 
+Same question
+Next Smallest Palindrome
+
+find next smaller palindrome strictly larger than given number
+
+given: number in form of array - num[] = [9,4,1,8,7,9,7,8,3,2,2]
+output: [9,4,1,8,8,0,8,8,1,4,9]
+
+9,4,1,8,7, |9| ,7,8,3,2,2
+
+9,4,1,8,7, |9|, 7,8,1,4,9 -> not larger than given
+
+increment the middle
+
+9,4,1,8,7, |10|, 7,8,3,2,2
+
+9,4,1,8,8, |0|, 8,8,1,4,9 -> ans
+
+Method is mirror and carry propagation
+
+
 
 
 
@@ -1415,6 +1436,83 @@ ex: nums[8,2,4,7], limit = 4
 4
 4,7
 7
+
+
+PriorityQueue solution: O(nlogn)
+
+public int longestSubarray(int[] nums, int limit) {
+
+	PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
+	PriorityQueue<int[]> minHeap = new PriorityQueue<>((a,b) -> Integer.compare(a[0], b[0]));
+
+	int left = 0;
+	int maxLength = 0;
+
+	for(int right = 0; right<nums.length; right++) {
+		minHeap.offer(new int[]{nums[right], right});
+		maxHeap.offer(new int[]{nums[right], right});
+
+		// if diff exceeds limit, move left pointer forward
+		while(maxHeap.peek()[0] - minHeap.peek()[0] > limit) {
+			left++;
+			// lazy removal, if index is out of window
+			while(maxHeap.peek()[1] < left) {
+				maxHeap.poll();
+			}
+			while(minHeap.peek()[1] < left) {
+				minHeap.poll();
+			}
+		}
+		maxLength = right - left + 1;
+	}
+
+	return maxLength;
+
+}
+
+Deque solution: O(n)
+
+public int longestSubarray(int[] nums, int limit) {
+
+	Deque<Integer> maxQueue = new LinkedList<>();
+	Dequeu<Integer> minQueue = new LinkedList<>();
+
+	int left = 0;
+	int maxLength = 0;
+
+	for(int right = 0; right<nums.length; right++) {
+
+		// maintain maxQueue in decresing order
+		while(!maxQueue.isEmpty() && maxQueue.peekLast() < nums[right]) {
+			maxQueue.pollLast();
+		}
+		maxQueue.offerLast(nums[right]);
+
+		// maintain minQueue in increaseing order
+		while(!minQueue.isEmpty() && minQueue.peekLast() > nums[right]) {
+			minQueue.pollLast();
+		}
+		minQueue.offerLast(nums[right]);
+
+		// while current window exceeds limit, remove elements
+		while(maxQueue.peekFirst() - minQueue.peekFirst() > limit) {
+			if(maxDeque.peekFirst() == nums[left]) {
+				maxDeque.pollFirst();
+			}
+			if(minDeque.peekFirst() == nums[left]) {
+				minDeque.pollFirst();
+			}
+			left++;
+		}
+
+		maxLength = right - left + 1;
+
+	}
+
+	return maxLength;
+}
+
+
 
 
 

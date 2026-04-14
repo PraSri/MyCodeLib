@@ -1,0 +1,163 @@
+
+
+This round focused on 𝗝𝗮𝘃𝗮 𝗮𝗻𝗱 𝗦𝗽𝗿𝗶𝗻𝗴 𝗕𝗼𝗼𝘁, with questions like:
+🔹 Bean Scopes (default scope)
+🔹 Strategy Design Pattern
+🔹 Observer Design Pattern
+Additionally, I was asked to design and implement a 𝗩𝗲𝗻𝗱𝗶𝗻𝗴 𝗠𝗮𝗰𝗵𝗶𝗻𝗲 using Low-Level Design (LLD) principles.
+
+
+ Question:
+	- Circular cipher based question. You need to decode the string passed you with the prvoided value of k. 
+	- Java Implementation based question on hackerank to implement construtor custom sorting using comparator and implementation of the above quertion
+
+I attended this role specialization round and it was messy. I mean, they were just randomly throwing questions based on what came to his mind.
+
+In my interview, I was asked some really deep concepts in java, and then some system design questions, then a trie based question, back to java where he asked some Java 8 features, and then system design questions.
+
+
+Questions I was asked in the rounds
+
+Thread related - Create two threads, each thread should print K elements give chance to other thread to print the K elements this should go on until each thread prints N elements K << N.
+
+I had a little confusion in java as I was working with C# mostly in last 4.5 years. but intuition was okay, but the interviewer needs a working code for this.
+
+Implement ArrayList (interviewer expected me to be aware of internal working of ArrayList, unfortunately I did not know the internal working, I asked him for approaches to implement, but he seems keen on the solution same as ArrayList and I must have aware of it.)
+
+How HashSet works internally, when inserting objects into it, how does it know difference, if two objects are same or not, what to do if we have to say two elements are same when their fields are same. explained approaches and implemented this.
+
+SOLID principles, explained.
+
+implement Lazy singleton init in multi threaded env. implemented.
+
+Other discussions around what design patterns I have used, some microservices related questions which went well.
+
+
+
+Core Java & OOP
+
+What is the difference between HashMap, ConcurrentHashMap, and Hashtable?
+
+How does Java handle memory management? Explain GC (Garbage Collection) in detail.
+
+Explain the working of the synchronized keyword. When would you use ReentrantLock over it?
+
+Java 8: How do Stream, map, flatMap, and collect work?
+
+What’s the difference between final, finally, and finalize()?
+
+How do you design an immutable class in Java?
+
+Multithreading & Concurrency
+
+How would you solve the Producer-Consumer problem in Java?
+
+What is the difference between wait(), notify(), and notifyAll()?
+
+Explain the Executor framework. What is the difference between Callable and Runnable?
+
+How would you ensure thread safety when updating shared resources?
+
+What’s the difference between CountDownLatch and CyclicBarrier?
+
+
+
+5. Spring Boot & Microservices
+
+How do you manage configurations across multiple microservices?
+
+What is Spring Security? How does it integrate with OAuth2?
+
+What is the difference between @Component, @Service, and @Repository?
+
+How does Spring Boot auto-configuration work?
+
+What is the Circuit Breaker pattern and how do you implement it in Spring Cloud?
+
+
+6. Database & Persistence
+
+What is the N+1 select problem in JPA? How do you resolve it?
+
+Difference between lazy and eager fetching in Hibernate.
+
+How do transactions work in Spring? What is propagation?
+
+Explain indexing in databases. When would you use composite indexes?
+
+How would you store logs from multiple services in a scalable way?
+
+
+
+
+Round 1: Core Java (Fundamentals Round)
+1. == vs .equals()
+== → checks reference (memory address)
+.equals() → checks logical equality
+
+👉 What they test:
+Do you understand object memory & references
+
+2. wait() vs sleep()
+
+Typical hidden expectations:
+
+wait():
+Releases lock
+Used in synchronization
+sleep():
+Does NOT release lock
+Just pauses thread
+
+👉 What they test:
+
+Thread lifecycle understanding
+Synchronization behavior
+3. HashMap Internals
+
+You’re expected to know:
+
+Buckets + hashing
+Collision handling (LinkedList → Tree after threshold)
+Load factor & resizing
+
+👉 What they test:
+
+Not usage, but internal working
+4. hashCode() & equals()
+If .equals() is overridden → must override hashCode()
+Otherwise → broken behavior in HashMap/HashSet
+
+👉 What they test:
+
+Real-world bugs understanding
+
+
+Round 2: Multithreading (Critical Round)
+
+Typical questions:
+
+Race condition example
+synchronized vs AtomicInteger
+Thread safety in collections
+
+👉 What they expect:
+
+Not theory → practical reasoning
+When to use which approach
+🧩 Round 3: Collections & Concurrency
+
+Example:
+
+ConcurrentHashMap vs Hashtable
+
+Expected answer direction:
+
+Hashtable → synchronized, slower
+ConcurrentHashMap → segment-level locking, better performance
+
+👉 What they test:
+
+Performance trade-offs
+Real system decisions
+
