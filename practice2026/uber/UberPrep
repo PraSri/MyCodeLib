@@ -1514,11 +1514,175 @@ public int longestSubarray(int[] nums, int limit) {
 
 
 
+Closet subsequence sum to target
+
+question:
+
+pick any number of elements from an array (a subsequence), such that their sum is as close as possible to a given target. we need to return minimum absolute difference = |sum-target|
+
+core challenge: exponential growth
+- for an array of size n, each element can be included or excluded
+- 2^n possible subsequences
+
+strategy: meet in the middle
+- divide the array in 2 parts, left & right
+- cal all possible subsequences sums for both halves independently, save in 
+sumL & sumR
+- sort one of the list sumR to enable efficient searching
+- combine & binary search: for every sum s in sumL, we want to find a sum r in sumR such that s+r ~ (target)
+	- equivalent to r ~ (target-s)
+	- use binary search in sumR to find value closest to target-s
+- track minimum difference
+
+time complexity: O(2^n/2 * n)
+space complexity: O(2^n/2)
+
+
+public int minAbsDifference(int[] nums, int target) {
+	int n = nums.length;
+	List<Integer> leftSums = new ArrayList<>();
+	List<Integer> rightSums = new ArrayList<>();
+
+	generateSums(nums, 0, n/2, 0, leftSums);
+	generateSums(nums, n/2, n, 0, rightSums);
+
+	Collections.sort(rightSums);
+
+	int minDiff = Integer.MAX_VALUE;
+
+	for(int s: leftSums) {
+		int remaining = target - s;
+		// binary search nearest remaining
+		int left = 0, right=rightSums.size() - 1;
+		while(left <= right) {
+			int mid = left + (right-left)/2;
+			int currentSum = s + rightSums.get(mid);
+			minDiff = Math.min(minDiff, Math.abs(target - currentSum));
+			if(currentSum < target) {
+				left = mid + 1;
+			} else if(current > target) {
+				right = mid - 1;
+			} else {
+				return 0; // perfect match found
+			}
+		}
+	}
+
+	return minDiff;
 
 
 
+}
+
+private void generateSums(int[] nums, int start, int end, int currentSum, List<Intege> sums) {
+	if(start == end) {
+		sums.add(currentSum);
+		return;
+	}
+	// decision include/exclude elements
+	generateSums(nums, start+1, end, currentSum + nums[start], sums);
+	generateSums(nums, start+1, end, currentSum, sums);
+}
 
 
+Find minimum number of coins for fruits II
+
+given: prices[], find minimum number of coins needed to acquire all fruits
+rule : if you buy ith fruit, stores gives you next i fruits for free.
+
+Idea: to take and not take approach of DP.
+when we take ith fruit, move from i+1 to 2*i+2, skipping next i fruits
+recursively explore each valid move and find minimum cost.
+
+public int minimumCoins(List<Integer> prices) {
+	int n = prices.size();
+	int[] dp = new int[n];
+	Arrays.fill(dp, -1);
+	return solve(prices, 0, n, dp);
+}
+
+public int solve(List<Integer> prices, int i, int n, int[] dp) {
+	// base case
+	if(i>=n) return 0;
+
+	if(dp[i] != -1) return dp[i];
+
+	int ans = Integer.MAX_VALUE;
+
+	for(int j = i+1; j<=2*i+2; j++) {
+		ans = Math.min(ans, solve(prices, j, n, dp));
+	}
+
+	return dp[i] = ans + prices.get(i);
+
+}
+
+Check for Possible bipartition
+=> Graph coloring problem
+=> bipartite => means we can color the graph using 2 colors such that no two adjacent nodes share the same color.
+=> use bfs/dfs, start from each uncolored node
+assign a color, and attempt to color all connected nodes with opposite color.
+=> if conflict is found, return false,
+=> if all nodes are succesfully colored return true.
+=> if graph is odd length, its impossible to color with 2 colors
+
+
+given: n (1 to n) people (nodes) and dislikes[][] (a->b) (edge)
+output: true if possible to segregate else false
+
+Time complexity = O(V+E)
+Space complexity = O(V+E)
+
+public boolean possibleBipartition(int n, int[][] dislikes) {
+
+	List<List<Integer>> adj = new ArrayList<>();
+
+	for(int i = 0;i<=n;i++) {
+		adj.add(new ArrayList<>());
+	}
+
+	for(int[] edge: dislikes) {
+		int u = edge[0];
+		int v = edge[1];
+		adj.get(u).add(v);
+		adj.get(v).add(u);
+	}
+
+	//-1=uncolored, 0=color A, 1=color B
+
+	int[] color = new int[n+1];
+
+	Arrays.fill(color, -1);
+
+	for(int i = 1; i<=n; i++) {
+		if(color[i] == -1) {
+			if(!bfs(i, adj, color)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+
+}
+ 
+private boolean bfs(int startNode, List<List<Integer>> adj, int[] color) {
+	Queue<Integer> queue = new LinkedList<>();
+	queue.offer(startNode);
+	color[startNode] = 0;
+	while(!queue.isEmpty()) {
+		int curr = queue.poll();
+		for(int neighbor: adj.get(curr)) {
+			if(color[neighbor] == -1) {
+				color[neighbor] = 1 - color[curr];
+				queue.offer(neighbor);
+			} else if(color[neighbor] == color[curr]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
 
 
 

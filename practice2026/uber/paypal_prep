@@ -2,18 +2,223 @@
 
 This round focused on 𝗝𝗮𝘃𝗮 𝗮𝗻𝗱 𝗦𝗽𝗿𝗶𝗻𝗴 𝗕𝗼𝗼𝘁, with questions like:
 🔹 Bean Scopes (default scope)
+	"In Spring Boot, beans are Singletons by default to save memory and improve performance. However, for stateful logic, we use Prototype scope. In web apps, we can use Request or Session scopes. The most important thing to remember is the Injection Problem: injecting a short-lived bean into a long-lived one requires a Scoped Proxy or Lookup Injection to work correctly."
+
+
 🔹 Strategy Design Pattern
+	- behaviourial pattern
+	- follow Open/Closed principle (Open for extension, closed for modification)
+	- Payment Systems
+
+inteface PaymentStrategy {
+	void pay(int amount);
+}
+
+class CreditCardPayment implements PaymentStrategy {
+	public void pay(int amount) {
+		sout("Paid " + amount + " using Credit Cards.");
+	}
+}
+
+class BitCoinPayment implments PAymentStrategy {
+	...
+}
+
+class ShoopingCart {
+	private PaymentStrategy strategy;
+
+	public void setPaymentStrategy(PaymentStrategy strategy) {
+		this.strategy = strategy;
+	}
+
+	public void checkout(int amount) {
+		strategy.pay(amount);
+	}
+}
+
+- we have multiple ways to perform a task & want to switch bw them at runtime
+- makes code modular
+- Collections.sort(list, Comparator c) => comparator is the strategy
+
 🔹 Observer Design Pattern
+
+- defines one to many dependency between objects.
+- one object (subject) changes state, all its dependents (observers) are notified and updated automatically
+-example : news agency (subject) broadcasts news to different news channels (observers)
+
+// the subject
+class NewsAgency {
+
+	private List<Channel> observers = new ArrayList<>();
+
+	public void addObserver(Channel channel) {
+		observers.add(channel);
+	}
+
+	public void setNews(String news) {
+		for(Channel channel: observers) {
+			channel.update(news);
+		}
+	}
+}
+
+// the observer interface
+interface Channel {
+	void update(String news);
+}
+
+class TVChannel implements Channel {
+	public void update(String news) {
+		sout("TV news :" + news);
+	}
+}
+
+- when a change in one object requires changing others and can't say how many
+- provides loose coupling
+- java.util.EventListener in swing or Flow API (reactive)
+
+
 Additionally, I was asked to design and implement a 𝗩𝗲𝗻𝗱𝗶𝗻𝗴 𝗠𝗮𝗰𝗵𝗶𝗻𝗲 using Low-Level Design (LLD) principles.
+
+// state interface
+public interface State {
+	void insertCoin(VendingMachine machine, int amount);
+	void selectProduct(VendingMachine machine, String productCode);
+	void dispenseProduct(VendingMachine machine);
+	void refund(VendingMachine machine);
+}
+
+// concrete states
+
+public class IdleState implements State {
+	
+}
+
+public class HasMoneyState implements State {
+	
+}
+
+// context Vending Machine
+
+public class VendingMachine {
+	private State currentState;
+	private int balance;
+	private Map<String, Product> inventory;
+
+	public VendingMachine() {
+		this.currentState = new IdleState();
+		this.balance = 0;
+		this.inventory = new HashMap<>();
+		inventory.put("A1", new Product("Coke", 25));
+	}
+
+	// delegation methods
+
+	public void insertCoin(int amount) {
+		currentState.insertCoin(this, amount);
+	}
+	....
+
+	// Getters & Setters
+	....
+}
+
+class Product {
+	private String name;
+	private int price;
+	....
+}
+
+=> Used State Pattern here - encapsulation, no ifs
+- Maintainability - if you want to add "Maintenance Mode" state, just create a new class.
+- Single Responsibility - machine manages data, state manages behavior.
+- I used State pattern for machine lifecycle, but I could also use Strategy pattern for PaymentProcessor (Coin vs QR code vs UPI) within hasMoneyState.
 
 
  Question:
-	- Circular cipher based question. You need to decode the string passed you with the prvoided value of k. 
+	- Circular cipher based question. You need to decode the string passed you with the prvoided value of k.
+	=> each letter in string shifts by a fixed number of positions k
+
+public String decode(String text, int k) {
+	StringBuilder result = new StringBuilder();
+	k = k%26;
+	for(char c: text.toCharArray) {
+		if(Character.isLetter(c)) {
+			char base = Character.isUpperCase(c) ? 'A' : 'a';
+			char decodedChar = (char) ((c - base - k + 26) % 26 + base);
+			result.append(decodedChar);
+		} else {
+			result.append(c);
+		}
+	}
+	return result.toString();
+}
+
 	- Java Implementation based question on hackerank to implement construtor custom sorting using comparator and implementation of the above quertion
+
+TreeSet<Student> studentSet = new TreeSet<>(Comparator.comparingDouble((Student s) -> s.grade).reversed().thenComparing(s -> s.name));
+
+class GradeComparator implements Comparator<Student> {
+	@Override
+	public int compare(Student s1, Student s2) {
+		int gradeCompare = Double.compare(s2.grade, s1.grade);
+		if(gradeCompare == 0) {
+			return s1.name.compareTo(s2.name);
+		}
+		return gradeCompare;
+	}
+}
 
 I attended this role specialization round and it was messy. I mean, they were just randomly throwing questions based on what came to his mind.
 
 In my interview, I was asked some really deep concepts in java, and then some system design questions, then a trie based question, back to java where he asked some Java 8 features, and then system design questions.
+
+JVM memory structure:
+
+Stack -> Thread specific
+- local variables, method call , etc.
+- LIFO
+- stack size is fixed via -Xss (1MB)
+- deep recursion can lead to StackOverFlowError
+
+Heap -> Shared
+- here all objects & their instance variables live.
+- primary target for Garbage Collector
+- Young Generation - new objects are born (Minor GC)
+	- Eden Space - Most objects die here quickly (Weak Generational Hypothesis)
+	- Survivor Spaces(S0/S1) - Objects that survive minor GC move here
+	- Process: Copy surviving objects between S0/S1, promote to old Gen after threshold (-XX:MaxTenuringThreshold)
+- Old Generation (Major GC):
+	- Long lived objects
+	- Collected via Major/full GC (Slower, stop of world)
+- Permanent Generation (PermGen) - special memory area in heap (before java 8), that stored metadata about classes, methods, interned strings, static varibales.
+- Metaspace(Java 8+): Replaced PermGen; stores class metadata (native memory)
+
+=> String pool is a special storage area in heap memory where string literals are stored to optimize memory usage and performance.
+String s1 = "hello"; // created in pool
+String s2 = "hello"; // reuses from pool
+
+s1==s2 // true
+
+String s3 = new String("hello"); //creates new object in heap outside of pool
+String s4 = s3.intern(); // moves/retrieves from pool
+
+s1==s3 // false
+s1.equals(s3) // true
+
+GC algo:
+- Serial GC
+- Parallel/Throughput GC (High throughput, batch processing)
+- CMS (Concurrent Mark-Sweep)
+- G1 GC (Garbage First)
+- ZGC/Shenandoah (sub-10ms pause, no stop of world) (trading apps)
+
+-Xms/-Xmx : Initial/max heap size
+
+Strong(prevent gc), Soft(GC when memory is low), Weak(GC next cycle)  & Phantom references(GC, then notifies)
+- Standard collections (like HashMap) use Strong references
+- best choice for in-memory cache is Soft Reference 
+- Map<String, SoftReference<byte[]>>
 
 
 Questions I was asked in the rounds
