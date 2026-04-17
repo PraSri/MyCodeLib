@@ -1686,6 +1686,210 @@ private boolean bfs(int startNode, List<List<Integer>> adj, int[] color) {
 
 
 
+Maximize Amount After Two Days of Conversions
+
+public double maxAmount(String initialCapacity, List<List<String>> pairs1, double[] rates1, List<List<String>> pairs2, double[] rates2) {
+	// step 1: find max amounts for all currencies after day 1
+	Map<String, Double> day1Max = getMaxAmounts(initialCurrency, 1.0, pairs1, rates1);
+
+	double maxFinalAmount = 1.0;
+
+	// Step 2: From each currency reached on Day 1, find max back to initialCurrency on Day 2
+
+	for(Map.Entry<String, Double> entry: day1Max.entrySet()) {
+		String currency = entry.getKey();
+		double amount = entry.getValue();
+
+		Map<String, Double> day2Max = getMaxAmounts(currency, amount, pairs2, rates2);
+
+		if(day2Max.containsKey(initialCurrency)) {
+			maxFinalAmount = Math.max(maxFinalAmount, day2Max.get(initialCurrency));
+		}
+	}
+
+	return maxFinalAmount;
+}
+
+private Map<String, Double> getMaxAmounts(String startNode, double startAmount, List<List<String>> pairs, double[] rates) {
+	// build adj list
+	Map<String, Map<String, Double>> graph = new HashMap<>();
+	for(int i = 0; i< paris.size(); i++) {
+		String u = pairs.get(i).get(0);
+		String v = pairs.get(i).get(1);
+		double rate = rates[i];
+		graph.computeIfAbsent(u, k -> new HashMap<>()).put(v, rate);
+		graph.computeIfAbsent(v, k -> new HashMap<>()).put(u, 1.0/rate);
+	}
+	Map<String, Double> maxMap = new HashMap<>();
+	maxMap.put(startNode, startAmount);
+
+	Queue<String> queue = new LinkedList<>();
+	queue.add(startNode);
+
+	while(!queue.isEmpty()) {
+		String curr = queue.poll();
+		double currAmt = maxMap.get(curr);
+		if(graph.containsKey(curr)) {
+			for(Map.Entry<String, Double> neighbor: graph.get(curr).entrySet()) {
+				String next = neighbor.getKey();
+				double nextAmt = currAmt * neighbor.getValue();
+				if(nextAmt > maxMap.getOrDefault(next, 0.0)) {
+					maxMap.put(next, nextAmt);
+					queue.add(next);
+				}
+			}
+		}
+	}
+
+	return maxMap;
+}
+
+Time complexity: O(N+E), N = no.of distinct currencies
+E = no. of conversion pairs
+
+Space: O(N+E)
+
+
+
+
+Number of Islands
+
+public int numOfIslands(char[][] A) {
+	int count = 0;
+	int n = A.length;
+	int m = A[0].length;
+
+	for(int i = 0;i<n;i++) {
+		for(int j = 0;j<m;j++) {
+			if(A[i][j] == '1') {
+				dfs(A, i, j);
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+private void dfs(char[][] a, int i, int j) {
+	if(i<0 || j<0 || i>=a.length || j>=a[0].length || a[i][j] != '1') return;
+
+	a[i][j] = '0';
+
+	dfs(a, i-1, j);
+	dfs(a, i, j-1);
+	dfs(a, i+1, j);
+	dfs(a, i, j+1);
+
+}
+
+Number of distinct islands
+
+even if 2 islands have same number of islands they will only be counted as one if they are identical in shape. (meaning one can be translated, but not rotated or reflected - to cover the other)
+
+approach - we need a way to represent the signature of an island so we can compare it to others. We do this by tracking the relative coordinates of every piece of land within an island.
+
+normalize co-ordinates
+
+for each cell (r,c), find relative position with starting cell (r0,c0)
+relative coordinate is (r-r0, c-c0)
+
+add entire shape signature in hashSet, return size of set
+
+public int numOfDistinctIslands(int[][] grid) {
+	int n = ..
+	int m = ..
+
+	Set<List<List<Integer>>> distinctIslands = new HashSet<>();
+
+	for(int i = 0;i<n;i++) {
+		for(int j = 0;j<m;j++) {
+			if(grid[i][j] == 1) {
+				List<List<Integer>> curr = new ArrayList<>();
+				dfs(grid, i, j, i, j, curr);
+				distinctIsland.add(cur);
+			}
+		}
+	}
+
+	return distinctIslands.size();
+}
+
+void dfs(int[][] grid, int r, int c, int r0, int c0, List<List<Integer>> islands) {
+
+	int n, m...;
+
+	if(r<0 || c<0 || r>=n || c>=m || grid[r][c] <= 0) {
+		return;
+	}
+
+	grid[r][c] = 0;
+
+	island.add(Arrays.asList(r - r0, c - c0));
+
+	dfs(grid, r+1, c, ro, co, island);
+	dfs(grid, r, c+1, ro, co, island);
+	dfs(grid, r-1, c, ro, co, island);
+	dfs(grid, r, c-1, ro, co, island);
+}
+
+
+Word search
+
+given: m*n grid and word. return true if word exist in the grid.
+
+
+public boolean exist(char[][] board, String word) {
+	int n = board.length;
+	int m = board[0].length;
+
+	for(int i = 0;i<n;i++) {
+		for(int j = 0; j<m;j++) {
+			if(dfs(i, j, word, 0, board)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+private boolean dfs(int row, int col, String word, int index, char[][] board) {
+	if(word.length() == index) {
+		return true;
+	}
+
+	if(row < 0 || row >= board.length || col < 0 || col >= board[0].length || word.charAt(index) != board[row][col]) {
+		return false;
+	}
+
+	boolean result = false;
+	char temp = board[row][col];
+	board[row][col] = '*';
+	int[][] offsets = {{0,1}, {1,0}, {-1,0}, {0,-1}};
+
+	for(int[] offset : offsets) {
+		int rowOffset = offset[0];
+		int colOffset = offset[1];
+		result = dfs(row + rowOffset, col + colOffset, word, board);
+		if(result) {
+			break;
+		}
+	}
+	board[row][col] = temp;
+	return result;
+}
+
+time complexity = O(M*N*3^L)
+space complexity = O(L)
+
+
+
+
+
+
+
+
+
 
 
 
