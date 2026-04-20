@@ -1,0 +1,177 @@
+
+
+Pointers
+
+Core Concepts
+- Networking Essentails
+- Api Design
+- Data Modeling
+- Database indexing
+- Caching
+- Sharding
+- Consistent Hashing
+- CAP Theorem
+- Numbers to know
+
+
+Key Technologies
+- Core Database
+	- Relational Database
+		- SQL Joins
+		- Indexes
+		- RDBMS Transactions
+	- NoSQL Database
+		- Flexible data models
+		- Scalability
+		- Handling Big Data & Real Time Web Apps
+- Blob Storage
+	- S3
+	- GCS
+	- Design Youtube - store videos in blob storage, metadata in db
+	- Design Instagram - store images & videos in blob storage, metadata in db
+	- Design Dropbox - stores files in blob storage, store metadata in db
+	- Durability (replication)
+	- Scalability
+	- Cost
+	- Security
+	- Upload & download directly from the client
+	- Chunking
+
+- Search Optimized Database
+	- Inverted Indexes
+	- Tokenization
+	- Stemming
+	- Fuzzy Search
+	- Scaling
+	- Elastic search - distributed, RESTful search & analytics engine, built on top of Apache Lucene
+
+- API Gateway
+	- AWS API Gateway
+	- Kong
+	- Apigee
+	- nginx
+	- Apache webserver
+
+- Load Balancer
+	- L4 - Persistent connections - Websockets
+	- L7 - Great flexibility
+	- AWS Elastic Load Balancer
+	- NGINX
+	- HAProxy
+
+- Queue
+	- Buffer for Bursty Traffic
+	- Distribute Work Across a System
+	- Message Ordering
+	- Retry Mechanisms
+	- Dead Letter Queues
+	- Scaling with Partitions
+	- Backpressure
+	- Kafka
+	-SQS
+
+- Streams / Event Sourcing
+	- When you need to process large amount of data in real time
+	- When you need to support complex processing scenarios like event sourcing
+	- When you need to support multiple consumers reading from the same stream
+	- Scaling with partitions
+	- Multiple Consumer Groups
+	- Replication
+	- Windowing
+	- Kafka
+	- Flink
+	- Kinesis
+
+- Distributed Lock
+	- Redis
+	- Zookeeper
+	- E-com checkout system
+	- Ride sharing matchmaking
+	- Distributed Cron jobs
+	- Online auction bidding system
+	- Locking Mechanism
+	- Lock Expiry
+	- Locking Granularity
+	- Deadlocks
+
+- Distrubuted Cache
+	- Save Aggregated Metrics
+	- Reduce number of DB queries
+	- Speed Up Expensive Queries
+	- Eviction Policy
+	- Cache Invalidation Strategy
+	- Cache Write Strategy
+		- Write Through Cache - Cache + DB both simultaneously
+		- Write Around Cache - directly to DB
+		- Write Back Cache - cache -> asyn to db
+	- Redis
+	- Memcached
+
+- CDN
+	- CDNs are just for static assets
+	- CDNs can be used to cache API responses
+	- Eviction Policies
+	- Cloudfare
+	- Akamai
+	- Amazon CloudFront
+
+- Docker
+	- unit of deployment
+	- containerization
+	- allows to package an application & its dependencies into a single container
+	- isolation - on same physical hardware without conflicts
+
+- Kubernetes (K8s)
+	- orchestrator
+	- open source platform
+	- automating deployment
+	- scaling
+	- management of containerized applications
+	- highly available services
+	- elastically scalable
+	- self healing
+	- HPA if CPU > 70% spin 5 more instances
+	- Service discovery & Load Balancing - gslb, cname
+	- Automates Rollouts/Rollbacks
+
+==> I would containerize the microservices using docker for environment consistency and deploy them on a Kubernetes cluster. this allows us to use HPA to handle traffic spikes and ensures high availability through K8s self healing capabilities
+
+
+
+Common Patterns
+- Pushing Realtime Updates
+	- HTTP polling
+	- SSE
+	- Websockets
+	- pub/sub 
+- Managing Long Running Tasks
+	- queues
+	- worker pools
+- Dealing with contention
+	- Pessimistic locking
+	- optimistic concurrency
+- Scaling Reads
+	- replication lag in read replicas
+	- hot keys
+- Scaling Writes
+	- sharding
+	- vertical partitioning
+	- handling write bursts via queue
+	- batching writes
+- Handling Large Blobs
+	- presigned urls
+	- CDN delivery
+- Multi-step Processes
+	- event sourcing
+	- state management
+	- failure recovery
+	- retry logic
+- Proximity Based Services
+	- Geospatial indexes
+	- redis geospatial data type
+	- elastic search with geo queries enabled
+
+
+
+
+
