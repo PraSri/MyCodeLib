@@ -1076,3 +1076,431 @@ public class RegularExpressionMatching {
 
 
 
+Minesweeper
+
+class Solution {
+    int[] dx = new int[]{0, -1, 0, 1, 1, -1, 1, -1};
+    int[] dy = new int[]{1, 0, -1, 0, 1, -1, -1, 1};
+    
+    public char[][] updateBoard(char[][] board, int[] click) {
+        if (board[click[0]][click[1]] == 'M') {
+            board[click[0]][click[1]] = 'X';
+            return board;
+        }
+        
+        int m = board.length, n = board[0].length;
+        
+        Queue<int[]> queue = new LinkedList();
+        boolean[][] visited = new boolean[m][n];
+        
+        queue.offer(click);
+        visited[click[0]][click[1]] = true;
+        
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int x = cur[0], y = cur[1];
+            int mines = getNumOfBombs(board, x, y);
+            
+            if (mines == 0) {
+                board[x][y] = 'B';
+                for (int i = 0; i < 8; ++i) {
+                    int nx = x + dx[i], ny = y + dy[i];
+                
+                    if (nx >= 0 && ny >= 0 && nx < board.length && ny < board[0].length && !visited[nx][ny] && board[nx][ny] == 'E') {
+                        queue.offer(new int[]{nx, ny});
+                        visited[nx][ny] = true;
+                    }
+                }
+            } else {
+                board[x][y] = (char)(mines + '0');
+            }
+        }
+        
+        return board;
+    }
+    
+    int getNumOfBombs(char[][] board, int x, int y) {
+        int count = 0;
+        for (int i = 0; i < 8; ++i) {
+            int nx = x + dx[i], ny = y + dy[i];
+            
+            if (nx == x && ny == y) continue;
+
+            if (nx >= 0 && ny >= 0 && nx < board.length && ny < board[0].length) {
+                count += board[nx][ny] == 'M' ? 1 : 0;
+            }
+          
+        }
+        return count;
+    }
+}
+
+ Shortest Bridge
+
+class Solution {
+    // represents 4 directions
+    int[][] directions = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+    // to represent a cell
+    static class Pair {
+        int x, y;
+
+        public Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    private boolean checkBoundary(int x, int y, int n) {
+        return x >= 0 && x < n && y >= 0 && y < n;
+    }
+
+    List<Pair> bfsQueue;
+
+    // recursively check neighbours & insert in queue for 1st island, say A
+    private void dfs(int[][] grid, int x, int y, int n) {
+        grid[x][y] = 2; // visited
+        bfsQueue.add(new Pair(x, y));
+        for (int[] dir : directions) {
+            int curX = x + dir[0], curY = y + dir[1];
+            // check boundary conditions & visited or not
+            if (checkBoundary(curX, curY, n) && grid[curX][curY] == 1) {
+                dfs(grid, curX, curY, n);
+            }
+        }
+    }
+
+    public int shortestBridge(int[][] grid) {
+        int n = grid.length;
+        int firstX = -1, firstY = -1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    firstX = i;
+                    firstY = j;
+                    break;
+                }
+            }
+        }
+
+        bfsQueue = new ArrayList<>();
+        dfs(grid, firstX, firstY, n);
+
+        // do bfs from source island A to find shortest distance to destination island B
+        int distance = 0;
+        while (!bfsQueue.isEmpty()) {
+            List<Pair> newbfs = new ArrayList<>(); // to capture the intermediate cells to reach B in each iteration
+            for (Pair pair : bfsQueue) {
+                for (int[] dir : directions) {
+                    int curX = pair.x + dir[0];
+                    int curY = pair.y + dir[1];
+                    // check boundary conditions
+                    if (checkBoundary(curX, curY, n)) {
+                        if (grid[curX][curY] == 1) {
+                            return distance;
+                        } else if (grid[curX][curY] == 0) {
+                            newbfs.add(new Pair(curX, curY));
+                            grid[curX][curY] = -1;
+                        }
+                    }
+                }
+            }
+            bfsQueue = newbfs;
+            distance++;
+        }
+        return distance;
+    }
+
+}
+
+
+
+package microsoft;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+public class SlidingWindowMedian {
+
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        int n = nums.length - k + 1;
+        if (n <= 0) return new double[0];
+        double[] result = new double[n];
+
+        for (int i = 0; i <= nums.length; i++) {
+            if (i >= k) {
+                result[i - k] = getMedian();
+                remove(nums[i - k]);
+            }
+            if (i < nums.length) {
+                add(nums[i]);
+            }
+        }
+
+        return result;
+    }
+
+    private void add(int num) {
+        if (num < getMedian()) {
+            maxHeap.add(num);
+        } else {
+            minHeap.add(num);
+        }
+        if (maxHeap.size() > minHeap.size()) {
+            minHeap.add(maxHeap.poll());
+        }
+        if (minHeap.size() - maxHeap.size() > 1) {
+            maxHeap.add(minHeap.poll());
+        }
+    }
+
+    private void remove(int num) {
+        if (num < getMedian()) {
+            maxHeap.remove(num);
+        } else {
+            minHeap.remove(num);
+        }
+        if (maxHeap.size() > minHeap.size()) {
+            minHeap.add(maxHeap.poll());
+        }
+        if (minHeap.size() - maxHeap.size() > 1) {
+            maxHeap.add(minHeap.poll());
+        }
+    }
+
+    private double getMedian() {
+        if (maxHeap.isEmpty() && minHeap.isEmpty()) return 0;
+
+        if (maxHeap.size() == minHeap.size()) {
+            return ((double) maxHeap.peek() + (double) minHeap.peek()) / 2.0;
+        } else {
+            return (double) minHeap.peek();
+        }
+    }
+}
+
+
+public class CandyCrush {
+
+    public int[][] candyCrush(int[][] board) {
+
+        int rows = board.length;
+        int cols = board[0].length;
+        
+        boolean shouldContinue = true;
+
+        while (shouldContinue) {
+            shouldContinue = false;
+
+            // Mark horizontal matches (3 or more consecutive same candies in a row)
+            for (int row = 0; row < rows; row++) {
+                for (int col = 2; col < cols; col++) {
+                    // Check if current position and previous 2 positions have same candy type
+                    if (board[row][col] != 0 &&
+                            Math.abs(board[row][col]) == Math.abs(board[row][col - 1]) &&
+                            Math.abs(board[row][col]) == Math.abs(board[row][col - 2])) {
+
+                        shouldContinue = true;
+                        int candyValue = Math.abs(board[row][col]);
+                        // Mark these positions as negative to indicate they should be crushed
+                        board[row][col] = -candyValue;
+                        board[row][col - 1] = -candyValue;
+                        board[row][col - 2] = -candyValue;
+                    }
+                }
+            }
+
+            // Mark vertical matches (3 or more consecutive same candies in a column)
+            for (int col = 0; col < cols; col++) {
+                for (int row = 2; row < rows; row++) {
+                    // Check if current position and previous 2 positions have same candy type
+                    if (board[row][col] != 0 &&
+                            Math.abs(board[row][col]) == Math.abs(board[row - 1][col]) &&
+                            Math.abs(board[row][col]) == Math.abs(board[row - 2][col])) {
+
+                        shouldContinue = true;
+                        int candyValue = Math.abs(board[row][col]);
+                        // Mark these positions as negative to indicate they should be crushed
+                        board[row][col] = -candyValue;
+                        board[row - 1][col] = -candyValue;
+                        board[row - 2][col] = -candyValue;
+                    }
+                }
+            }
+
+            // Drop candies down after crushing marked candies
+            if (shouldContinue) {
+                for (int col = 0; col < cols; col++) {
+                    int writePosition = rows - 1;
+
+                    // Move all positive values (uncrushed candies) down
+                    for (int row = rows - 1; row >= 0; row--) {
+                        if (board[row][col] > 0) {
+                            board[writePosition][col] = board[row][col];
+                            writePosition--;
+                        }
+                    }
+
+                    // Fill remaining top positions with 0 (empty spaces)
+                    while (writePosition >= 0) {
+                        board[writePosition][col] = 0;
+                        writePosition--;
+                    }
+                }
+            }
+        }
+
+        return board;
+    }
+}
+
+
+//All Nodes Distance K in Binary Tree
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        convertToGraph(root, -1, map);
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(target.val);
+
+        Set<Integer> visited = new HashSet<>();
+        visited.add(target.val);
+
+        int distance = 0;
+        while (!queue.isEmpty()) {
+            if (distance == k) {
+                // All nodes currently in queue are at distance k
+                return new ArrayList<>(queue);
+            }
+            int levelSize = queue.size();
+            for (int i = 0; i < levelSize; i++) {
+                int curr = queue.poll();
+                for (int neighbor : map.getOrDefault(curr, Collections.emptySet())) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        queue.add(neighbor);
+                    }
+                }
+            }
+            distance++;
+        }
+        // If k-distance nodes don't exist
+        return new ArrayList<>();
+    }
+
+    private void convertToGraph(TreeNode curr, int parent, Map<Integer, Set<Integer>> map) {
+        if (curr == null) return;
+
+        map.putIfAbsent(curr.val, new HashSet<>());
+        if (parent != -1) {
+            map.get(curr.val).add(parent);
+            map.get(parent).add(curr.val);
+        }
+        if (curr.left != null) convertToGraph(curr.left, curr.val, map);
+        if (curr.right != null) convertToGraph(curr.right, curr.val, map);
+    }
+}
+
+
+
+
+
+public Node copyRandomList2(Node head) {
+        Node iter = head, next;
+
+        // First round: make copy of each node,
+        // and link them together side-by-side in a single list.
+        while (iter != null) {
+            next = iter.next;
+
+            Node copy = new Node(iter.val);
+            iter.next = copy;
+            copy.next = next;
+
+            iter = next;
+        }
+
+        // Second round: assign random pointers for the copy nodes.
+        iter = head;
+        while (iter != null) {
+            if (iter.random != null) {
+                iter.next.random = iter.random.next;
+            }
+            iter = iter.next.next;
+        }
+
+        // Third round: restore the original list, and extract the copy list.
+        iter = head;
+        Node pseudoHead = new Node(0);
+        Node copy, copyIter = pseudoHead;
+
+        while (iter != null) {
+            next = iter.next.next;
+
+            // extract the copy
+            copy = iter.next;
+            copyIter.next = copy;
+            copyIter = copy;
+
+            // restore the original list
+            iter.next = next;
+
+            iter = next;
+        }
+
+        return pseudoHead.next;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,11 +19,18 @@ public class LinkedListCycleDetection {
             slow = slow.next;
             fast = fast.next.next;
             if (slow == fast) {
+//                fast = head;
+//                while (slow != fast) {
+//                    fast = fast.next;
+//                    slow = slow.next;
+//                }
+//                return slow;
                 return true;
             }
         }
         return false;
     }
+
     /**
      * <a href="https://leetcode.com/problems/linked-list-cycle-ii/">LeetCode - Linked List Cycle II</a>
      */
