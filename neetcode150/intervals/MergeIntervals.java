@@ -61,7 +61,8 @@ import java.util.*;
 
 public class MergeIntervals {
 
-    // Intervals ko pehle start ke basis par sort karo, phir ek current interval rakh ke overlap check karo.
+    // Intervals ko pehle start ke basis par sort karo,
+    // phir ek current interval rakh ke overlap check karo.
 
     public int[][] merge(int[][] intervals) {
         // sort on basis of start time

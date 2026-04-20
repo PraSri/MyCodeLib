@@ -1,4 +1,4 @@
-package practice.Rippling.kvstore;
+package microsoft.kvstore;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -9,13 +9,13 @@ import java.util.concurrent.locks.ReentrantLock;
  * the internal base store and the stack of transactions.
  * This ensures that concurrent access by multiple threads does not lead to inconsistent data.
  */
-public class ConcurrentTransactionKVStore implements IKeyValueStore {
-    // Base store holds key–value mappings when no transaction is active.
-    private final Map<String, String> store = new HashMap<>();
+public class ConcurrentTransactionKVStore<K, V> implements IKeyValueStore<K, V> {
+    // Base store holds key-value mappings when no transaction is active.
+    private final Map<K, V> store = new HashMap<>();
 
     // A stack of transaction overlays supporting nested transactions.
     // Each transaction overlay (a HashMap) holds changes made in that transaction.
-    private final Deque<Map<String, String>> transactions = new ArrayDeque<>();
+    private final Deque<Map<K, V>> transactions = new ArrayDeque<>();
 
     // A ReentrantLock to ensure that every method that accesses/modifies shared data is thread-safe.
     private final ReentrantLock lock = new ReentrantLock();
@@ -29,13 +29,13 @@ public class ConcurrentTransactionKVStore implements IKeyValueStore {
      * @return The current value of the key, which might be null if deleted or not set.
      */
     @Override
-    public String get(String key) {
+    public V get(K key) {
         lock.lock();
         try {
             // Check the current transactions from the most recent.
-            Iterator<Map<String, String>> it = transactions.descendingIterator();
+            Iterator<Map<K, V>> it = transactions.descendingIterator();
             while (it.hasNext()) {
-                Map<String, String> txn = it.next();
+                Map<K, V> txn = it.next();
                 if (txn.containsKey(key)) {
                     // A value of null represents that the key was deleted in the transaction.
                     return txn.get(key);
@@ -57,7 +57,7 @@ public class ConcurrentTransactionKVStore implements IKeyValueStore {
      * @param value The value to associate with the key.
      */
     @Override
-    public void set(String key, String value) {
+    public void set(K key, V value) {
         lock.lock();
         try {
             if (!transactions.isEmpty()) {
@@ -80,7 +80,7 @@ public class ConcurrentTransactionKVStore implements IKeyValueStore {
      * @param key The key to delete.
      */
     @Override
-    public void deleteKey(String key) {
+    public void deleteKey(K key) {
         lock.lock();
         try {
             if (!transactions.isEmpty()) {
@@ -121,15 +121,15 @@ public class ConcurrentTransactionKVStore implements IKeyValueStore {
                 return;
             }
             // Remove the current (top) transaction overlay.
-            Map<String, String> currentTxn = transactions.removeLast();
+            Map<K, V> currentTxn = transactions.removeLast();
             if (!transactions.isEmpty()) {
                 // If nested, merge into the parent transaction overlay.
-                Map<String, String> parentTxn = transactions.peekLast();
+                Map<K, V> parentTxn = transactions.peekLast();
                 parentTxn.putAll(currentTxn);
                 System.out.println("Committed nested transaction. Active transactions: " + transactions.size());
             } else {
                 // Merge to the base store.
-                for (Map.Entry<String, String> entry : currentTxn.entrySet()) {
+                for (Map.Entry<K, V> entry : currentTxn.entrySet()) {
                     if (entry.getValue() == null) {
                         store.remove(entry.getKey());
                     } else {

@@ -1,7 +1,7 @@
-package practice.Rippling.kvstore;
+package microsoft.kvstore;
 
 // Define an interface for our Key-Value Store including transaction methods.
-interface IKeyValueStore extends BaseKVStore {
+interface IKeyValueStore<K, V> extends BaseKVStore<K, V> {
     void beginTransaction();
 
     void commit();

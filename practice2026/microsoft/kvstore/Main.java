@@ -1,11 +1,11 @@
-package practice.Rippling.kvstore;
+package microsoft.kvstore;
 
 public class Main {
     /**
      * A Main method which tests the key value store through various scenarios.
      */
     public static void main(String[] args) {
-        TransactionalKeyValueStore kvStore = new TransactionalKeyValueStore();
+        TransactionalKeyValueStore<String, String> kvStore = new TransactionalKeyValueStore<>();
 
         System.out.println("===== Test 1: Basic operations outside transactions =====");
         // Basic operations (set, get, delete) when no transactions are active.
@@ -67,7 +67,7 @@ public class Main {
         System.out.println("\n===== Final Store State =====");
         kvStore.printStore();
 
-        SimpleKeyValueStore simpleKeyValueStore = new SimpleKeyValueStore();
+        SimpleKeyValueStore<String, String> simpleKeyValueStore = new SimpleKeyValueStore<>();
 
         // Test 1: Basic set and get
         System.out.println("Test 1: Setting key 'a' to 'apple'.");
@@ -95,7 +95,7 @@ public class Main {
      * Two threads are created: one for writing (making changes) and one for reading concurrently.
      */
     public static void concurrentTestCases() {
-        final ConcurrentTransactionKVStore kvStore = new ConcurrentTransactionKVStore();
+        final ConcurrentTransactionKVStore<String, String> kvStore = new ConcurrentTransactionKVStore<>();
 
         // Create a writer thread that begins a transaction, modifies a key, and commits.
         Thread writerThread = new Thread(() -> {

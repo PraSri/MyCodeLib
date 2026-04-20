@@ -1,6 +1,7 @@
 package backtracking;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,6 +41,36 @@ public class Permutations {
                 temp.remove(temp.size() - 1);
                 pick[i] = false;
             }
+        }
+    }
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums); // Sort to group duplicates
+        boolean[] used = new boolean[nums.length];
+        backtrackUnique(nums, res, used, new ArrayList<>());
+        return res;
+    }
+
+    private void backtrackUnique(int[] nums, List<List<Integer>> res,
+                                 boolean[] used, List<Integer> temp) {
+        if (temp.size() == nums.length) {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            // Skip if already used
+            if (used[i]) continue;
+
+            // Skip duplicates: if current equals previous and previous hasn't been used
+            if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+
+            temp.add(nums[i]);
+            used[i] = true;
+            backtrackUnique(nums, res, used, temp);
+            temp.remove(temp.size() - 1);
+            used[i] = false;
         }
     }
 

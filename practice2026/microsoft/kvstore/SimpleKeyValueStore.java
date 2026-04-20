@@ -1,4 +1,4 @@
-package practice.Rippling.kvstore;
+package microsoft.kvstore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,10 +10,10 @@ import java.util.Map;
  * This design illustrates encapsulation in OOP by hiding the details
  * of the underlying storage (the HashMap) behind the interface.
  */
-public class SimpleKeyValueStore implements BaseKVStore {
+public class SimpleKeyValueStore<K, V> implements BaseKVStore<K, V> {
 
     // Underlying storage for the key-value mappings.
-    private final Map<String, String> store = new HashMap<>();
+    private final Map<K, V> store = new HashMap<>();
 
     /**
      * Retrieves the value for the given key.
@@ -22,7 +22,7 @@ public class SimpleKeyValueStore implements BaseKVStore {
      * @return The corresponding value if present, else null.
      */
     @Override
-    public String get(String key) {
+    public V get(K key) {
         return store.get(key);
     }
 
@@ -33,7 +33,7 @@ public class SimpleKeyValueStore implements BaseKVStore {
      * @param value The value to be associated with the key.
      */
     @Override
-    public void set(String key, String value) {
+    public void set(K key, V value) {
         store.put(key, value);
     }
 
@@ -43,7 +43,7 @@ public class SimpleKeyValueStore implements BaseKVStore {
      * @param key The key to remove.
      */
     @Override
-    public void deleteKey(String key) {
+    public void deleteKey(K key) {
         store.remove(key);
     }
 }

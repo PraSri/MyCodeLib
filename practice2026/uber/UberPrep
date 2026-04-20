@@ -226,7 +226,7 @@ for(int[] pre: prerequisites) {
 }
 
 Queue<Integer> q = new LinkedList<>();
-for(int i = 0;i<n;i++) {
+for(int i = 0; i<n; i++) {
 	if(indegree[i] == 0) {
 		q.add(i);
 	}
@@ -289,6 +289,7 @@ public int minimumSemesters(int n, int[][] relations) {
 			remaining--;
 			int curr = queue.poll();
 			for(int neigh : adj[curr]) {
+				indegree[neigh]--;
 				if(indegree[neigh] == 0) {
 					queue.add(neigh);
 				}
@@ -456,7 +457,7 @@ public Node cloneGraph(Node node) {
 	return dfs(node, map);
 }
 
-private Node dfs(Node src, Map<Intger, Node> map) {
+private Node dfs(Node src, Map<Integer, Node> map) {
 	if(src == null) {
 		return src;
 	}

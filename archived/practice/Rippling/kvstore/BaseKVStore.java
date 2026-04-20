@@ -1,4 +1,4 @@
-package Rippling.kvstore;
+package practice.Rippling.kvstore;
 
 public interface BaseKVStore {
     String get(String key);

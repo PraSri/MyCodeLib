@@ -1,15 +1,32 @@
-package practice.Rippling.kvstore;
+package microsoft.kvstore;
 
 import java.util.*;
 
 // Implementation of the key-value store with transaction support.
-public class TransactionalKeyValueStore implements IKeyValueStore {
+public class TransactionalKeyValueStore<K, V> implements IKeyValueStore<K, V> {
     // Base key-value store. This holds data when no transactions are active.
-    private final Map<String, String> store = new HashMap<>();
+    private final Map<K, V> store = new HashMap<>();
 
     // A stack (implemented via Deque) holds transaction contexts.
     // Each transaction is represented as a Map holding all changes made inside that transaction.
-    private final Deque<Map<String, String>> transactions = new ArrayDeque<>();
+    private final Deque<Map<K, V>> transactions = new ArrayDeque<>();
+
+    // Maximum size of the base store.
+    private final int maxSize;
+
+    // Eviction strategy to use when the store exceeds max size.
+    private final EvictionStrategy evictionStrategy;
+
+    // Constructor to inject max size and eviction strategy.
+    public TransactionalKeyValueStore(int maxSize, EvictionStrategy evictionStrategy) {
+        this.maxSize = maxSize;
+        this.evictionStrategy = evictionStrategy;
+    }
+
+    public TransactionalKeyValueStore() {
+        this.maxSize = 100;
+        this.evictionStrategy = new LRUEviction<>();
+    }
 
     /**
      * Retrieve the value for a given key.
@@ -18,14 +35,14 @@ public class TransactionalKeyValueStore implements IKeyValueStore {
      * Otherwise, if no active transaction contains the key, the base store is checked.
      */
     @Override
-    public String get(String key) {
+    public V get(K key) {
         if (key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }
         // Start with the latest transaction overlay.
-        Iterator<Map<String, String>> it = transactions.descendingIterator();
+        Iterator<Map<K, V>> it = transactions.descendingIterator();
         while (it.hasNext()) {
-            Map<String, String> txn = it.next();
+            Map<K, V> txn = it.next();
             if (txn.containsKey(key)) {
                 // A null value represents that the key has been deleted in that transaction.
                 return txn.get(key);
@@ -41,7 +58,7 @@ public class TransactionalKeyValueStore implements IKeyValueStore {
      * Otherwise, update the base store directly.
      */
     @Override
-    public void set(String key, String value) {
+    public void set(K key, V value) {
         if (key == null || value == null) {
             throw new IllegalArgumentException("Key and value cannot be null");
         }
@@ -50,6 +67,9 @@ public class TransactionalKeyValueStore implements IKeyValueStore {
             transactions.peekLast().put(key, value);
         } else {
             store.put(key, value);
+            if (maxSize > 0 && store.size() > maxSize) {
+                evictionStrategy.evict(store, maxSize);
+            }
         }
     }
 
@@ -59,7 +79,7 @@ public class TransactionalKeyValueStore implements IKeyValueStore {
      * Without a transaction, we remove the key from the base store.
      */
     @Override
-    public void deleteKey(String key) {
+    public void deleteKey(K key) {
         if (key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }
@@ -93,20 +113,23 @@ public class TransactionalKeyValueStore implements IKeyValueStore {
             return;
         }
         // Remove the current (top-most) transaction overlay.
-        Map<String, String> currentTxn = transactions.removeLast();
+        Map<K, V> currentTxn = transactions.removeLast();
         if (!transactions.isEmpty()) {
             // Merge into the parent transaction overlay.
-            Map<String, String> parentTxn = transactions.peekLast();
+            Map<K, V> parentTxn = transactions.peekLast();
             parentTxn.putAll(currentTxn);
             System.out.println("Committed nested transaction. Remaining transactions: " + transactions.size());
         } else {
             // Merge changes into the base store.
-            for (Map.Entry<String, String> entry : currentTxn.entrySet()) {
+            for (Map.Entry<K, V> entry : currentTxn.entrySet()) {
                 if (entry.getValue() == null) {
                     store.remove(entry.getKey());
                 } else {
                     store.put(entry.getKey(), entry.getValue());
                 }
+            }
+            if (maxSize > 0 && store.size() > maxSize) {
+                evictionStrategy.evict(store, maxSize);
             }
             System.out.println("Committed transaction to base store.");
         }

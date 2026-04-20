@@ -1,0 +1,1078 @@
+
+DSA & Coding Questions
+Graphs & Trees
+
+Binary Tree Maximum Path Sum: Find the maximum path sum in a binary tree (LeetCode 124).
+
+Connected Components in Graph: For a graph with multiple components, return the number of nodes reachable from a given node.
+
+Map of Map Encoding: Solve an encoding problem involving map structures and graph traversal.
+
+Spiral Matrix Traversal: Return all elements of an m x n matrix in spiral order.
+
+
+
+Strings, Arrays & Intervals
+
+Longest Substring with K Repeating Characters: Find the length of the longest substring where each character appears at least k times.
+
+Meeting Rooms II: Find the minimum number of conference rooms required given an array of meeting time intervals (LeetCode 253).
+
+Trapping Rain Water 3D: Calculate the total volume of water trapped after raining on a 3D elevation map.
+
+Count Perfect Pairs: Count perfect pairs in an array (details vary).
+
+Merge Overlapping Intervals: Merge all overlapping intervals in a given list.
+
+
+
+
+Advanced Data Structures & Algorithms
+
+Unique Artist & Enthusiast Problem: Design a system to efficiently handle "artist" producing and "enthusiast" consuming unique items in order.
+
+Design 2D Graph Data Structure: Build a structure to find the shortest path between points and locate the nearest landmarks (e.g., hospitals).
+
+Design LRU Cache: Implement a Least Recently Used cache (LeetCode 146).
+
+OA Problem Types: HackerRank assessments often feature DP, greedy, string, bitmasking, and prefix sum problems.
+
+
+
+
+?? LLD & Machine Coding Questions
+Core Design Patterns
+
+Design Multi-Level Parking Lot: A classic question requiring you to model vehicles, floors, slots, and a ticketing system.
+
+Design Task Scheduling System: Create a system similar to Cron or Airflow that handles one-time/recurring tasks and manages dependencies using a DAG.
+
+Design Snake & Food Game: Model a snake game with a focus on extensibility, often evaluated using patterns like Strategy and Factory.
+
+Design Matrix Traversal with Extensibility: Design classes and interfaces for matrix traversal, making it easy to add new patterns (e.g., zigzag, diagonal) using the Factory pattern.
+
+
+
+
+
+System & Application Design
+
+Design a Music Playing App: Provide a low-level design (pseudocode) for an app like Spotify, focusing on core components like playlist and player management.
+
+Design a Chat Application: Clarify requirements and design the core entities and interactions for a chat system.
+
+Design a Vending Machine: Outline the classes and interfaces for a vending machine system, covering state management and payment.
+
+Design a Notification Service: Architect a service for sending notifications, potentially using the Observer pattern for status updates.
+
+Handle Idempotency During Checkout: Design pseudocode to ensure idempotency in a financial transaction checkout process.
+
+Design for Concurrent Task Execution: Ensure thread safety in your LLD, particularly for systems handling concurrent execution, such as a task scheduler.
+
+
+##################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
+
+
+
+Binary Tree Maximum Path Sum: Find the maximum path sum in a binary tree (LeetCode 124).
+
+Core challenge - 
+- path can stay within a subtree or it can bend at root, including both subtree
+- post order traversal (bottom up recursion)
+- avoid negative values, by putting them 0
+
+I used the recursive dfs to calculate the maximum contribution each node can offer to its parent, while simultaneously updating the global max sum, that considers the current node as the highest point, or bridge of a potential path.
+
+
+recursion return vs global maxima
+- max contribution for the parent - the value of current which it can offer to its parent
+- it cannot branch, so it will give root + max(l,r)
+- max path sum - answer - value of path that peaks at current node, connecting left subtree and right subtree and update global maxima
+
+class TreeNode {
+	int val;
+	TreeNode left;
+	TreeNode right;
+	public TreeNode() {}
+}
+
+private int maxSum;
+
+public int maxPathSum(TreeNode root) {
+	this.maxSum = Integer.MIN_VALUE;
+	this.maxContri(root);
+	return maxSum;
+}
+
+private int maxContri(TreeNode root) {
+	if(root == null) {
+		return 0;
+	}
+	
+	int maxLeft = maxContri(root.left);
+	int maxRight = maxContri(root.right);
+
+	int leftST = Math.max(maxLeft, 0);
+	int rightST = Math.max(maxRight, 0);
+
+	int newValuePath = root.val + leftST + rightST;
+
+	this.maxSum = Math.max(maxSum, newValuePath);
+
+	return root.val + Math.max(leftST, rightST);
+
+}
+
+Time complexity : O(N), visits each node
+Space complexity : O(H)
+
+Graph - Number of nodes reachable from other nodes
+
+2 approaches - DFS & DSU
+
+1. DFS - O(V + E)
+
+public int[] solve(int n, int[][] edges, int[] queries) {
+	List<List<Integer>> adj = new ArrayList<>();
+	for(int i =0; i<=n; i++) adj.add(new ArrayList<>());
+	for(int[] edge: edges) {
+		int u = edge[0];
+		int v = edge[1];
+		adj.get(u).add(v);
+		adj.get(v).add(u);
+	}
+	int[] componentSize = new int[n+1];
+	boolean[] visited = new boolean[n+1];
+	for(int i = 1; i<=n; i++) {
+		if(!visited[i]) {
+			List<Integer> componentNodes = new ArrayList<>();
+			int size = dfs(i, componentNodes);
+			for(int node: componentNodes) {
+				componentSize[node] = size;
+			}
+		}
+	}
+
+	int[] res = new int[queries.length];
+
+	int j = 0;
+
+	for(int query: queries) {
+		res[j++] = componentSize[query] - 1;
+	}
+
+	return res;
+
+} 
+
+2. DSU O((V+E)alpha(V)) - preferred when edges are dynamically added
+
+class ComponentSizeDSU{
+
+	int[] parent;
+	int[] size;
+
+	public ComponentSizeDSU(int n) {
+
+		parent = new int[n+1];
+		size = new int[n+1];
+
+		for(int i = 0; i<=n; i++) {
+			parent[i] = i;
+			sise[i] = 1;
+		}
+
+	}
+
+	public int find(int x) {
+		if(parent[x] != x) {
+			parent[x] = find(parent[x]); // path compression
+		}
+		return parent[x];
+	}
+
+	public void union(int x, int y) {
+		int rootX = find(x);
+		int rootY = find(y);
+		if(rootX == rootY) {
+			return;
+		}
+		if(size[rootX] > size[rootY]) {
+			parent[rootY] = rootX;
+			size[rootX] = size[rootX] + size[rootY];
+		} else {
+			parent[rootX] = rootY;
+			size[rootY] = size[rootY] + size[rootX];
+		}
+	}
+
+	public int getSize(int i) {
+		return size[find(i)];
+	}
+
+	public void solve(int n, int[][] edges, int[] queries) {
+		ComponentSizeDSU dsu = new ComponentSizeDSU(n);
+		for(int[] edge : edges) {
+			dsu.union(edge[0], edge[1]);
+		}
+		for(int query: queries) {
+			sout(getSize(query)-1);
+		}
+	}
+
+}
+
+Longest Substring with At Least K Repeating Characters
+
+given: string s, int k
+output: return longest substring which have each character atleast k frequency
+
+public int longestSubstring(String s, int k) {
+        if(true) {
+            return slidingWindow(s,k);
+        }
+        return bruteForce(s, k);
+    }
+
+    public int bruteForce(String s, int k) {
+        if(s == null || s.isEmpty() || k > s.length()) {
+            return 0;
+        }
+        int[] countMap = new int[26];
+        int n = s.length();
+        int result = 0;
+        for(int i = 0; i<n; i++) {
+            Arrays.fill(countMap, 0);
+            for(int j = i; j<n; j++) {
+                countMap[s.charAt(j) - 'a']++;
+                if(isValid(s, i, j, k, countMap)) {
+                    result = Math.max(result, j - i + 1);
+                }
+            }
+        }
+        return result;
+    }
+
+    private boolean isValid(String s, int i, int j, int k, int[] countMap) {
+        int countLetters = 0, countAtLeastK = 0;
+        for(int freq : countMap) {
+            if(freq > 0) countLetters++;
+            if(freq >= k) countAtLeastK++;
+        }
+        return countLetters == countAtLeastK;
+    }
+
+    public int slidingWindow(String s, int k) {
+        char[] str = s.toCharArray();
+        int[] countMap = new int[26];
+        int maxUnique = getMaxUniqueLetters(s);
+        int result = 0;
+        int n = str.length;
+        for(int currUnique = 1; currUnique <= maxUnique; currUnique++) {
+            Arrays.fill(countMap, 0);
+            int windowStart = 0, windowEnd = 0, idx = 0, unique = 0, countAtLeastK = 0;
+            while(windowEnd < n) {
+                // expand
+                if(unique <= currUnique) {
+                    idx = str[windowEnd] - 'a';
+                    if(countMap[idx] == 0) unique++;
+                    countMap[idx]++;
+                    if(countMap[idx] == k) countAtLeastK++;
+                    windowEnd++;
+                } else {
+                    // shrink
+                    idx = str[windowStart] - 'a';
+                    if(countMap[idx] == k) countAtLeastK--;
+                    countMap[idx]--;
+                    if(countMap[idx] == 0) unique--;
+                    windowStart++;
+                }
+                if(unique == currUnique && unique == countAtLeastK) {
+                    result = Math.max(windowEnd - windowStart, result);
+                }
+            }
+        }
+        return result;
+    }
+
+    private int getMaxUniqueLetters(String s) {
+        boolean map[] = new boolean[26];
+        int maxUnique = 0;
+        for(int i = 0; i<s.length(); i++) {
+            if(!map[s.charAt(i) - 'a']) {
+                maxUnique++;
+            }
+            map[s.charAt(i) - 'a'] = true;
+        }
+        return maxUnique;
+    }
+
+
+Meeting Rooms variants
+
+1st - meetings can happen without conflict
+given: (start,end)
+output: boolean true/false
+
+public class Interval {
+    int start, end;
+    public Interval(int s, int e) {
+        this.start = s;
+        this.end = e;
+    }
+}
+
+public boolean canAttendMeeting(List<Interval> intervals) {
+    intervals.sort(Comparator.comparingInt(a -> a.start));
+    if(intervals.size() == 0){
+        return true;
+    }
+    int prevEndTime = intervals.get(0).end;
+    for(int i = 1; i<intervals.size(); i++) {
+        int currStartTime = intervals.get(i).start;
+        if(currStartTime < prevEndTime) {
+            return false;
+        }
+        prevEndTime = intervals.get(i).end;
+    }
+    return true;
+}
+
+2nd - minimum number of rooms required to schedule all meetings without any conflicts
+given: (Start, End)
+output: minimum number of rooms
+
+public int minMeetingRooms(List<Interval> intervals) {
+    // rooms required is the maximum overlapping meetings at any time
+    intervals.sort(Comparator.comparing(a -> a.start));
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    for(Interval interval: intervals) {
+        if(!minHeap.isEmpty() && minHeap.peek() <= interval.start) {
+            minHeap.poll();
+        }
+        minHeap.offer(interval);
+    }
+    return minHeap.size();
+}
+
+3rd -
+Given: n rooms (0, n-1)
+2d array meetings = [start, end], half closed [start, end)
+allocation rules : lowest number room allocated, no rooms then meetings delayed
+output: number of the room that held most meetings. if multiple, return lowest number.
+Input: n = 2, meetings = [[0,10],[1,5],[2,7],[3,4]]
+output: 0
+
+n=2 => room numbers : 0, 1
+0 -> 0,10
+1 -> 1,5
+2,7 -> delayed
+1 -> 2,7
+3,4 -> delayed
+0 -> 3,4
+
+both rooms 0 & 1 held 2 meetings, but lowest room number os 0 so we returned 0 as answer.
+// Greedy approach
+
+public int mostBooked(int n, int[][] meetings) {
+    int[] count = new int[n];
+    int m = meetings.length;
+    // minheap storing room ids that are currently free
+    PriorityQueue<Integer> available = new PriorityQueue<>();
+    // min heap storing {endTime, roomId} which are currently in room
+    PriorityQueue<long[]> usedRoom = new PriorityQueue<>(
+        (a,b) -> a[0] != b[0] ? Long.compare(a[0], b[0]) : Long.compare(a[1], b[2]
+    );
+
+    for(int  i = 0; i<n; i++) {
+        available.offer(i);
+    }
+
+    Arrays.sort(meetings, (a,b) -> (a[0] - b[0]));
+
+    for(int i = 0; i<m; i++) {
+        long startTime = meetings[i][0];
+        long endTime = meetings[i][1];
+
+        while(!usedRoom.isEmpty() && usedRoom.peek()[0] <= startTime) {
+            int room = (int) usedRoom.poll()[1];
+            available.offer(room);
+        }
+
+        if(available.isEmpty()) {
+            long end = usedRoom.peek()[0];
+            int room = (int) usedRoom.poll()[1];
+            // add delay
+            endTime  = end + (endTime - startTime);
+            availabel.offer(room);
+        }
+
+        int room = available.poll();
+        usedRoom.offer(new long[]{endtime, room});
+        count[room]++;
+    }
+
+    int max = 0;
+    for(int i = 0; i<n; i++) {
+        if(count[i] > count[max]) {
+            max = i;
+        }
+    }
+
+    return max;
+
+}
+
+
+
+
+LRU Cache
+
+template
+
+Node class
+
+intialize head, tail, Map<Integer, Node>, capacity
+
+public methods : get, put
+
+private methods: insert, remove in DLL
+
+
+class LRU {
+	static class Node {
+		int key;
+		int value;
+		Node prev, next;
+		Node(int k, int v) {
+			this.key = k;
+			this.value = v;
+		}
+	}
+
+	Node head = new Node(0, 0);
+	Node tail = new Node(0, 0);
+
+	int capacity;
+	Map<Integer, Node> map;
+
+	public LRU(int capacity) {
+		this.capacity = capacity;
+		this.map = new HashMap<>();
+		head.next = tail;
+		tail.prev= head;
+	}
+
+	private void insert(Node node) {
+
+		// insert after head
+
+		map.put(node.key, node);
+
+		// 4 pointers shift in order
+		node.next = head.next;
+		node.next.prev = node;
+		head.next = node;
+		node.prev = head;
+
+	}
+
+	private void remove(Node node) {
+		map.remove(node.key);
+		node.prev.next = node.next;
+		node.next.prev = node.prev;
+
+	}
+
+	public int get(int key) {
+		if(map.containsKey(key)) {
+			Node node = map.get(key);
+			remove(node);
+			insert(node);
+			return node.value;
+		}
+		return -1;
+	}
+
+	public void put(int key, int value) {
+		// if exists
+		if(map.containsKey(key)) {
+			remove(map.get(key));
+		}
+
+		// full cap
+		if(map.size() == capacity) {
+			remove(tail.prev);
+		}
+
+		// last insert
+		insert(new Node(key, value));
+	}
+
+}
+
+
+Find K closest elements
+
+given : sorted array arr[], two integers k and x.
+output: return k closest integers to x.
+
+// O(log(N-K) + K)
+public List<Integer> findClosestElements(int[] arr, int k, int x) {
+	int n = arr.length;
+	int s = 0, e = n-k;
+	List<Integer> res = new ArrayList<>();
+	while(s<e) {
+		int mid = s + (e-s)/2;
+		if(x - arr[mid] > arr[mid+k] - x) {
+			s = mid + 1;
+		} else {
+			e = mid;
+		}
+	}
+
+	for(int i = s; i<s+k; i++) {
+		res.add(arr[i]);
+	}
+
+	return res;
+}
+
+similar - Given an array representating n positions along the straight line.
+find k (k<=n) elements from the array such that the minimum distance between any two is maximized.
+
+time complexity : O(NlogN + NlogD),  D = range of pos
+
+int solve(int[] positions, int k) {
+
+	Arrays.sort(positions);
+	int n = positions.length;
+
+	// range (1, maxDiff)
+	int low = 1;
+	int high = positions[n-1] - positions[0];
+
+	int result = 0;
+
+	while(low <= high) {
+		int mid = low + (high - low)/2;
+		if(canPlace(positions, k, mid)) {
+            result = mid; // this distance is possible, try for better one
+            low = mid + 1;
+		} else {
+			high = mid - 1;
+		}
+	}
+
+	return result;
+
+	}
+
+	// can we place k elements with at least 'dist' gap
+	boolean canPlace(int[] positions, int k, int dist) {
+		int count = 1;
+		int lastPosition = positions[0];
+
+		for(int i = 1; i < positions.length; i++) {
+			if(positions[i] - lastPosition >= dist) {
+				count++;
+				lastPosition = positions[i];
+				if(count >= k) return true;
+			}
+		}
+		return false;
+
+	}
+
+
+
+
+LLD: Elevator
+
+Requirements
+- design elevator for a building
+- should handle multiple elevators
+- floor requests
+- move elevators efficiently to service requests
+
+Clarifying Questions - cover 4 areas
+- what are the core actions
+- how errors should be handled
+- what are the boundaries of the system
+- whether we need to plan for future extensions
+
+- how many elevators and floors are we handling? Is this configurable or fixed? - 3 elevators serving 10 floors (0 to 9), fixed for now
+
+final requirements:
+1. System manages 3 elevators serving 10 floors (0-9)
+2. Users can request an elevator from any floor. System decide which elevator to dispatch
+3. Once inside, users can select one or more destination floors.
+4. Simulation runs in discrete time steps (eg. step() or tick() call advance time)
+5. Elevator stops come in two types:
+	- Hall calls: Request from a floor with direction (UP or DOWN)
+	- Destination: Request from inside elevator (no direction specified)
+6. System handles multiple concurrent pickup requests across floors.
+7. Invalid requests should be rejected (return false)
+8. Requests for the current floor are treated as no-op / already served
+
+
+Core Entities & Relationship
+
+1. ElevatorController - orchestrator
+2. Elevator
+3. Request
+
+Class Design
+
+ElevatorController
+- Collections of elevators it controls, List<Elevator>
+- requestElevator(floor, type) - boolean
+- step() - void
+
+Elevator
+- current floor position, currentFloor: int
+- current direction of travel, direction: DIRECTION // UP,DOWM, IDLE
+- collection of floors to stop at: requests:Set<Request>
+- addRequest(request) -> boolean
+- step() -> void
+- getCurrentFloor() -> int
+- getDirection() -> Direction
+
+Request
+- floor: int
+- type: RequestType
+
+enum RequestType
+- PICKUP_UP
+- PICKUP_DOWN
+- DESTINATION
+
+Implmentation
+
+1. Start with the main flow - happy cases
+2. Handle the edge cases - invalid inputs, boundary conditions or unexpected states
+
+
+class ElevatorController {
+	List<Elevator> elevators;
+
+	public boolean requestElevator(int floor, RequestType type) {
+		// invalid
+		if(floor < 0 || floor > 9) return false;
+		if(type == DESTINATION) return false;
+		Request request = new Request(floor, type);
+		Elevator best = selectBestElevator(request);
+		return best.addRequest(request);
+	}
+
+	private Elevator selectBestElevator(Request request) {
+		Elevator best = null;
+
+		// priority 1 : Elevators moving toward the floor in the right direction
+
+		best = findMovingToward(request);
+
+		if(best != null) return best;
+
+		// priority 2: Idle elevators
+		best = findNearestIdle(request.getFloor());
+
+		if(best != null) return best;
+
+		// priority 3: Any elevator
+
+		return findNearest(request.getFloor());
+
+	}
+
+	private Elevator findMovingToward(Request request) {
+		int floor = request.getFloor();
+		Direction direction = (rquest.getType() == PICKUP_UP) ? UP : DOWN;
+		Elevator nearest = null;
+		Integer minDist = Integer.MAX_VALUE;
+		for(Elevator e : elevators) {
+			if(e.getDirection() != direction) {
+				continue;
+			}
+			if((direction == UP && e.getCurrentFloor() > floor) || (direction == DOWN && e.getCurrentFloor() < floor)) continue;
+
+			int distance = Math.abs(e.getCurrentFloor() - floor);
+			if(distance < minDist) {
+				minDist = dist;
+				nearest = e;
+			}
+		}
+		return e;
+	}
+}
+
+class Elevator {
+	int currentFloor;
+	Direction currentDirection;
+	Set<Request> requests = new HashSet<>();
+
+	public Elevator() {
+		//...
+	}
+
+	public boolean addRequest(Request request) {
+		int floor = request.getFloor();
+		if(floor < 0 || floor > 9) {
+			return false;
+		}
+		if(floor == currentFloor) return true;
+		return requests.add(request);
+	}
+
+	public void step() {
+
+		if(requests.isEmpty()) direction = IDLE;
+
+		nearest = null;
+		minDist = Integer.MAX_VALUE;
+
+		for(Request request: requests) {
+			distance = Math.abs(currentFloor - request.getFloor());
+			if(distance < minDistance || (...)) {
+				minDist = distance;
+				nearest = request;
+			}
+		}
+
+		if(currentFloor < nearest.getFloor()) currentFloor++;
+		else if(currentFloor > nearest.getFloor()) currentFloor--;
+
+		if(currentFloor == nearest.getFloor()) {
+			requests.remove(nearest);
+		}
+
+	}
+
+	// getters, setters
+
+}
+
+Integer to English Words
+
+Input: num = 12345
+Output: "Twelve Thousand Three Hundred Forty Five"
+
+Time Complexity: $O(\log_{10} N)$
+
+class Solution {
+    private final String[] belowTen = new String[] {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
+    private final String[] belowTwenty = new String[] {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    private final String[] belowHundred = new String[] {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+
+    public String numberToWords(int num) {
+        
+        if(num == 0) return "Zero";
+        return helper(num);
+
+    }
+
+    private String helper(int num) {
+        String result = new String();
+        if(num < 10) result = belowTen[num];
+        else if(num < 20) result = belowTwenty[num - 10];
+        else if(num < 100) result = belowHundred[num/10] + " " + helper(num%10);
+        else if(num < 1000) result = helper(num/100) + " Hundred " + helper(num%100);
+        else if(num < 1000000) result = helper(num/1000) + " Thousand " + helper(num%1000);
+        else if(num < 1000000000) result = helper(num/1000000) + " Million " + helper(num%1000000);
+        else result = helper(num/1000000000) + " Billion " + helper(num%1000000000);
+        return result.trim();
+    }
+}
+
+
+public class Intervals {
+
+    // Insert Intervals
+    //Input: intervals = [[1,3],[4,6]], newInterval = [2,5]
+    //
+    //Output: [[1,6]]
+
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        int n = intervals.length;
+        int i = 0;
+
+        List<int[]> res = new ArrayList<>();
+
+        while (i < n && newInterval[0] > intervals[i][1]) {
+            res.add(intervals[i]);
+            i++;
+        }
+
+        while (i < n && newInterval[1] >= intervals[i][0]) {
+            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
+            newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            i++;
+        }
+
+        res.add(newInterval);
+
+        while (i < n) {
+            res.add(intervals[i]);
+            i++;
+        }
+
+        return res.toArray(new int[res.size()][]);
+    }
+
+
+    // Merge Intervals
+    //Input: intervals = [[1,3],[1,5],[6,7]]
+    //
+    //Output: [[1,5],[6,7]]
+
+    public int[][] merge(int[][] intervals) {
+
+        // sort by start time
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        List<int[]> res = new ArrayList<>();
+        int[] newInterval = intervals[0];
+
+        for (int[] interval : intervals) {
+            if (interval[0] <= newInterval[1]) {
+                newInterval[1] = Math.max(newInterval[1], interval[1]);
+            } else {
+                newInterval = interval;
+                res.add(newInterval);
+            }
+        }
+
+        return res.toArray(new int[res.size()][]);
+
+    }
+
+    // Non-overlapping Intervals
+    public int eraseOverlapIntervals(int[][] intervals) {
+
+        // sort by end time
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[1]));
+
+        int res = 0;
+        int prevEnd = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            int start = intervals[i][0];
+            int end = intervals[i][1];
+            if (start < prevEnd) {
+                res++;
+            } else {
+                prevEnd = end;
+            }
+        }
+        return res;
+    }
+
+
+}
+
+coding round :
+FastArray
+Design an array that supports get(index), set(index, value), and setAll(value)—which sets every element in the array to value—all in O(1) time.
+Given two strings, S and T, return the starting index in S where an anagram of T appears. An anagram is any permutation of the characters in T.
+
+
+
+There is a planet where there are 2 species. An Artist and an Enthusiast. The Artist creates a painting for his survival (which is in the form of integers) and the Enthusiast will consume the oldest unique painting that exists. So, using appropriate data structure implement these 2 functions.
+
+import java.util.*;
+
+class ArtistEnthusiast {
+    // Stores frequency of each painting
+    private final Map<Integer, Integer> frequencyMap = new HashMap<>();
+    // Stores only unique paintings in the order they were added
+    private final LinkedHashSet<Integer> uniquePaintings = new LinkedHashSet<>();
+
+    /**
+     * Artist adds a new painting.
+     * Time Complexity: O(1)
+     */
+    public void artistPaints(int val) {
+        int count = frequencyMap.getOrDefault(val, 0) + 1;
+        frequencyMap.put(val, count);
+
+        if (count == 1) {
+            // First time seen: add to unique set
+            uniquePaintings.add(val);
+        } else {
+            // Seen before: no longer unique, remove it
+            uniquePaintings.remove(val);
+        }
+    }
+
+    /**
+     * Enthusiast consumes the oldest unique painting.
+     * Time Complexity: O(1)
+     */
+    public Integer enthusiastConsumes() {
+        if (uniquePaintings.isEmpty()) {
+            return null; // Or throw exception based on requirement
+        }
+
+        // Get the first element (oldest) from LinkedHashSet
+        Integer oldestUnique = uniquePaintings.iterator().next();
+        
+        // Consume it (remove it from our tracking entirely)
+        uniquePaintings.remove(oldestUnique);
+        // Note: Depending on interview preference, you might reset 
+        // frequencyMap for this value or keep it so it's never "unique" again.
+        frequencyMap.put(oldestUnique, -1); 
+
+        return oldestUnique;
+    }
+}
+
+Minimum Cost to Convert String I
+
+public long minimumCost(String source, String target, char[] original, char[] changed, int[] cost) {
+
+        long totalCost = 0;
+
+        long[][] minCost = new long[26][26];
+
+        for(long[] row : minCost) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+
+        for(int i = 0; i< original.length; i++) {
+            int startChar = original[i] - 'a';
+            int endChar = changed[i] - 'a';
+            minCost[startChar][endChar] = Math.min(
+                minCost[startChar][endChar], (long) cost[i]
+            );
+        }
+
+        // Floyd-Warshall algo to find shortest path between any 2 characters
+        for(int k = 0; k<26; k++) {
+            for(int i = 0; i<26; i++) {
+                for(int j = 0; j<26; j++) {
+                    minCost[i][j] = Math.min(
+                        minCost[i][j],
+                        minCost[i][k] + minCost[k][j]
+                    );
+                }
+            }
+        }
+
+        for(int i = 0; i<source.length(); i++) {
+            if(source.charAt(i) == target.charAt(i)) continue;
+
+            int sourceChar = source.charAt(i) - 'a';
+            int targetChar = target.charAt(i) - 'a';
+
+            if(minCost[sourceChar][targetChar] >= Integer.MAX_VALUE) return -1;
+
+            totalCost += minCost[sourceChar][targetChar];
+        }
+
+        return totalCost;
+        
+    }
+
+
+Top K Frequent Elements
+
+public int[] topKFrequent(int[] nums, int k) {
+        
+        Map<Integer, Integer> frequency = new HashMap<>();
+        
+        for(int x : nums) {
+            frequency.put(x, frequency.getOrDefault(x, 0) + 1);
+        }
+        
+        Queue<Integer> minHeap = new PriorityQueue<>(
+            (x1, x2) -> frequency.get(x1) - frequency.get(x2)
+        );
+        
+        for(int x : frequency.keySet()) {
+            minHeap.add(x);
+            if(minHeap.size()>k) {
+                minHeap.poll();
+            }
+        }
+        
+        int[] top = new int[k];
+        
+        for(int i = k-1; i>=0; i--) {
+            top[i] = minHeap.poll();
+        }
+        
+        return top;
+}
+
+
+public class RegularExpressionMatching {
+
+    //string s[i...] kya pattern p[j...] se match karta hai ya nahi
+
+    private Boolean[][] dp;
+
+    public boolean isMatch(String s, String p) {
+        int n = s.length(), m = p.length();
+        //true/false batata hai ki
+        //s ka index i se end tak
+        //p ka index j se end tak match karta hai ya nahi.
+        dp = new Boolean[n + 1][m + 1];
+        return dfs(0, 0, s, p, n, m);
+    }
+
+    private Boolean dfs(int i, int j, String s, String p, int n, int m) {
+        //Agar pattern khatam ho gaya:
+        //
+        //to string bhi khatam honi chahiye, tabhi match hoga
+        //
+        //warna false
+        if (j == m) {
+            return i == n;
+        }
+
+        if (dp[i][j] != null) {
+            return dp[i][j];
+        }
+
+        //match = true hoga agar:
+        //
+        //string ka current char == pattern ka current char
+        //
+        //OR pattern me . ho (dot kisi bhi char se match karta hai)
+        boolean match = i < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.');
+
+        // * case
+        //* ka matlab:
+        //
+        //a* ? 0 ya zyada a
+        //
+        //Isliye 2 choices hoti hain:
+        //1?? Zero occurrence
+        //
+        //a* ko ignore kar diya
+        //
+        //dfs(i, j+2)
+        //2?? One or more occurrence
+        //
+        //agar current char match karta hai
+        //
+        //string aage badhao, pattern wahi rakho
+        //
+        //dfs(i+1, j)
+        //Agar koi bhi option true ho jaaye ? match ho gaya
+        if (j + 1 < m && p.charAt(j + 1) == '*') {
+            // a* for example
+            boolean zeroOccurrenceCase = dfs(i, j + 2, s, p, n, m); // a* ko ignore kr diya
+            boolean oneOrMoreOccurrence = dfs(i + 1, j, s, p, n, m); // s = ab, p = a*, a match hogya, string agey bhadao aur pattern wahi rkho
+            dp[i][j] = zeroOccurrenceCase || (match && oneOrMoreOccurrence);
+        } else {
+            // simple case
+            // current char match hona chahiye
+            //
+            //dono pointers aage badhenge
+            dp[i][j] = match && dfs(i + 1, j + 1, s, p, n, m);
+        }
+        return dp[i][j];
+    }
+}
+
+
+
