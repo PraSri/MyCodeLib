@@ -22,6 +22,10 @@ import java.util.List;
  */
 
 public class Subsets {
+    public static void main() {
+        System.out.println("hellop");
+    }
+
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> subset = new ArrayList<>();
@@ -47,7 +51,7 @@ public class Subsets {
     }
 
     public static class SubsetsII {
-        
+
         public List<List<Integer>> subsetsWithDup(int[] nums) {
             List<List<Integer>> res = new ArrayList<>();
             List<Integer> subset = new ArrayList<>();

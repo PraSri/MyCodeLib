@@ -1,0 +1,55 @@
+
+// minimum window in s fot t
+
+// remember to read code and do dry run
+
+String minWin(String s, String t) {
+    int[] tFreq = new int[26];
+    int[] winFreq = new int[26];
+    for(char c : t.toCharArray()) tFreq[c - 'A']++;
+
+    int required = 0;
+    for(int f : tFreq) if(f > 0) required++;
+
+    int left = 0, right = 0;
+    int formed = 0;
+    int min = Integer.MAX_VALUE, startMin = 0;
+
+    while(right < s.length()) {
+        int c = s.charAt(right) - 'A';
+        winFreq[c]++;
+        if(tFreq[c] > 0 && winFreq[c] == tFreq[c])
+            formed++;
+
+        while(formed == required) {          // ? no else
+            if(right - left + 1 < min) {
+                min = right - left + 1;
+                startMin = left;
+            }
+            int leftChar = s.charAt(left) - 'A'; // ? left char
+            winFreq[leftChar]--;
+            if(tFreq[leftChar] > 0 && winFreq[leftChar] < tFreq[leftChar])
+                formed--;
+            left++;
+        }
+        right++;
+    }
+    return min != Integer.MAX_VALUE ? s.substring(startMin, startMin + min) : "";
+}
+
+// dry run
+ // s = "ADOBECODEBANC", t = "ABC"
+ tFreq = A:1, B:1, C:1
+ required = 3
+ l = 0, r = 0
+ n = 13
+ r = 0
+ c = A
+ winFreq[c] = A:1 formed = 1
+ D:1, O:1, B:1 formed = 2
+ E:1 C:1 formed = 3 = required min=6
+ A:0
+ l=1
+ O:2
+
+

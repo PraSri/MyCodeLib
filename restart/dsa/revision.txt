@@ -1,0 +1,495 @@
+
+// minimum window in s fot t
+
+// remember to read code and do dry run
+
+String minWin(String s, String t) {
+    int[] tFreq = new int[26];
+    int[] winFreq = new int[26];
+    for(char c : t.toCharArray()) tFreq[c - 'A']++;
+
+    int required = 0;
+    for(int f : tFreq) if(f > 0) required++;
+
+    int left = 0, right = 0;
+    int formed = 0;
+    int min = Integer.MAX_VALUE, startMin = 0;
+
+    while(right < s.length()) {
+        int c = s.charAt(right) - 'A';
+        winFreq[c]++;
+        if(tFreq[c] > 0 && winFreq[c] == tFreq[c])
+            formed++;
+
+        while(formed == required) {          // ? no else
+            if(right - left + 1 < min) {
+                min = right - left + 1;
+                startMin = left;
+            }
+            int leftChar = s.charAt(left) - 'A'; // ? left char
+            winFreq[leftChar]--;
+            if(tFreq[leftChar] > 0 && winFreq[leftChar] < tFreq[leftChar])
+                formed--;
+            left++;
+        }
+        right++;
+    }
+    return min != Integer.MAX_VALUE ? s.substring(startMin, startMin + min) : "";
+}
+
+// dry run
+ // s = "ADOBECODEBANC", t = "ABC"
+ tFreq = A:1, B:1, C:1
+ required = 3
+ l = 0, r = 0
+ n = 13
+ r = 0
+ c = A
+ winFreq[c] = A:1 formed = 1
+ D:1, O:1, B:1 formed = 2
+ E:1 C:1 formed = 3 = required min=6
+ A:0
+ l=1
+ O:2
+
+// binary search
+
+dry run:
+weights = [1,2,3,4,5,6,7,8,9,10], D = 5
+Output: 15
+
+max = 10 = s
+sum = 55 = e
+mid = 37
+
+mid = 28
+
+mid = 19
+
+mid = 14
+
+mid = 15
+1,2,3,4,5 day = 1
+6,7 day = 2
+8 day = 3
+9 day = 4
+10 day = 5
+
+int public minDays(int[] weights, int d) {
+    int max = -1;
+        int sum = 0;
+        for(int x: weights) {
+            if(x > max) {
+                max = x;
+            }
+            sum += x;
+        }
+    int s = max;
+    int e = sum;
+    while(s<e) {
+        int mid = s + (e-s)/2;
+        if(isFeasible(mid, weights, d)) {
+            e = mid;
+        } else {
+            s = mid + 1;
+        }
+    }
+    return s;
+}
+
+// weights = [3, 2, 2], capacity = 5, D = 2 , ans = 2
+
+
+boolean public isFeasible(int ans, int[] weights, int d) {
+    int cap = 0;
+    int days = 0;
+    for(int w: weights) {
+        if(cap + w >= ans) {
+            cap = 0;
+            days++;
+            continue;
+        }
+        cap += w;
+    }
+    if(cap != 0) days++;
+    if(days <= d) return true;
+    return false;
+}
+
+// graph
+// traverse 0,1 grid from 0,0 to m-1,n-1, you can eliminate at most k walls
+
+int minSteps(int[][] grid, int k) {
+    int m = grid.length, n = grid[0].length;
+
+    Queue<int[]> queue = new LinkedList<>();
+
+    boolean[][][] visited = new boolean[m][n][k+1];
+
+    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}};
+
+    queue.add(new int[]{0, 0, 0});
+
+    visited[0][0][0] = true;
+
+    int steps = 0;
+
+    while(!queue.isEmpty()) {
+        int size = queue.size();          // ? renamed
+        for(int i = 0; i < size; i++) {
+            int[] curr = queue.poll();
+            int x = curr[0], y = curr[1], we = curr[2];
+            if(x == m-1 && y == n-1) return steps; // ? check on poll
+            for(int[] dir : dirs) {
+                int nx = x + dir[0];
+                int ny = y + dir[1];
+                if(nx < 0 || ny < 0 || nx >= m || ny >= n) continue; // ? bounds
+                int newWalls = grid[nx][ny] == 1 ? we + 1 : we;
+                if(newWalls <= k && !visited[nx][ny][newWalls]) {
+                    visited[nx][ny][newWalls] = true;
+                    queue.add(new int[]{nx, ny, newWalls}); // ? newWalls not we
+                }
+            }
+        }
+        steps++;
+    }
+    return -1;
+}
+
+//
+int findJudge(int[][] trust, int n) {
+    int[] out = new int[n];
+    int[] in = new int[n];
+    for(int[] t: trust) {
+        int u = t[0];
+        int v = t[1];
+        out[u]++;
+        in[v]++;
+    }
+    for(int i = 0; i<n; i++) {
+        if(out[i] == 0 && in[i] == n-1) return i;
+    }
+    return -1;
+}
+
+
+// depth of tree
+
+int depth(TreeNode root) {
+    if(root == null) return 0;
+    return 1 + Math.max(depth(root.left), depth(root.right));
+}
+
+int diameter(TreeNode root) {
+    int[] res = new int[1];
+    dfs(root, res);
+    return res[0];
+}
+
+int dfs(TreeNode root, int[] res) {
+    if(root == null)
+        return 0;
+    int l = dfs(root.left);
+    int r = dfs(root.right);
+    res[0] = Math.max(res[0], l+r);
+    return 1 + max(l,r);
+}
+
+// path sum II
+
+List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+    List<List<Integer>> res = new ArrayList<>();
+    dfs(root, targetSum, 0, new ArrayList<>(), res);
+    return res;
+}
+
+void dfs(TreeNode root, int targetSum, int currSum, List<Integer> path, List<List<Integer>> res) {
+    // base case
+    if(root == null)
+        return;
+    currSum += root.val;
+    path.add(root);
+    if(root.left == null && root.right == null && currSum == targetSum) {
+        res.add(new ArrayList<>(path));
+        path.clear();
+        return;
+    } else {
+        dfs(root.left, targetSum, currSum, path, res);
+        dfs(root.right, targetSum, currSum, path, res);
+    }
+
+    path.remove(path.size()-1);
+}
+
+
+//
+Build adjacency list from edges
+DFS from root to find path to bob ? build bobTime map with reversed timing
+DFS for Alice from root — at each node, determine which case applies, accumulate income
+At each leaf, compare total income with global maximum
+
+int globalMax;
+
+public int mostProfitablePath(int[][] edges, int bob, int[] amount) {
+    int n = amount.length;                         // n nodes
+    List<Integer>[] adj = new List[n];
+    for(int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+
+    for(int[] edge : edges) {
+        adj[edge[0]].add(edge[1]);                 // undirected
+        adj[edge[1]].add(edge[0]);
+    }
+
+    // Step 1: find Bob's path from root 0 to bob
+    // bobTime[node] = time Bob arrives at node
+    Map<Integer, Integer> bobTime = new HashMap<>();
+    int[] path = new int[n];
+    findBobPath(0, -1, bob, adj, path, 0, bobTime);
+
+    // Step 2: Alice's DFS to find max income
+    globalMax = Integer.MIN_VALUE;
+    dfsAlice(0, -1, 0, 0, bobTime, adj, amount);
+    return globalMax;
+}
+
+// DFS to find path from root to bob, populate bobTime
+boolean findBobPath(int node, int parent, int bob,
+                    List<Integer>[] adj, int[] path,
+                    int depth, Map<Integer, Integer> bobTime) {
+    path[depth] = node;
+
+    if(node == bob) {
+        // found bob — populate bobTime with reversed timing
+        for(int i = 0; i <= depth; i++) {
+            bobTime.put(path[i], depth - i); // time Bob reaches path[i]
+        }
+        return true;
+    }
+
+    for(int nei : adj[node]) {
+        if(nei == parent) continue;              // don't go back to parent
+        if(findBobPath(nei, node, bob, adj, path, depth+1, bobTime))
+            return true;                         // path found, stop exploring
+    }
+    return false;
+}
+
+// DFS for Alice — track time and accumulated income
+void dfsAlice(int node, int parent, int time, int income,
+              Map<Integer, Integer> bobTime,
+              List<Integer>[] adj, int[] amount) {
+
+    // determine what Alice collects at this node
+    if(!bobTime.containsKey(node) || bobTime.get(node) > time) {
+        income += amount[node];                  // only Alice visits
+    } else if(bobTime.get(node) == time) {
+        income += amount[node] / 2;              // same time — split
+    }
+    // else Bob was here first — Alice gets 0
+
+    boolean isLeaf = true;
+    for(int nei : adj[node]) {
+        if(nei == parent) continue;              // skip parent
+        isLeaf = false;
+        dfsAlice(nei, node, time+1, income, bobTime, adj, amount);
+    }
+
+    if(isLeaf) {
+        globalMax = Math.max(globalMax, income); // update at leaf
+    }
+}
+
+// right side of binary tree
+
+List<Integer> rightSide(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if(root == null) return res;
+
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+
+    while(!queue.isEmpty()) {
+        int size = queue.size();
+        while(size > 0) {
+            TreeNode curr = queue.poll();      // poll first
+            if(size == 1) res.add(curr.val);  // last in level
+            if(curr.left != null) queue.add(curr.left);
+            if(curr.right != null) queue.add(curr.right);
+            size--;
+        }
+    }
+    return res;
+}
+
+// path sum III
+
+public int pathSum(TreeNode root, int targetSum) {
+    Map<Long, Integer> map = new HashMap<>(); // Long to avoid overflow
+    map.put(0L, 1);
+    return dfs(root, map, 0L, targetSum);
+}
+
+int dfs(TreeNode root, Map<Long, Integer> map, long currSum, int targetSum) {
+    if(root == null) return 0;
+
+    currSum += root.val;
+
+    // how many valid paths end at this node
+    int count = map.getOrDefault(currSum - targetSum, 0);
+
+    // add current prefix sum to map
+    map.put(currSum, map.getOrDefault(currSum, 0) + 1);
+
+    // recurse
+    count += dfs(root.left, map, currSum, targetSum);
+    count += dfs(root.right, map, currSum, targetSum);
+
+    // backtrack — remove current prefix sum
+    map.put(currSum, map.getOrDefault(currSum, 0) - 1);
+
+    return count;
+}
+
+
+// climb stairs
+int[] dp;
+int climbWays(int n) {
+    int[] dp = new int[n+1];
+    Arrays.fill(dp, -1);
+    return count(n, dp);
+}
+
+int count(int i, int[] dp) {
+    if(dp[i]!=-1) return dp[i];
+    if(i == 0 || i==1) return 1;
+    if(i == 2) return 2;
+    dp[i] = count(i-1,dp) + count(i-2, dp);
+    return dp[i];
+}
+
+int climbWays(int n) {
+    int[] dp = new int[n+1];
+    dp[0] = 1;
+    dp[1] = 1;
+    for(int i = 2; i<=n;i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    return dp[n];
+}
+
+
+int climbWays(int n) {
+    if(n == 1) return 1;
+    int a = 1, b = 1;
+    int ans = 0;
+    for(int i = 2; i <= n; i++) {
+        ans = a + b;
+        b = a;      // ? b = old a
+        a = ans;    // ? a = new value
+    }
+    return ans;
+}
+
+// house robber
+int maxAmount(int[] nums) {
+    int n = nums.length;
+    if(n == 1) return nums[0];
+    int[] dp = new int[n];
+    dp[0] = nums[0];
+    dp[1] = Math.max(nums[0], nums[1]);
+    for(int i = 2; i < n; i++) {
+        dp[i] = Math.max(dp[i-1], nums[i] + dp[i-2]);
+    }
+    return dp[n-1];
+}
+
+int maxAmount(int[] nums) {
+    int n = nums.length;
+    if(n == 1) return nums[0];
+    int a = nums[0];
+    int b = Math.max(nums[0], nums[1]);
+    int ans = b;
+    for(int i = 2; i < n; i++) {
+        ans = Math.max(b, nums[i] + a); // ? correct recurrence
+        a = b;                           // ? swap order matters
+        b = ans;
+    }
+    return ans;
+}
+
+// min cost path
+int minCost(int[][] grid) {
+    int n = grid.length;
+    int m = grid[0].length;         // ? fix 1
+    int[][] dp = new int[n][m];     // same size as grid
+
+    dp[0][0] = grid[0][0];
+
+    for(int i = 1; i < n; i++)
+        dp[i][0] = grid[i][0] + dp[i-1][0];
+
+    for(int j = 1; j < m; j++)
+        dp[0][j] = grid[0][j] + dp[0][j-1];
+
+    for(int i = 1; i < n; i++) {
+        for(int j = 1; j < m; j++) {
+            dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+        }
+    }
+    return dp[n-1][m-1];            // ? bottom-right corner
+}
+
+// pattern matching
+if p[j-1] == s[i-1] or p[j-1] == '.':
+    f(i,j) = f(i-1, j-1)
+
+if p[j-1] == '*':
+    // zero occurrences — skip x* pair
+    f(i,j) = f(i, j-2)
+    // one or more — if p[j-2] matches s[i-1]
+    if p[j-2] == s[i-1] or p[j-2] == '.':
+        f(i,j) = f(i,j) OR f(i-1, j)
+
+else:
+    f(i,j) = false
+
+boolean patternMatch(String s, String p) {
+    int n = s.length();
+    int m = p.length();
+    Boolean[][] memo = new Boolean[n+1][m+1];
+    return f(n, m, s, p, memo);
+}
+
+boolean f(int i, int j, String s, String p, Boolean[][] memo) {
+    if(memo[i][j] != null) return memo[i][j];
+
+    // base cases
+    if(i == 0 && j == 0) return memo[i][j] = true;
+    if(i == 0) {
+        // only x* pairs match empty string
+        if(j > 1 && p.charAt(j-1) == '*')
+            return memo[i][j] = f(0, j-2, s, p, memo);
+        return memo[i][j] = false;
+    }
+    if(j == 0) return memo[i][j] = false; // pattern empty, string not
+
+    boolean result;
+
+    if(p.charAt(j-1) == s.charAt(i-1) || p.charAt(j-1) == '.') {
+        // characters match — move both forward
+        result = f(i-1, j-1, s, p, memo);
+
+    } else if(p.charAt(j-1) == '*') {
+        // zero occurrences — skip x* pair
+        result = f(i, j-2, s, p, memo);
+        // one or more — if preceding char matches
+        if(j > 1 && (p.charAt(j-2) == s.charAt(i-1) || p.charAt(j-2) == '.'))
+            result = result || f(i-1, j, s, p, memo);
+
+    } else {
+        result = false;
+    }
+
+    return memo[i][j] = result;
+}
+

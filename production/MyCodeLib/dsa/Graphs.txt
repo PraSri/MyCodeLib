@@ -1,0 +1,220 @@
+package dsa;
+
+public class Graphs {
+
+    int islands(int[][] grid) {
+        int count = 0;
+        for(int i = 0; i<grid.length; i++) {
+            for(int j = 0; j<grid[0].length; j++) {
+                if(grid[i][j] == 1) {
+                    count++;
+                    dfs(i, j, grid);
+                }
+            }
+        }
+        return count;
+    }
+
+    void dfs(int i, int j, int[][] grid) {
+        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length || grid[i][j] != 1) {
+            return;
+        }
+
+        grid[i][j] = 2;
+
+        dfs(i+1, j, grid);
+        dfs(i-1, j, grid);
+        dfs(i, j-1, grid);
+        dfs(i, j+1, grid);
+    }
+
+//    translation invariant
+
+    int islands(int[][] grid) {
+        Set<String> shapes = new HashSet<>();
+        for(int i = 0;i<grid.length;i++) {
+            for(int j = 0; j<grid[0].length; j++) {
+                if(grid[i][j] == 1) {
+                    shapes.add(dfs(i, j, grid));
+                }
+            }
+        }
+        return shapes.size();
+    }
+
+    String dfs(int i, int j, int[][] grid) {
+        if(i<0 || j<0 || i>=grid.length || j>= grid[0].length || grid[i][j] != 1) {
+            return "";
+        }
+        grid[i][j] = 2;
+        String shape = "";
+
+        shape += "D" + dfs(i+1, j, grid);
+        shape += "U" + dfs(i-1, j, grid);
+        shape += "R" + dfs(i, j+1, grid);
+        shape += "L" + dfs(i, j-1, grid);
+        shape += "B";
+        return shape;
+    }
+
+  class UnionFind {
+      int[] parent;
+      int[] rank;
+
+      public UnionFind(int n) {
+          parent = new int[n];
+          rank = new int[n];
+          for(int i = 0; i < n; i++) {
+              parent[i] = i;
+              rank[i] = 1;
+          }
+      }
+
+      public int find(int x) {
+          if(parent[x] != x)
+              parent[x] = find(parent[x]); // path compression
+          return parent[x];
+      }
+
+      // returns true if union happened (were different components)
+      public boolean union(int x, int y) {
+          int rootX = find(x);
+          int rootY = find(y);
+          if(rootX == rootY) return false; // already connected
+
+          // union by size
+          if(rank[rootX] > rank[rootY]) {
+              parent[rootY] = rootX;
+              rank[rootX] += rank[rootY];
+          } else {
+              parent[rootX] = rootY;
+              rank[rootY] += rank[rootX];
+          }
+          return true;
+      }
+  }
+
+  List<Integer> numIslands(int m, int n, int[][] positions) {
+      int[][] grid = new int[m][n];
+      int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+      UnionFind uf = new UnionFind(m * n);
+      List<Integer> result = new ArrayList<>();
+      int islandCount = 0;
+
+      for(int[] position : positions) {
+          int x = position[0];
+          int y = position[1];
+
+          // duplicate position — island count unchanged
+          if(grid[x][y] == 1) {
+              result.add(islandCount);
+              continue;
+          }
+
+          grid[x][y] = 1;
+          islandCount++;  // new land = new island initially
+
+          for(int[] dir : dirs) {
+              int nx = x + dir[0];
+              int ny = y + dir[1];
+
+              // skip invalid or water cells
+              if(nx < 0 || ny < 0 || nx >= m || ny >= n || grid[nx][ny] != 1)
+                  continue;
+
+              int curr1d = x * n + y;
+              int next1d = nx * n + ny;
+
+              if(uf.union(curr1d, next1d)) {
+                  islandCount--; // two islands merged into one
+              }
+          }
+          result.add(islandCount);
+      }
+      return result;
+  }
+
+  // BFS, minimum steps to from top left to bottom right
+  int minSteps(int[][] grid) {
+      int n = grid.length;
+      int m = grid[0].length;
+      if(grid[0][0] == 1 || grid[n-1][m-1] == 1) return -1; // edge case
+      Queue<int[]> queue = new LinkedList<>();
+      boolean[][] visited = new boolean[n][m];
+      int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+      queue.offer(new int[]{0, 0});
+      visited[0][0] = true;
+      int steps = 1;
+
+      while(!queue.isEmpty()) {
+          int size = queue.size();
+          for(int i = 0; i < size; i++) {
+              int[] cell = queue.poll();   // ? poll once
+              int x = cell[0], y = cell[1];
+              if(x == n-1 && y == m-1) return steps;
+              for(int[] dir : dirs) {
+                  int nx = x + dir[0];
+                  int ny = y + dir[1];
+                  if(nx >= 0 && ny >= 0 && nx < n && ny < m
+                     && grid[nx][ny] != 1 && !visited[nx][ny]) {
+                      visited[nx][ny] = true;  // ? mark on insert
+                      queue.offer(new int[]{nx, ny});
+                  }
+              }
+          }
+          steps++;  // outside inner loop
+      }
+      return -1;  // unreachable
+  }
+
+  // Bus routes
+  int minBuses(int[][] routes, int src, int target) {
+      if(src == target) return 0; // edge case
+
+      // pre-processing: stop ? list of buses serving it
+      Map<Integer, List<Integer>> stopToBuses = new HashMap<>();
+      for(int i = 0; i < routes.length; i++) {
+          for(int stop : routes[i]) {
+              List<Integer> buses = stopToBuses.getOrDefault(stop, new ArrayList<>());
+              buses.add(i);
+              stopToBuses.put(stop, buses);
+          }
+      }
+
+      if(!stopToBuses.containsKey(src)) return -1; // src not in any route
+
+      Queue<Integer> queue = new LinkedList<>();
+      Set<Integer> visitedBuses = new HashSet<>();
+      Set<Integer> visitedStops = new HashSet<>();
+
+      // seed queue with all buses serving source
+      for(int bus : stopToBuses.get(src)) {
+          queue.add(bus);
+          visitedBuses.add(bus);
+      }
+
+      int count = 1;
+      while(!queue.isEmpty()) {
+          int size = queue.size();           // level size
+          for(int i = 0; i < size; i++) {
+              int bus = queue.poll();
+              for(int stop : routes[bus]) {
+                  if(stop == target) return count;  // found!
+                  if(!visitedStops.contains(stop)) {
+                      visitedStops.add(stop);
+                      for(int b : stopToBuses.get(stop)) {
+                          if(!visitedBuses.contains(b)) {
+                              visitedBuses.add(b);  // mark on insert
+                              queue.add(b);
+                          }
+                      }
+                  }
+              }
+          }
+          count++;  // one full level = one bus ride
+      }
+      return -1;
+  }
+
+
+}
