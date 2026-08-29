@@ -230,7 +230,11 @@ NFR
 
 
 
-
+SAGA
+- do backwards operations if something fails as compensation steps
+2 ways
+1. Choreograpghy - kafka/event bus, communicate through events
+2. Orchestation
 
 
 

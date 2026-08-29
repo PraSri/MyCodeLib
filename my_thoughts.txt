@@ -1,2 +1,8 @@
-in catalog, there is a way to whitelist advertisers so thet they can create their campaigns without any guardrail. Currently we are adding advertiser id's in a configuration file. I think we should do Aspect oriented programming for cross cutting, extracting the advertiser is whitelisted or not from headers and separate db to track whitelisted
-this is more scalable and reliable solution and isolated from our internal logic.
+in catalog, there is a way to whitelist advertisers so that
+they can create their campaigns without any guardrail.
+ Currently we are adding advertiser id's in a configuration file.
+ I think we should do Aspect oriented programming for cross cutting,
+  extracting the advertiser is whitelisted or not from headers and separate db to track
+  whitelisted
+this is more scalable and reliable solution and
+isolated from our internal logic.
