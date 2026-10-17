@@ -1,0 +1,77 @@
+
+
+project 1: Scaling of adtech catalog systems
+
+- intially ek mvp monolithic system tha, mysql backed, sab kuch mysql me rkhte the aur application me pura
+data la ke usme user needs ke hisaan se transaform krte the.
+ But as adtech was experiencing massive growth, our aim was to support this at unprecedented scale.
+
+- my objective was to architected the solution to handle over 500k - 1M
+daily search request for massive volume of data for about 100M products
+
+- maine monolithic system ko microservices broke down kiya
+- maine 5 services me break kiya using scala play, due to strong concurrency model
+- scala akka uses actor model
+- complex, high volume, multi faceted search queries support krne ke liye
+ maine elastic search intregate kiya - jisse system choke na ho at peak hours
+ - scalable search architecture
+ - primary RDBMS for high volume search often leads to full table scan and CPU exhaustion
+ - reasons to support ES over RDBMs
+  - offloading heavy reads to ES, RDMS can take writes without contention
+  - ES is distributed inverted index based on lucene, designed for high cardinality
+  searches over million of documents
+  - optimized the write path, fine tuning of ingestion
+  - introduce back pressure by kafka in between write path to ES
+  - Sharding & replication : chose right number of Primary Shards (for write parallelism)
+        and Replica Shards (for read parallelism)
+  - In ES you avoid joins, so it involves denormalization of data, so all information needed for query present in doc
+  - caching -
+    - advertiser to brand mapping, will not changes frequently
+    - monthly sales data
+- new architecture successful to onboard 100K+ advertisers mostly self - serve,
+means auto driven from UI with minimal involvement of ops team
+- search latency got reduced
+
+
+Project 2: Under AI & innovation initiative Adtech Catalog MCP server
+
+- Walmart has introduced an AI Agent called Marty for advertising experience
+- This Agent interact with catalog in a secured and context aware manner.
+- The other motivation to build MCP was to improve operations & substaining team awareness for on-call production issues
+- they can interact with LLMs in NLP and LLMs are interagated with catalog MCP
+- I was given the task to build a bridge between our REST compliant microservices
+and AI Agents, i.e. MCP(Model Context Protocol) server
+- I used Spring AI in java ....
+- looup right tool based on user's intent
+- RAG based Agentic workflow, context window engineering
+- Security & guardrail ... only accessed info, no offensive words, etc.
+- it enabled seamless, conversational advertiser onboarding & campaign activation
+ through AI Agent, making it intuitive and self serve smooth
+ - LLM functions as planning layer, and Spring AI backed MCP server acts as
+ execution & safety layer.
+- redis for storing session specific agent state, specific SKU again in current
+session, don't invoke mcp tool
+- chromadb for vector db
+
+Project 3: Display Ads Inventory Forecast
+- needed accurate and fast forecast for ad inventory for display ads on ecom site
+in real time, where 10k advertisers were competing and bidding for space
+
+- i needed to build the forecasting APIs for inventory of display ads space, so that
+advertisers can place their bid more accurately. It was a value added service
+
+- I developed the APIs using spring boot and vespa for query engine, because we needed
+real time big data serving and computation, it supports range queries as well
+i focused on fault tolerance, resilience, i deployed vespa in 2 regions for HA
+in active-passive mode
+data is ingested in passive vespa cluster
+- API achieved 99.9% uptime, with high precision forecasting, which optimizied the
+ad placement & contributed to 25% increase in revenue.
+- For accuracy and identify the staleness of data, I implmented evaluation framework
+which tasked with evaluation, producing results with metrics and trigger reconcilation in
+case of downgrade of precision, these were offline batch jobs scheduled via airflow
+
+
+
+
+

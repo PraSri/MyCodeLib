@@ -1,0 +1,243 @@
+
+
+What does “fuzzy matching” actually mean here?
+
+Searching bird returns posts containing ostrich, sparrow, eagle, etc — even though the word bird is not literally present.
+
+So this is semantic similarity, not typo correction.
+
+Level 1 (Most interview-friendly): Synonym / Concept Expansion
+
+Level 2: Graph / Ontology Based Expansion
+
+Level 3: Embeddings (Mention briefly)
+
+
+
+personalization in search results 
+Personalization = the search results are tailored to the specific user, not just based on the keyword.
+“Personalization in search means ranking search results based on the specific user’s context, including past interactions, social connections, and interests. We compute a personalized score for each result and sort accordingly, while still leveraging keyword indexes for efficient retrieval.”
+
+
+Read about Outbox Pattern - https://www.morling.dev/blog/revisiting-the-outbox-pattern/
+
+
+
+Scaling Reads
+
+1. Optimize read performance within your database
+	Indexing
+	Upgrade hardware
+	Denormalization + Materialized views for precomputed aggregations
+2. Scale your database horizontally - when reads > 50k-100k per sec
+	Read replicas
+	Db sharding
+3. Add external caching layer
+	TTL
+	Write through invalidation
+	Write behind invalidation
+	Tagged invalidation
+	Versioned keys
+	CDN + Edge Caching
+
+Common scenarios
+1. url shorterner - long to short url mappings
+2. tickermaster - events pages search results, not ticket purchase
+3. social media news feed
+4. youtube/video platforms
+
+
+Consistent Hashing
+
+Problem solve - how to distribute data across servers while minimizing redistribution when the number of servers changes
+How - arrange everything in circle and move clockwise
+
+simple hashing
+Consistent hashing
+Virtual Nodes
+
+In an interview, the key distinction to make is: virtual nodes prevent structural imbalance (uneven key distribution), while replication and key salting prevent workload imbalance (uneven traffic).
+
+
+
+
+
+System Design patterns
+
+1. Real time updates
+	
+	- TicketMaster
+	- Uber
+	- WhatsApp
+	- RobinHood (Zerodha)
+	- Google Docs
+	- Strava
+	- Online Auction
+	- FB Live Comments
+
+2. Dealing with Contention
+	- Ticketmaster
+	- Rate limiter
+	- Online Auction
+
+3. Multi-step processes
+	- Uber 
+	- Payment System
+4. Scaling Reads
+
+5. Scaling Writes
+	- Youtube top K
+	- Strava
+	- Rate limiter
+	- Ads click aggregator
+	- FB post search
+	- Metrics Monitoring
+6. Handling Large Blobs
+	- Instagram
+	- Youtube
+	- Dropbox
+7. Managing long running tasks
+	- Instagram
+	- Leetcode
+
+
+
+
+Paypal: 
+-Web Crawler
+
+-Design a configuration management system to handle deployments across a large number of microservices. Describe the overall system architecture, key components, and how services consume configuration.
+What type of database would you choose for storing configurations and feature flags, and why?
+
+How would you design the database schema for managing service-level configurations and feature flags?
+
+How would the system handle scenarios where a feature flag introduces a bug in production, and redeploying the service takes significant time?
+
+How would you ensure real-time or near real-time configuration updates without requiring redeployment?
+
+How would you manage versioning, auditing, and rollback of configuration changes?
+
+-Design a Payment Gateway System
+
+Discussion Points
+Overall architecture and system components
+Payment flow between services
+Transaction processing mechanisms
+Ledger system implementation for consistency and traceability
+High-level design (backend focused, despite being a frontend role)
+Preparation Tip
+This topic appears frequently in PayPal interviews. Study payment gateway architectures from LeetCode discussions and system design resources.
+
+
+1. Design a Digital Wallet System
+2. Design a Fraud Detection System
+3. Design a Payment Gateway System
+4. Design a Subscription Billing System
+5. Design a Peer-to-Peer Payment System
+6. Design a Transaction Analytics Platform
+7. Design a Multi-Currency Payment System
+8. Design a Scalable Payment Processing System
+9. Design a Secure Login and Authentication System
+10. Design a Scalable Logging and Monitoring System
+
+-Design a notification service.
+
+-Design an eCommerce Application (e.g., Shopping Cart/Wishlist)
+
+-Design a Rate Limiter (e.g., Sliding Window or Token Bucket)
+
+-Design a Fraud Detection System
+
+-Design a Secure Login & Authentication System
+
+-Discuss Microservices vs. Monolith Architecture
+
+
+Uber:
+
+Design Uber's Ride-Matching & Dispatch System
+Design a HeatMap of Active Drivers
+Design the Uber Eats Homepage
+Design Near Real-Time Uber Eats Metrics for Restaurant Owners
+Design a Search Function for Uber Eats
+Design a Scalable Real-Time Tracking System
+Design a System to Track & Count Real-Time Events
+
+
+
+OCC - Optimistic Concurrency Control => Optimistic Locking
+
+Strategic trade off between throughput and data integrity
+
+Look before you leap
+
+Assumes low contention (that most transactions will not interfere with each other)
+
+no locking (locking is pessimistic)
+
+system allows transaction to proceed & only checks the conflicts at the very end.
+
+3 phase life cycle : 
+1. Read/execution phase
+2. Validation phase
+3. Commit/Write phase
+
+Implementation strategies:
+1. Version number
+2. Timestamp (last_updated_at)
+3. Checksum/hash/fingerprinting (check hash of entire record)
+
+Key trade offs:
+
+Pros : 
+1. high concurrency: No "stop the world", excellent for read heavy workloads
+2. deadlock prevention: no locks
+3. Scalability: better for stateless architecture
+
+Cons:
+1. Contention Penalty: if many users fight for same resource(eg, flash sale), the high abort/retry rate waste more CPU and IO, giving worse performance than pessimistic locking.
+
+2. the "ABA" problem: if value changes from A to B and back to A, system won't detect (version number can)
+
+3. Starvation: a larger slow transaction might keep getting abort by smaller fast transactions.
+
+When to choose:
+Choose OCC when cost of retry is lower than cost of waiting (eg, collab tools, google docs, git, inventory management, etc.)
+choose pessimistic locking, when contention is high & latency of a retry is not affordable.(banking, ledger, etc.)
+
+SSE - Server side events
+
+- real time, unidirectional data streaming from server to client over http
+- alternative of web sockets, where one way push is needed
+- long lived http connection
+- text/event-stream format 
+- eg. stock tickers, cryptocurrency prices, real time notifications, LLM streaming
+
+
+
+
+Payment System
+
+NFR 
+- highly secure
+- gurantee durability & auditability
+- guarntee transaction safety & financial integrity 
+- highly scalable (10k+ tps)
+
+
+
+
+
+
+
+SAGA
+- do backwards operations if something fails as compensation steps
+2 ways
+1. Choreograpghy - kafka/event bus, communicate through events
+2. Orchestation
+
+
+
+
+
+

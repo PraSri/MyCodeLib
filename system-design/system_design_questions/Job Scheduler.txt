@@ -1,0 +1,31 @@
+
+
+DB schema
+
+keep 2 separate tables
+1. job_definitions
+    - jobId : partition key
+    - userId
+    - taskId
+    - params
+    - schedule
+2. job_execution_instances
+    - time_bucket : partition key (unix timestamp rounded to hour)
+    - execution_time : Sort key
+    - jobId
+    - userId
+    - status : enum(COMPLETED, FAILED, IN_PROGRESS, RETRYING)
+    - attempt
+
+    GSI
+    - userId: Partition key
+    - execution_time + jobId : sort key
+
+    access pattern : GET /jobs/user_id?sort=<execution_time>&page=<>
+
+this is common, similar approach taken in
+- meeting/calendar system - event definition vs occurences
+- notification system - template vs individual notifications
+- stampcard - stampard vs custumer_stampcard_instance
+
+

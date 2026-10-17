@@ -1,0 +1,85 @@
+
+
+
+
+Round 1: Deep Dive on Walmart (Current Role)
+
+1. AdTech Catalog Services
+
+Walk me through the architecture of the AdTech Catalog Services you built at Walmart.
+
+Follow-up: How do requests flow from advertisers or internal systems to Elasticsearch and back?
+
+Catalog services provide 3 major functionalities to our downstream clients
+1. Search/discovery of products capabilities 
+2. Bundle the products/items available in Walmart inventory in a single entity, we call them itemsets
+3. Insights of advertiser brands and products, like Sales, GMV, availability, etc.
+
+Architecture: 
+1. Search services are built on elastic search where we have separate indexes for our dedicated query patterns, like product-index for items details search, brand-search for brand and aggregated on items, category-index for keeping categories of items, like what is clothing items, their count, brands, etc.
+
+2. There is a daily batch job which refreshes the data in the elastic search, and only updates for the diff. Some items might get unpublished due to legal or other issues.
+
+3. The upstream data source for this elastic search are hive tables, these hive tables themselves enriched by daily batch jobs by polling and joining the data from uber tables, the global inventory of Walmart.
+
+4. The compressed dump of the data is also kept in GCS buckets in orc(Optimized Row Columnar) format per version as a source of truth.
+
+5. We also keep a view of this data in Presto, to provide the insights to bussiness and visibility of items per itemsets.
+
+APIs:
+1. These search APIs are read only for discvery purpose. Having filters on different criteria or attributes of a product.
+2. Example, search items for Apple brands under Mobile categories ordered by sales in descending order and its availability is IN_STOCK.
+3. When advertiser who is creating campaign for Apple mobile phones on Walmart website, get these items, create itemset of these items, and attach this itemset to the ad campaign which is scheduleded to be launced in Christmas, the ad of iphones will be shown on Walmart websites on selected ad locations.
+
+
+You mentioned handling 1M+ daily search requests over 100M+ products with 30% latency reduction. How exactly did you achieve that reduction?
+
+Think: indexing strategy, caching, query optimization, data modeling in Elasticsearch, Play framework optimizations.
+
+High level optimizations or infra level optimizations:
+
+1. At infra level of services, we have deployed our services in 2 regions behind a global load balancer - us-central and us-west, the load balancer route the request to the nearest server.
+
+2. In each region we have 20 kube pods deployed and configured with auto-scaling in case of traffic spikes.
+
+3. Each pod is profiled to with 20 CPU cores and 16gb memory and benchmarked to process 200k rpm.
+
+Low level optimizations:
+
+1. We have build dedicated indexes according to our query patterns which are evolved over the time and now quite mature.
+
+2. We have not enabled any global caching since are request pattern doesn't seem to have any regular pattern in queries.
+
+3. We have modelled our data in ES, which is helpful in our queries, like we have enabled keyword type for some highly used text field like item name, brand name, etc.
+Keyword tokenize the text and keep the inverse indexing making it favourable for text search.
+
+4. We have used the play framework & scala functional programming offerings like lazy evaluations and futures to optimize the request processing at application level.
+
+5. Migrated from Solr to Elastic search
+- both are lucene based, but ES is better for large scale distributed deployments
+- es give better latency
+- solr has master-slave zookeeper dependency, which is complicated to handle
+- es has peer-to-peer cluster, self-organizing, simpler to scale
+- solr is near real time - refresh time is 5 sec but in ES 1 sec
+- Benchmark likely showed: ES 30-50% faster for faceted searches.
+
+
+
+How do you design the schema and indices in Elasticsearch for the catalog? What trade-offs did you make between query flexibility and write performance?
+
+1. Mostly read queries for seach/discovery
+2. For curated list of itemsets items, we do write the subset of data in separate ES index to serve with minimal latency to our clients.
+3. Used keyword for text based fields, number type for range based, object based type for multi tenant for supporting different languages.
+
+How do you ensure relevance and ranking for search results in the AdTech context (e.g., advertiser constraints, product attributes, campaigns)?
+
+1. We have cutomized sorting order like item name, sales, etc.
+
+How to prepare: Be ready to whiteboard a simple architecture: client → API gateway → Play service → ES cluster → data pipelines for indexing.
+Call out metrics and trade-offs (consistency vs latency, index refresh, replicas, sharding)
+
+
+
+
+
+

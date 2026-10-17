@@ -1,0 +1,37 @@
+Instagram
+
+FR
+
+NFR
+
+Core entities
+- user
+- post
+- media
+- follow
+
+APIs
+
+POST /posts -> postId
+
+POST /follows
+{
+    "followedId": 123
+}
+
+GET /feed?cursor={cursor}&limit={page_size} -> post[]
+
+
+HLD
+
+Deep Dives
+
+=> Scaling Reads
+-shard by user id
+
+=> Managing long running tasks
+- fanout on write
+When a user posts, we need to update the feeds of all their followers.
+This is a long-running task that can take a while to complete and need to happen asynchronously.
+
+=> Handling large blobs
