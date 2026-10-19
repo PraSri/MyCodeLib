@@ -1,0 +1,10 @@
+*.class
+*.jar
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Git-ignore the scratchpad so you don't commit unfinished cold attempts
+04_scratchpad/*
+!04_scratchpad/Scratch.java

@@ -1,0 +1,121 @@
+i want to add a folder with name zero_IDE, and add this type of structure - 
+
+/Users/prakharsrivastava/Desktop/myprojects/MyCodeLib/
+│
+├── .gitignore
+├── README.md
+├── PROGRESS.md                    # Cold-run tracking & first-pass pass-rates
+│
+├── templates/                     # Standalone, memorized Java templates
+│   ├── BinarySearchTemplates.java # Integer vs float BS, boundary patterns
+│   ├── MonotonicDeque.java        # Sliding window maximum idiom
+│   ├── MonotonicStack.java        # Next greater/histogram idiom
+│   ├── UnionFind.java             # Path compression + rank template
+│   ├── KahnTopologicalSort.java   # In-degree BFS skeleton
+│   └── DijkstraShortestPath.java  # Stale-node skip PriorityQueue template
+│
+├── 01_google_gaps/                # Google high-frequency blind spots
+│   ├── topological_sort/
+│   │   ├── course_schedule_ii/
+│   │   │   ├── Solution.java
+│   │   │   └── Notes.md
+│   │   └── alien_dictionary/
+│   ├── dijkstra/
+│   │   ├── network_delay_time/
+│   │   └── cheapest_flights_k_stops/
+│   ├── intervals/
+│   │   ├── merge_intervals/
+│   │   ├── insert_interval/
+│   │   └── meeting_rooms_ii/
+│   ├── bit_manipulation/
+│   │   ├── counting_bits/
+│   │   └── reverse_bits/
+│   └── advanced_dp/
+│       ├── coin_change_ii/
+│       └── partition_equal_subset_sum/
+│
+├── 02_core_patterns/              # NeetCode 150 grouped by algorithmic invariant
+│   ├── 01_sliding_window/
+│   │   ├── sliding_window_maximum/ # Agoda / Coupang failure patterns
+│   │   ├── min_window_substring/
+│   │   └── longest_repeating_char/
+│   ├── 02_two_pointers/
+│   │   ├── 3sum/
+│   │   └── trapping_rain_water/    # Tekion problem
+│   ├── 03_monotonic_stack/
+│   │   ├── largest_rectangle_histogram/
+│   │   └── daily_temperatures/
+│   ├── 04_binary_search_answer/
+│   │   ├── koko_eating_bananas/
+│   │   ├── split_array_largest_sum/
+│   │   └── min_time_repair_cars/   # Blinkit problem
+│   ├── 05_trees_and_tries/
+│   │   ├── path_sum_ii/            # Roku problem
+│   │   ├── most_profitable_path/   # Nutanix problem
+│   │   └── word_search_ii/
+│   ├── 06_graphs_and_bfs/
+│   │   ├── bus_routes/             # Uber R2 problem
+│   │   ├── number_of_islands_ii/   # Uber R1 problem
+│   │   └── distinct_islands/       # Grey Orange bar raiser
+│   ├── 07_dynamic_programming/
+│   │   ├── regex_matching/         # Microsoft R1 problem
+│   │   ├── longest_increasing_subseq/
+│   │   └── edit_distance/
+│   └── 08_backtracking/
+│       ├── generate_parentheses/
+│       └── n_queens/
+│
+├── 03_low_level_design/           # Machine coding & concurrency rounds
+│   ├── lru_cache/                 # Bitgo problem (Node + Map + DLL)
+│   ├── rate_limiter/              # Grey Orange (Token Bucket & Sliding Log)
+│   ├── meeting_scheduler/         # Microsoft LLD
+│   ├── uno_game/                  # Tekion R2
+│   └── ad_server/                 # PhonePe R1
+│
+└── 04_scratchpad/                 # Git-ignored local sandbox for cold testing
+    └── Scratch.java               # Blank file for unassisted 20-min timed coding
+
+.gitignore
+Keeps your repo clean of compiled Java bytecode, IDE-specific config, and temporary scratch attempts:
+*.class
+*.jar
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Git-ignore the scratchpad so you don't commit unfinished cold attempts
+04_scratchpad/*
+!04_scratchpad/Scratch.java
+
+
+Standardized Notes.md Template
+
+Every problem folder should have a Notes.md adhering strictly to this concise 3-part layout:
+
+# [Problem Name] — [Difficulty]
+
+### 1. Invariant Trigger
+* **Signal:** (e.g., "Finding min cost on DAG with edge weights >= 0 -> Dijkstra")
+* **Core Invariant:** (e.g., "Queue stores [cost, node]; discard polled entries where cost > dist[u]")
+
+### 2. Failure Traps & Edge Cases
+* Subtraction in comparator `(a, b) -> a - b` risks 32-bit integer overflow; always use `Integer.compare()`.
+* Boundary: Check $k = 0$, single-node graphs, and disconnected components.
+
+### 3. Complexity & Variations
+* **Time:** $O((V + E) \log V)$
+* **Space:** $O(V + E)$
+* **Google Follow-up:** "What if the graph cannot fit in memory?" -> Partition adjacency across external shards using vertex IDs.
+
+
+
+3. PROGRESS.md Tracker
+Track execution metrics rather than a passive checkbox list:
+
+# Execution Log — Google L5 Prep
+
+| Date | Category | Problem | Target Time | Actual Time | First Run OK? | Core Mistake / Invariant Missed |
+|---|---|---|---|---|---|---|
+| Oct 20 | TopoSort | Course Schedule II | 20m | 17m | Yes | None; clean in-degree queue |
+| Oct 21 | Intervals | Meeting Rooms II | 20m | 24m | No | Used subtraction in PriorityQueue comparator |
